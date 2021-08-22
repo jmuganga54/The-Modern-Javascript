@@ -4,6 +4,8 @@ In this first section, we're going to explore what you'll learn in this course. 
 There are no individual lecture notes for this first section. These lectures are important, but they don't cover any Javascript features.
         
 ## keywords & Notes
+[What is Javascript](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
+
 `In part one` you're going to learn the very basics of the language.Learn how to create a javascript file.We'll see how we can execute it and we're going to start using javascript to solve interesting problems.In part one you'll start building out hte to do and note taking applications .
 
 `In part two` we're going to take what we already know about javascript and connect it to the browser.Be able to render stuff to the screen like the list of notes or to do's that haven't been completed and we're going to figure out how to respond to user interaction so users can click buttons or submit forms and we'll be able to do thing with that info.
