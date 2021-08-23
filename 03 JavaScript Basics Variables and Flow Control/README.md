@@ -1,7 +1,7 @@
 ## Topic
 In this section, you're going to learn the very basics of Javascript. We'll explore the Javascript syntax and some of the core building blocks that Javascript provides. But the end of this section you'll be able to create basic Javascript programs!
 
-* [Strings and Variables](#)
+* Strings and Variables
 * Numbers
 * More on Variables
 * Building a Temperature Converter
