@@ -21,7 +21,7 @@ Other text edior
 
 [Sublime Text](https://www.sublimetext.com/)
 
-[WebStorm](https://www.jetbrains.com/webstorm/) It's more of an idea than  a text editor but for this course we don't need a lot of those features. I prefer a visual studio code.
+[WebStorm](https://www.jetbrains.com/webstorm/) It's more of an IDE(Intergrated Development Environment) than  a text editor but for this course we don't need a lot of those features. I prefer a visual studio code.
 
 *Extension to be installed*
 * Sublime text keymap: This plug in is going to switch the keyboard shortcuts for Visual studio code from their defaults to default popularized by Sublime TEXT.
