@@ -13,11 +13,14 @@ In this video you're going to install Visual Studio code on your machine. Visual
 
 You can learn more [Visual Studio Code](https://code.visualstudio.com/)
 
-Aide from being my favorite text editor Visual Stuidio code is free open source and it runs everywhere.So regardless of what operating system you're using for this course you are going to be able to install VSC and configure it exactly as I have my local copy set up for this course.
+Aside from being my favorite text editor Visual Stuidio code is free open source and it runs everywhere.So regardless of what operating system you're using for this course you are going to be able to install VSC and configure it exactly as I have my local copy set up for this course.
 
 Other text edior 
+
 [Atom](https://atom.io/)
+
 [Sublime Text](https://www.sublimetext.com/)
+
 [WebStorm](https://www.jetbrains.com/webstorm/) It's more of an idea than  a text editor but for this course we don't need a lot of those features. I prefer a visual studio code.
 
 *Extension to be installed*
@@ -87,3 +90,5 @@ We installed a bunch of tools and configured them creating a good environment fo
 
 
 ## Summary
+
+In this section we have learned how to set up environment to be able to execute javascript code.
