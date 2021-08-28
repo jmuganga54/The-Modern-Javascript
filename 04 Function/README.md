@@ -268,3 +268,4 @@ console.log(result);
 
 
 ## Summary
+In this section we have learned the basics of function, undefined and null data types, passing multiple arguments and arguments defaults, function scope and template literals(template strings).
