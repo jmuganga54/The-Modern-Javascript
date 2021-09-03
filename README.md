@@ -10,7 +10,7 @@
 
 ## Structure
 
-- Each section of a section has it's own folder
+- Each section of a course has it's own folder
 
 ## Course Source
 
