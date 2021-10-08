@@ -10,7 +10,7 @@ We're going to kick the section off by setting up a web server on your machine s
 ## keywords & Notes
 
 [HTML: HyperText Markup Language](https://developer.mozilla.org/en-US/docs/Web/HTML)
-## Javascript in a Browser
+### Javascript in a Browser
 This is going to allow us to change what the user sees or respond to thing like user clicks.To do this we are going to use the script tag 
 from HTML.
 
