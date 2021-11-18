@@ -17,21 +17,27 @@
 
 
     <input type="text" name="" id="search-text" placeholder="filter notes">
-
-    <select name="" id="filter-by">
-        <option value="by-edited">Sort by last edited</option>
-        <option value="by-created">Sort by recent created</option>
+    <select id="filter-by">
+        <option value="byEdited">Sort by last edited</option>
+        <option value="byCreated">Sort by recent created</option>
         <option value="alphabetical">Sort alphabetically</option>
     </select>
 
-
-
     <div id="notes"></div>
-    <button id="create-note">Create Note</button>
-
-
-
+    <!-- <button id="create-note">Create Note</button> -->
+    <!--UI to enter the notes title and body-->
+    <div>
+        <form action="" id="note-form">
+            <button id="create-note"> Create Note</button>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"
+        integrity="sha512-LGXaggshOkD/at6PFNcp2V2unf9LzFq6LE+sChH7ceMTDP0g2kn6Vxwgg7wkPP7AAtX+lmPqPdxB47A0Nz0cMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
+    <script src="./notes-functions.js"></script>
     <script src="./notes-app.js"></script>
+
 </body>
 
 </html>

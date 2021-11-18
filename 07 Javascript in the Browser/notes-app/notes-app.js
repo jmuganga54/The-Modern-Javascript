@@ -1,47 +1,59 @@
-const notes = [{
-  title: 'My next trip',
-  body: 'I would like to go to Spain'
-}, {
-  title: 'Habits to work on',
-  body: 'Exercise, Eating a bit better'
-}, {
-  title: 'Office modifications',
-  body: 'Get a new seat'
-}]
+let notes = getSavedNotes();
 
 const filters = {
-  searchText: ''
-}
-
-//renderNotes function
-const renderNotes = function (notes, filters) {
-  const filteredNotes = notes.filter(function (note) {
-    return note.title.toLowerCase().includes(filters.searchText.toLowerCase())
-  })
-  document.querySelector('#notes').innerHTML = '';
-  filteredNotes.forEach(function (note) {
-    let noteEl = document.createElement('p');
-    noteEl.textContent = note.title;
-    document.querySelector('#notes').appendChild(noteEl);
-  })
+  searchText: '',
+  sortBy: 'byEdited'
 }
 
 //rendering Notes
 renderNotes(notes, filters)
 
-
-//create a notelet hour = data.hour;
-document.querySelector('#create-note').addEventListener('click', function (e) {
-  e.target.textContent = 'The button was clicked';
-})
-
 //search text
 document.querySelector('#search-text').addEventListener('input', function (e) {
   filters.searchText = e.target.value;
-  renderNotes(notes, filters)
+  renderNotes(notes, filters);
 })
 
 //dropdown
 document.querySelector('#filter-by').addEventListener('change', (e) => {
-  console.log(e.target.value);
+  filters.sortBy = e.target.value;;
+  renderNotes(notes, filters);
+})
+
+const form_id = document.querySelector('#note-form');
+const noteTitle = document.querySelector('#note-title');
+const noteBody = document.querySelector('#note-body');
+const createNote = document.querySelector('#create-note');
+
+if (createNote) {
+  createNote.addEventListener('click', function () {
+
+    const id = uuidv4();
+    const timestamp = moment().valueOf();
+
+
+
+    notes.push({
+      id: id,
+      title: "Unnamed note",
+      body: "",
+      createdAt: timestamp,
+      updatedAt: timestamp
+    })
+    savedNotes(notes);
+    location.assign(`./edit.html#${id}`);
+    renderNotes(notes, filters);;
+
+  })
+}
+
+window.addEventListener('storage', function (e) {
+  if (e.key === 'notes') {
+    //1.Parse the new data and update notes
+    notes = JSON.parse(e.newValue)
+    //2.Rerender the notes
+    renderNotes(notes, filters);
+
+  }
+
 })
