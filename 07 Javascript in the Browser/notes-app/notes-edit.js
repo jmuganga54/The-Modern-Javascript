@@ -1,3 +1,4 @@
+'use strict'
 //Tags
 const titleElement = document.querySelector('#note-title');
 const bodyElement = document.querySelector('#note-body');
@@ -11,11 +12,11 @@ const noteId = location.hash.substring(1);
 let notes = getSavedNotes();
 
 //checking if noteId match, the id of fetched notes
-let note = notes.find(function (note) {
+let note = notes.find((note) => {
     return note.id === noteId;
 })
 
-if (note === undefined) {
+if (!note) {
     location.assign('./index.html')
 }
 
@@ -26,7 +27,7 @@ dateElement.textContent = generateLastEdited(note.updatedAt);
 
 
 //event listener for title
-titleElement.addEventListener('input', function (e) {
+titleElement.addEventListener('input', (e) => {
     note.title = e.target.value;
     note.updatedAt = moment().valueOf()
     //showing last edited
@@ -35,12 +36,8 @@ titleElement.addEventListener('input', function (e) {
 
 })
 
-
-
-
-
 //event listener for body
-bodyElement.addEventListener('input', function (e) {
+bodyElement.addEventListener('input', (e) => {
     note.body = e.target.value;
     note.updatedAt = moment().valueOf()
     //show last edited
@@ -53,14 +50,14 @@ bodyElement.addEventListener('input', function (e) {
 
 
 //remove the tiltle value and body values and send the user back to the home page
-removeNoteBack.addEventListener('click', function () {
+removeNoteBack.addEventListener('click', () => {
     removeNote(note.id);
     savedNotes(notes);
     location.assign('./index.html');
 
 })
 
-window.addEventListener('storage', function (e) {
+window.addEventListener('storage', (e) => {
     if (e.key === 'notes') {
         notes = JSON.parse(e.newValue)
 
@@ -69,7 +66,7 @@ window.addEventListener('storage', function (e) {
         })
 
 
-        if (note === undefined) {
+        if (!note) {
             location.assign('/index.html')
         }
 

@@ -1,20 +1,23 @@
-//fetch existing todos from localStorage
-const getSavedTodos = function () {
+'use strict'
+//Read existing todos from localStorage
+const getSavedTodos = () => {
     const todoJSON = localStorage.getItem('todos');
-    if (todoJSON !== null) {
-        return JSON.parse(todoJSON);
-    } else {
-        return [];
+
+    try {
+        return todoJSON ? JSON.parse(todoJSON) : []
+    } catch (error) {
+        return []
     }
+
 }
 
 //save todos to localStorage
-const saveTodos = function (todos) {
+const saveTodos = (todos) => {
     localStorage.setItem('todos', JSON.stringify(todos))
 }
 
 //Render application todos based on filter
-const renderTodos = function (todos, filters) {
+const renderTodos = (todos, filters) => {
 
     //based on the search
     const filteredTodo = todos.filter(function (todo) {
@@ -38,8 +41,7 @@ const renderTodos = function (todos, filters) {
     })
 }
 //Removing todo
-const removeTodo = function (id) {
-
+const removeTodo = (id) => {
     const todoIndex = todos.findIndex((todo) => {
         return todo.id === id;
     })
@@ -50,20 +52,13 @@ const removeTodo = function (id) {
 }
 
 // toggle todo
-const toggleTodo = function (id) {
-    const todo = todos.find((todo) => {
-        return todo.id === id;
-    })
-    debugger;
+const toggleTodo = (id) => {
+    const todo = todos.find((todo) => todo.id === id)
 
-    if (todo !== undefined) {
+    if (todo) {
         todo.completed = !todo.completed;
-        debugger;
     }
-
 }
-
-
 //Get the DOM elements for an individual todo
 const generateTodoDOM = function (todo) {
     const todoEl = document.createElement('div');
@@ -77,22 +72,14 @@ const generateTodoDOM = function (todo) {
     checkbox.checked = todo.completed;
     todoEl.appendChild(checkbox);
 
-
-
     checkbox.addEventListener('change', (e) => {
         toggleTodo(todo.id);
         saveTodos(todos);
         renderTodos(todos, filters);
-
-
     })
 
+    todo.text !== '' ? todoText.textContent = todo.text : todoText.textContent = 'Unnamed todo'
 
-    if (todo.text !== '') {
-        todoText.textContent = todo.text;
-    } else {
-        todoText.textContent = 'Unnamed todo';
-    }
     todoEl.appendChild(todoText);
     //Setup remove button
     removeButton.textContent = 'x';
@@ -108,7 +95,7 @@ const generateTodoDOM = function (todo) {
 }
 
 //Get the DOM elements for list summary
-const generateSummaryDOM = function (incompleteTodos) {
+const generateSummaryDOM = (incompleteTodos) => {
 
     let summary = document.createElement('h2');
     summary.textContent = `You have ${incompleteTodos.length} todos Left`

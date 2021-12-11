@@ -1,3 +1,4 @@
+'use strict'
 let notes = getSavedNotes();
 
 const filters = {
@@ -9,7 +10,7 @@ const filters = {
 renderNotes(notes, filters)
 
 //search text
-document.querySelector('#search-text').addEventListener('input', function (e) {
+document.querySelector('#search-text').addEventListener('input', (e) => {
   filters.searchText = e.target.value;
   renderNotes(notes, filters);
 })
@@ -26,7 +27,7 @@ const noteBody = document.querySelector('#note-body');
 const createNote = document.querySelector('#create-note');
 
 if (createNote) {
-  createNote.addEventListener('click', function () {
+  createNote.addEventListener('click', () => {
 
     const id = uuidv4();
     const timestamp = moment().valueOf();
@@ -47,7 +48,7 @@ if (createNote) {
   })
 }
 
-window.addEventListener('storage', function (e) {
+window.addEventListener('storage', (e) => {
   if (e.key === 'notes') {
     //1.Parse the new data and update notes
     notes = JSON.parse(e.newValue)
