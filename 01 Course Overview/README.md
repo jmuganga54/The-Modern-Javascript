@@ -6,7 +6,7 @@ There are no individual lecture notes for this first section. These lectures are
 ## keywords & Notes
 [What is Javascript](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
 
-`In part one` you're going to learn the very basics of the language.Learn how to create a javascript file.We'll see how we can execute it and we're going to start using javascript to solve interesting problems.In part one you'll start building out hte to do and note taking applications .
+`In part one` you're going to learn the very basics of the language.Learn how to create a javascript file.We'll see how we can execute it and we're going to start using javascript to solve interesting problems.In part one you'll start building out the to do and note taking applications .
 
 `In part two` we're going to take what we already know about javascript and connect it to the browser.Be able to render stuff to the screen like the list of notes or to do's that haven't been completed and we're going to figure out how to respond to user interaction so users can click buttons or submit forms and we'll be able to do thing with that info.
 
@@ -35,7 +35,7 @@ The last piece of advice I have  for you is to take your time working through th
 
 > It would be very easy to blow through this course in 4 days.I simply stopped following along and I skip all the challenges.I watched the videos all day and I'm done in 4 days.The only problem is that when I'm done I haven't actually learned anything.
 
-That's is not my wish for you, it's going to take a bit more time ans that's is ok.
+That's is not my wish for you, it's going to take a bit more time and that's is ok.
 
 > I recommend coming up with a schedule that works for you.Maybe you can dedicate weekday evenings to the course or maybe you can dedicate Saturdays and Sunday morning to learning Javascript whatever it happens to be.
 
@@ -43,7 +43,7 @@ Try to find a schedule and stick to it.It is truly the slow but steady that are 
 
 Now there are other situation where you might want to think about your pacing as well.
 
-> If you get really tired and you find yourself skipping challenges or not following along it's probably a good iead to take a break.Maybe take a day or two off go ahead and step outside or do something else for a little while.Then when you come back  you'll be recharged and ready to actually learn the language.It's not a race by the end.My goal for you is to actually learn and understand javascript.That might take three weeks or two months.Either way is good.
+> If you get really tired and you find yourself skipping challenges or not following along it's probably a good idea to take a break.Maybe take a day or two off go ahead and step outside or do something else for a little while.Then when you come back  you'll be recharged and ready to actually learn the language.It's not a race by the end.My goal for you is to actually learn and understand javascript.That might take three weeks or two months.Either way is good.
 
 > Let's go ahead and continue on in the next videos.
 

@@ -9,19 +9,19 @@ In this section, you'll be setting your machine for the rest of the course. Ther
 
 ## keywords & Notes
 ### Installing Visual Studio Code
-In this video you're going to install Visual Studio code on your machine. Visual Studio code is a text editor.This is where we're going to write al the code we write throughout the course.
+In this video you're going to install Visual Studio code on your machine. Visual Studio code is a text editor.This is where we're going to write all the code throughout the course.
 
 You can learn more [Visual Studio Code](https://code.visualstudio.com/)
 
-Aside from being my favorite text editor Visual Stuidio code is free open source and it runs everywhere.So regardless of what operating system you're using for this course you are going to be able to install VSC and configure it exactly as I have my local copy set up for this course.
+Aside from being my favorite text editor Visual Studio code is free open source and it runs everywhere.So regardless of what operating system you're using for this course you are going to be able to install VSC and configure it exactly as I have my local copy set up for this course.
 
-Other text edior 
+Other text editor 
 
 [Atom](https://atom.io/)
 
 [Sublime Text](https://www.sublimetext.com/)
 
-[WebStorm](https://www.jetbrains.com/webstorm/) It's more of an IDE(Intergrated Development Environment) than  a text editor but for this course we don't need a lot of those features. I prefer a visual studio code.
+[WebStorm](https://www.jetbrains.com/webstorm/) It's more of an IDE(Integrated Development Environment) than  a text editor but for this course we don't need a lot of those features. I prefer a visual studio code.
 
 *Extension to be installed*
 * Sublime text keymap: This plug in is going to switch the keyboard shortcuts for Visual studio code from their defaults to default popularized by Sublime TEXT.
@@ -29,9 +29,9 @@ Other text edior
 * Babel ES6/ES7: So we're supporting more recent version of the syntax.
 
 ### Installing Node.js
-As I mentioned in the introduction to the course one of the great things about javascript is that its a universal language so once you know it and you can use it in a lot of different places I can use javascript in the browser, on a server, I can use it to make mobile application or I can program a virtual reality headset.Whatever you want to do.You can probably do with javascript.Well it means that we need to install at least one of those.
+As I mentioned in the introduction to the course one of the great things about javascript, is that its a universal language so once you know it and you can use it in a lot of different places, I can use javascript in the browser, on a server, I can use it to make mobile application or I can program a virtual reality headset.Whatever you want to do.You can probably do with javascript.Well it means that we need to install at least one of those.
 
-We need a way to execute javascript code and to do that.For now we're going to be using `nodejs`. Node js is typically used to execute javascript to create a server to create a backend for a mobile app or Web site.That is not what we're going to use if for.We just going to use node to execute basic javascript scripts.We're not going to be expoloring any nodes specific features.
+We need a way to execute javascript code and to do that.For now we're going to be using `nodejs`. Node js is typically used to execute javascript to create a server to create a backend for a mobile app or Web site.That is not what we're going to use if for.We just going to use node to execute basic javascript scripts.We're not going to be exploring any nodes specific features.
 
 Don't worry we are going to tie our javascript files into the browser a bit later in the course but that's more complex process which requires us to set up HTML a web server and few other things.For now as we're just trying to learn the basics that would be a distraction.So we're going to stick with node as a really easy way to run javascript from our computer.
 
@@ -52,7 +52,7 @@ _Clear the termina output_
 ```
 clear
 ``` 
-Every command we run from the terminal runs from a specific directory on our machine.So to visualize this what we're going to to is click open the Finder or the file explorer and the finder I'm always looking a specific directory.And if we don't pick one it uses our user directory by default and we can prove this we can run `pwd` which stands for print working directory.The working directory is just the directory you're currently issuing commands from.
+Every command we run from the terminal runs from a specific directory on our machine.So to visualize this what we're going to is click open the Finder or the file explorer and the finder I'm always looking a specific directory.And if we don't pick one it uses our user directory by default and we can prove this we can run `pwd` which stands for *print working directory*.The working directory is just the directory you're currently issuing commands from.
 
 _Print the full path to the current working directory_
 ```
@@ -91,4 +91,4 @@ We installed a bunch of tools and configured them creating a good environment fo
 
 ## Summary
 
-In this section we have learned how to set up environment to be able to execute javascript code.
+In this section we have learned how to set up environment to be able to execute javascript code.We have learned how to use basic command on a terminal to be able to access different files and directories.

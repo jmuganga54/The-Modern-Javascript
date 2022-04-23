@@ -45,6 +45,9 @@ let lastName = 'Muganga'
 let fullName = firstName + ' ' + lastName;
 
 console.log(fullName);
+
+//Expected output:
+Joseph Muganga
 ```
 
 > Semi-colons as we've just seen are completely optional.
@@ -52,7 +55,7 @@ console.log(fullName);
 [Useful string methods](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
 
 ### [Number]()
-In this video you are going to learn about numbers in javascript and this is going to be our second data type.
+In this section  you are going to learn about numbers in javascript and this is going to be our second data type.
 
 > Data type refers to the different types of data you can work with in a given language.We already learned about the string type.
 
@@ -77,7 +80,9 @@ let x = 11;
 
 let num = (x+1) *2;
 
-console.log(num)//24
+console.log(num)
+
+//Expected output: 24
 ```
 When you add `parentheses` it means, perform this operation first then use the result to to the rest.
 
@@ -94,7 +99,7 @@ let petName = 'Hal'
 let petName = 'Spot'
 ```
 1. You can't define a variable more than ones.
-You can't define a variable that you've already defined. Here I've used twice to defined pet name twice.
+You can't define a variable that you've already defined. Here I've used twice to defined `petName` twice.
 
 So while I can't use let twice to define a variable twice, it's Ok to reassign a variable value later.
 
@@ -102,6 +107,8 @@ So while I can't use let twice to define a variable twice, it's Ok to reassign a
 let petName = 'Hal'
 petName = 'Spot'
 console.log(petName)
+
+//Expected output: Hal Spot
 ```
 2. There are rules related o the variable names
 [variable naming rules](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Variables#an_aside_on_variable_naming_rules)
@@ -130,7 +137,7 @@ Boolean represents a logical entity and can have two values: true and false
 
 What if we wanted to do something only under a certain condition.For example what if we wanted to print a message that it's freezing outside but only when the temperature is actually 32 degrees or lower for Celsius that would be zero degrees or lower.
 
-> Note: You may see some people using `==` and `!=` in their tests for equality and non-equality. These are valid operators in JavaScript, but they differ from `===/!==`. The former versions test whether the values are the same but not whether the values' data types are the same. The latter, strict versions test the equality of both the values and their data types. The strict versions tend to result in fewer errors, so we recommend you use them.
+> Note: You may see some people using `==` and `!=` in their tests for equality and non-equality. These are valid operators in JavaScript, but they differ from `===/!==`. The former versions test whether the values are the same but not whether the values data types are the same. The latter, strict versions test the equality of both the values and their data types. The strict versions tend to result in fewer errors, so we recommend you use them.
 
 ```
 //Create a get variable set to your age
@@ -185,7 +192,8 @@ function testNum(a) {
 }
 
 console.log(testNum(-5));
-// expected output: "NOT positive"
+
+// Expected output: "NOT positive"
 
 ```
 
@@ -212,7 +220,7 @@ const a = 3;
 const b = -2;
 
 console.log(a > 0 && b > 0);
-// expected output: false
+// Expected output: false
 
 ```
 [Logical OR (||)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR)
@@ -248,7 +256,7 @@ The scope of a variable defines where it's accessible in your program based off 
 
 So just because we create a variable in one place in our program doesn't mean it's going to be accessible everywhere in the script.
 
-> Lexical Scope(Static Scope) This is sometimes reffered to as static scoping and this is the idea that a variable defined in one part of your program might not be accessible everywhere else in your program and that's exactly what we are seeing below
+> Lexical Scope(Static Scope) This is sometimes refereed to as static scoping and this is the idea that a variable defined in one part of your program might not be accessible everywhere else in your program and that's exactly what we are seeing below
 
 ```
 let varOne = 'varOne'
@@ -260,10 +268,14 @@ if(true){
 }
 console.log(varTwo)
 
+//EXpected output:
+varOne
+varTwo
+varTwo is not defined
 ```
-The thing we want to pay attention to when it comes to scoping is the code blocks in our script.So the only thing we have right now that creates a code block is the if statement.There are other structures in the language that will also create code blocks but we'll get to those later like funtion. 
+The thing we want to pay attention to when it comes to scoping is the code blocks in our script.So the only thing we have right now that creates a code block is the if statement.There are other structures in the language that will also create code blocks but we'll get to those later like function. 
 
-> There are two types of scope, global scope and local scope.`Global scope` contain all of the things defined outside of all code blocks.`Local scope` thesse are things define inside a code block.
+> There are two types of scope, global scope and local scope.`Global scope` contain all of the things defined outside of all code blocks.`Local scope` theses are things define inside a code block.
 
 In a scope you can access variables defined in that scope, or in any parent/ancestor scope
 
@@ -293,7 +305,9 @@ function exampleFunction() {
     console.log(x);
 }
 
-console.log(x);  // Causes error
+console.log(x);  
+
+//Expected output: return an error
 ```
 
 > However, the following code is valid due to the variable being declared outside the function, making it global:
@@ -340,7 +354,7 @@ if(true){
 ```
 > `Leaked global` when we assign a value to a variable but that variable was never explicitly defined.
 ```
-//et name = 'Joseph'
+//let name = 'Joseph'
 
 if(true){
     //let name = 'Mike'
@@ -356,4 +370,4 @@ if(true){
 ```
 
 ## Summary
-In this section we learned all about variable strings, booleans and numbers. We also learned about flow control how to control the flow in our application using if statements so we can run one block of code and not another block of code. Also we learned about comparison operators in our logical and or operators allowing us to set up more complex real world conditional checks.
+In this section we learned all about variable strings, booleans and numbers. We also learned about flow control how to control the flow in our application using if statements so we can run one block of code and not another block of code. Also we learned about comparison operators in our logic and or operators allowing us to set up more complex real world conditional checks.
