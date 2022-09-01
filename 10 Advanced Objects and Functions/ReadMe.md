@@ -613,7 +613,6 @@ const team = ['like', 'Maddison']
 console.log(team)
 
 //Expected output:
-```
 (2) ['like', 'Maddison']
 0: "like"
 1: "Maddison"
