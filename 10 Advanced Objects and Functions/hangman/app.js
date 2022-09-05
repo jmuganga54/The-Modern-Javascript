@@ -18,7 +18,6 @@ guessesEl.textContent = guess1.getStatusMessage()
 
 
 window.addEventListener('keypress',(e)=>{
-
     const guess = String.fromCharCode(e.charCode)
     guess1.makeGuess(guess)
     puzzleEl.textContent = guess1.getPuzzle()
@@ -33,18 +32,18 @@ const request = new XMLHttpRequest()
 //setting an eventListener when the response is returned
 request.addEventListener('readystatechange',(e)=>{
     //fired whenever readState is Done
-    if(e.target.readyState === 4){
+    if(e.target.readyState === 4 && e.target.status === 200){
       //capture the responseText content and parse it 
       const data = JSON.parse(e.target.responseText)
       console.log(data)
+    }else if(e.target.readyState === 4){
+        console.log('An error has taken place')
     }
 
 })
 // open request: HTTP method and path of where Jason is 
-request.open('GET','https://puzzle.mead.io/puzzle')
+request.open('GET','https://puzzle.mead.io/puzzle?wordCount=3')
 //send off the request
 request.send()
 
 
-//Expected output:
-{puzzle: 'Exercise Bicycle'}

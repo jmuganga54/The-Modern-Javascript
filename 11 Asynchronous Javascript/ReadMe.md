@@ -68,4 +68,106 @@ request.send()
 > 
 > Or it could be a server that someone else has set up for example companies like Google, Facebook and Twitter all have Jason API that you can access to pull Information in to your program.
 
+### HTTP Headers and Errors
+
+In this section we are going to look at HTTP request, we're going to dive into some of the details and we're also going to be making a new request to a completely different API 
+
+Every `HTTP response` comes with a status also known as a status code, and this is a numeric value that describes exactly how things went. There are a whole bunch of different status code for various degrees of succeeding or failing.
+
+So the status code is our big picture way to figure out if things went good or if things went bad.So we're actually going to want to look at that status code value when we use the response.
+
+That means it's not enough to just ask if things are complete. Things might be complete but a complete failure. We only want to parse response text when the request is complete and it was considered a success.
+
+> We're going to use the status code value to determine if it was success or not.
+
+Now we can actually access that value on target just like we can access response text. `e.target.status`
+
+```
+request.addEventListener('readystatechange',(e)=>{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4){
+      //printing the status code
+      console.log(e.target.status)
+      //capture the responseText content and parse it 
+      const data = JSON.parse(e.target.responseText)
+      console.log(data)
+    }
+
+})
+
+//Expected output:
+200
+Object { puzzle: "Old Building Supplies" }
+
+```
+
+When the puzzle API was configure it can return the number of words based on `wordCount` if it is 2, it will return only two words. To use this we use the query string. You can't use any key, the key which is already set up is called `wordCount`, `key=value`, `wordCount=2`, this will only generate puzzles that have two words in them.
+
+```
+http://puzzle.mead.io/puzzle?wordCount=
+
+//Expected output:
+puzzle	"Incredible Skyline"
+```
+
+If you make a mistake on writing the the name of the key the API will return an error, and the status code will be `400`.
+
+```
+https://puzzle.mead.io/puzzle?wordCounddjdt=2
+
+//Expected output:
+error	"Invalid query parameter used."
+
+```
+Checking if readyState is equal to fourth state which means things are complete.If it does we're going to do is cancel dialogue  and error has taken place.
+
+```
+    if(e.target.readyState === 4 && e.target.status === 200){
+      //capture the responseText content and parse it 
+      const data = JSON.parse(e.target.responseText)
+      console.log(data)
+    }else if(e.target.readyState === 4){
+        console.log('An error has taken place')
+    }
+
+})
+
+
+// open request: HTTP method and path of where Jason is 
+request.open('GET','https://puzzle.mead.io/puzzle?key=value') //no key=value
+//send off the request
+request.send()
+
+
+//Expected output:
+An error has taken place
+```
+
+So by adding just a little bit of conditional logic we can make sure that we only do certain things when things go well and we do other things when the request seems to fail for some reason.
+
+> Resources to understand status code and HTTP request
+* [HTTP Statuses](https://httpstatuses.org/)
+* [HTTP Messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages)
+
+There are four parts to both the request and the response
+* `Start line` for the `request` is where we can see the `method such as GET`, and we can also see the `protocol such as HTTP/1.1`. For response we can see the protocol which comes first and the status code `HTTP/1.1 403 Forbidden`
+
+> So the request says what method it want to use, the response said exactly how things went via the start line.
+
+* `HTTP headers` after that on both sides we have a `list of headers`. Headers are just key value pairs.
+
+> For example the key can be the `Host: localhost:8000`. So when we work with headers it's typically API specific if you work with an API it will tell you if it needs you to set any headers or not. In most cases the answer is no.
+> 
+> Now in the example of our `response` there are headers that get set as well. One of the headers is `server` which tells you what type of server you're working with. And another one type tell you what exactly is coming back. For example `Server: Apache`
+
+* `Blank line/ Empty line` To separate the headers from the body.
+
+* `optional body` And after the Empty line we have the `body` either the request body or the response body.
+> The body for the response can be for example `HTML Document` or `Jason string`
+
+So to quick recap inn this section we learned about `HTTP status code` which has a numeric value that describe exactly how things went. The status code gets sent in the response.
+
+So when you make a request for some data you don't send out a status code when the server sends the data back, it gives you a status code saying that things went well or that things went poorly.
+
+We also learned what makes up these request as we can see it is just a bunch of text.We're never going to work with the text, instead we're just going to work with the interface given to use by `XMLHttpRequest()` and that is a great transition into the next section.
 ## Summary
