@@ -1,18 +1,4 @@
-//Primitive value: Is a values that does not have properties it is not an object.
 
-//Object: myObject --> Object.prototype --> null
-//Array: myArray -->. Array.prototype --> Object.prototype --> null
-//Function: myFunc --> Function.prototype --> Object.prototype --> null
-//String: myString --> String.prototype --> Object.prototype --> null
-//Number. myNumber --> Number.prototype --> Object.prototype --> null
-//Boolean: myBoolean --> Boolean.prototype --> Object.prototype --> null
-
-
-// const product = 'Computer'
-// console.log(product.split())
-
-// const otherProduct = new String('Phone')
-// console.log(otherProduct)
 
 //HTTP (Hypertext Transfer Protocol)
 // Request - What do we want to do
@@ -40,3 +26,25 @@ window.addEventListener('keypress',(e)=>{
     
 
 })
+
+//Making an HTTP request 
+//initialize a request using constructor function provided with a browser
+const request = new XMLHttpRequest()
+//setting an eventListener when the response is returned
+request.addEventListener('readystatechange',(e)=>{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4){
+      //capture the responseText content and parse it 
+      const data = JSON.parse(e.target.responseText)
+      console.log(data)
+    }
+
+})
+// open request: HTTP method and path of where Jason is 
+request.open('GET','https://puzzle.mead.io/puzzle')
+//send off the request
+request.send()
+
+
+//Expected output:
+{puzzle: 'Exercise Bicycle'}

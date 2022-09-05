@@ -13,4 +13,4 @@ const data = {
 //code that uses the data object
 data.location = 'Dar es Salaam'
 data.location = 'Mwanza'
-console.log(data)
+console.log(data) 

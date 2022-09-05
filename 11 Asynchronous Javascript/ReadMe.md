@@ -9,24 +9,63 @@
 
 ## Keywords & Notes
 ### HTTP Request from Javascript
->In this section we're going to kick off on asynchronous programming by making our very first request for third party data. So we're going to figure out how we can get some information into our application that doesn't come from the code itself and doesn't come from the user. In this case the information we're going to be getting is a random phrase we can use for the hangman puzzle as opposed to the static text that's currently defined in app.js. 
->
-> Now to actually set up a communication between our browser and this other server what we need to do is issue and HTTP request up above
+The `Hypertext Transfer Protocol` is a request response protocol meaning that we the developer in the browser will issue some some of request.
 
-> HTTP (HyperText Transfer Protocol) is a request response protocol meaning that we the developer in the browser will issue some sort of request.This goes off to some sort of third party server that server does some work and it gives us back a response.
-> Request: The request describes what we the person making the request hoped to do.
-> Response: contain information about what was actually done.
->
-> So think about the request that we're trying to make to generate random word or phrase for each new Hangman game. The `request` itself is what we want to do, what we want to do is to generate a new word or phrase, and the response is going to contain that word or phrase, what was actually done behind the scenes the service that we're going to use is going to generate a random word or phrase from a list and then it's going to send that back so we can add it into the game.
+This goes off to some sort of third party server that server does some work and it gives us back a `response`.
+
+```
+HTTP (Hypertext Transfer Protocol)
+//Request - What do we want to do
+//Response - What was actually done
+```
+
+> To view your request go to `Network Tab`  
+
+`Web sockets : ws` allow us to communicate between two things in real time. And this is used to allow the browser to automatically refresh whenever we change some data on the application files.
+
+Well we're not going to do  is make HTTP requests that send things back like HTML or javascript files.
+
+Instead what we're going to do is make HTTP request that allow us to get Jason Back. We can then parse that Jason into javascript object to extract the data off of it, the Jason that comes back contains the randomly generated word. 
+
+Sow what we want to to do is figure out how we can make request example [Jason](https://puzzle.mead.io/puzzle) not by typing something in the browser but running some code from javascript that is going to allow us to set up the request requesting a new random puzzle, and then inside of the response we're going to be able to get the puzzle and create a new game.
+
+> XML was just a different way to structure data that you wanted to transfer, but most of the time today most people use Jason.
+
+We can use this constructor function `XMLHttpRequest()` to transfer any information we want not just XML.
+
+`request.send()` This is going to actually initiate the process. Now the process doesn't take place right away.It takes a bit of time for you to connect with that server. It takes time for the server to actually do what it's supposed to do, in this case generate random phrase and it takes time for the server to get it's response back to you.
+
+> Now we can see this over inside of the `network tab` as well, we can see there's a timeline and the timeline is in milliseconds, it all happens very quickly and it shows you exactly when requests are started when they're made and how long they actually take to get done.
+
+We need to add an `eventListener` that's going to fire when we actually have the information.
+
+[XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) Documentation
+
+```
+//Making an HTTP request 
+//initialize a request using constructor function provided with a browser
+const request = new XMLHttpRequest()
+//setting an eventListener when the response is returned
+request.addEventListener('readystatechange',(e)=>{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4){
+      //capture the responseText content and parse it 
+      const data = JSON.parse(e.target.responseText)
+      console.log(data)
+    }
+
+})
+// open request: HTTP method and path of where Jason is 
+request.open('GET','https://puzzle.mead.io/puzzle')
+//send off the request
+request.send()
+
+
+//Expected output:
+{puzzle: 'Exercise Bicycle'}
+```
+> So using this little bit of code our application is going to be able to pull information from some other server that lives out there in the world. This could be a server that we've created using a backend language like Python, Java or node.
 > 
-> This is the process which we are going to use here and the HTTP protocol is actually something that our application is already using, these request though are just initiated behind the scene.
-> If you go go to network tab on the browser, you can see the request and the response
-> `Websocket` allow us to communicate between two things in real time.And this is used to allow the browser to automatically refresh whenever we change some data. [Because of life Server]
->
-> What we want to do is initiate a request from our javascript and we want to do something with the response in the javascript. Because in the end of the day when I get that random word back I want to actually pass it to the new hangman so I can start a game with the randomly generated word.
->
-> Well we're not going to do is make HTTP requests that send things back like HTML or javascript files.Instead what we're going to do is make HTTP request that allow us to get Jason back.We can then parse that Jason into a javascript object to extract the data off from it.
->
-> So what we want to do is figure out how we can make this request not by typing something in the browser but running some code from javascript that is going to allow us to set up the request requesting a new random puzzle, and then inside of the response we're going to be able to get that puzzle and create a new game to do.
+> Or it could be a server that someone else has set up for example companies like Google, Facebook and Twitter all have Jason API that you can access to pull Information in to your program.
 
 ## Summary
