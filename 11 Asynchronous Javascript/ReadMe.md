@@ -197,7 +197,7 @@ request.addEventListener('readystatechange',(e)=>{
         //2. Paste the responseText get back the array of objects
         const data = JSON.parse(e.target.responseText)
        
-        //3. Find your country object by it's country code (alpha2Code property)
+        //3. Find your country object by it's country code (cca2 property)
         //It is oK is use array.find()
         let sameCountryCode = data.filter((country)=> country.cca2 === countryCode
         )
