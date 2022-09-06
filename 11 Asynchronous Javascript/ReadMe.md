@@ -170,4 +170,56 @@ So to quick recap inn this section we learned about `HTTP status code` which has
 So when you make a request for some data you don't send out a status code when the server sends the data back, it gives you a status code saying that things went well or that things went poorly.
 
 We also learned what makes up these request as we can see it is just a bunch of text.We're never going to work with the text, instead we're just going to work with the interface given to use by `XMLHttpRequest()` and that is a great transition into the next section.
+
+### Exploring Another API
+In this section we are going to be making a brand new request to a brand new URL as a challenge.
+
+This new request is not going to return a puzzle, but it is going to return a different set of data related to the various countries in the world.
+
+> Link to API 
+[REST COUNTRIES](https://restcountries.com/)
+> API FOR ALL 
+[ALL](https://restcountries.com/v3.1/all)
+
+How to figure out the code for your country. You can do a quick Google Search. There is a standard for these country codes it's called `ISO 3166-2 tanzania` which is `ISO 3166-2:TZ`
+
+So this what we're going to be using to locate the correct country in this array. We're going to find it by its `alpha2Code`, then we're going to print the name of that country.
+
+```
+const countryCode = 'TZ'
+
+
+const request = new XMLHttpRequest()
+
+//setting the event Listener
+request.addEventListener('readystatechange',(e)=>{
+    if(e.target.readyState === 4 && e.target.status === 200){
+        //2. Paste the responseText get back the array of objects
+        const data = JSON.parse(e.target.responseText)
+       
+        //3. Find your country object by it's country code (alpha2Code property)
+        //It is oK is use array.find()
+        let sameCountryCode = data.filter((country)=> country.cca2 === countryCode
+        )
+    
+        console.log(sameCountryCode[0]['name']['official'])
+    
+       
+    }else if(e.target.readyState ===4){
+        console.log('An error has taken place')
+    }
+
+})
+
+//1. Make a new request for all countries
+request.open('GET', 'https://restcountries.com/v3.1/all')
+//send the request
+request.send()
+
+//Expected output:
+United Republic of Tanzania
+
+```
+
+ 
 ## Summary

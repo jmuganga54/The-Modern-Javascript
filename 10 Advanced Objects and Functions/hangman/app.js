@@ -26,24 +26,59 @@ window.addEventListener('keypress',(e)=>{
 
 })
 
-//Making an HTTP request 
-//initialize a request using constructor function provided with a browser
+// //Making an HTTP request 
+// //initialize a request using constructor function provided with a browser
+// const request = new XMLHttpRequest()
+// //setting an eventListener when the response is returned
+// request.addEventListener('readystatechange',(e)=>{
+//     //fired whenever readState is Done
+//     if(e.target.readyState === 4 && e.target.status === 200){
+//       //capture the responseText content and parse it 
+//       const data = JSON.parse(e.target.responseText)
+//       console.log(data)
+//     }else if(e.target.readyState === 4){
+//         console.log('An error has taken place')
+//     }
+
+// })
+// // open request: HTTP method and path of where Jason is 
+// request.open('GET','https://puzzle.mead.io/puzzle?wordCount=3')
+// //send off the request
+// request.send()
+
+//1. Make a new request for all countries
+
+
+//4. Print the full country name (name property)
+
+const countryCode = 'TZ'
+
+
 const request = new XMLHttpRequest()
-//setting an eventListener when the response is returned
+
+//setting the event Listener
 request.addEventListener('readystatechange',(e)=>{
-    //fired whenever readState is Done
     if(e.target.readyState === 4 && e.target.status === 200){
-      //capture the responseText content and parse it 
-      const data = JSON.parse(e.target.responseText)
-      console.log(data)
-    }else if(e.target.readyState === 4){
+        //2. Paste the responseText get back the array of objects
+        const data = JSON.parse(e.target.responseText)
+       
+        //3. Find your country object by it's country code (alpha2Code property)
+        //It is oK is use array.find()
+        let sameCountryCode = data.filter((country)=> country.cca2 === countryCode
+        )
+    
+        console.log(sameCountryCode[0]['name']['official'])
+    
+       
+    }else if(e.target.readyState ===4){
         console.log('An error has taken place')
     }
 
 })
-// open request: HTTP method and path of where Jason is 
-request.open('GET','https://puzzle.mead.io/puzzle?wordCount=3')
-//send off the request
+
+//1. Make a new request for all countries
+request.open('GET', 'https://restcountries.com/v3.1/all')
+//send the request
 request.send()
 
 
