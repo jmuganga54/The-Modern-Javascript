@@ -177,9 +177,9 @@ In this section we are going to be making a brand new request to a brand new URL
 This new request is not going to return a puzzle, but it is going to return a different set of data related to the various countries in the world.
 
 > Link to API 
-[REST COUNTRIES](https://restcountries.com/)
+* [REST COUNTRIES](https://restcountries.com/)
 > API FOR ALL 
-[ALL](https://restcountries.com/v3.1/all)
+* [ALL](https://restcountries.com/v3.1/all)
 
 How to figure out the code for your country. You can do a quick Google Search. There is a standard for these country codes it's called `ISO 3166-2 tanzania` which is `ISO 3166-2:TZ`
 
