@@ -9,7 +9,7 @@
 
 ## Keywords & Notes
 ### HTTP Request from Javascript
-The `Hypertext Transfer Protocol` is a request response protocol meaning that we the developer in the browser will issue some some of request.
+The `Hypertext Transfer Protocol` is a request response protocol meaning that we the developer in the browser will issue some of request.
 
 This goes off to some sort of third party server that server does some work and it gives us back a `response`.
 
@@ -165,13 +165,13 @@ There are four parts to both the request and the response
 * `optional body` And after the Empty line we have the `body` either the request body or the response body.
 > The body for the response can be for example `HTML Document` or `Jason string`
 
-So to quick recap inn this section we learned about `HTTP status code` which has a numeric value that describe exactly how things went. The status code gets sent in the response.
+So to quick recap in this section we learned about `HTTP status code` which has a numeric value that describe exactly how things went. The status code gets sent in the response.
 
 So when you make a request for some data you don't send out a status code when the server sends the data back, it gives you a status code saying that things went well or that things went poorly.
 
 We also learned what makes up these request as we can see it is just a bunch of text.We're never going to work with the text, instead we're just going to work with the interface given to use by `XMLHttpRequest()` and that is a great transition into the next section.
 
-### Exploring Another API
+### Exploring Another API | Challenge
 In this section we are going to be making a brand new request to a brand new URL as a challenge.
 
 This new request is not going to return a puzzle, but it is going to return a different set of data related to the various countries in the world.
@@ -198,7 +198,7 @@ request.addEventListener('readystatechange',(e)=>{
         const data = JSON.parse(e.target.responseText)
        
         //3. Find your country object by it's country code (cca2 property)
-        //It is oK is use array.find()
+        //It is oK to use array.find()
         let sameCountryCode = data.filter((country)=> country.cca2 === countryCode
         )
     
@@ -206,7 +206,7 @@ request.addEventListener('readystatechange',(e)=>{
     
        
     }else if(e.target.readyState ===4){
-        console.log('An error has taken place')
+        console.log('Unable to fetch data')
     }
 
 })
