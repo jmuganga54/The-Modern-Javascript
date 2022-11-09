@@ -220,6 +220,151 @@ request.send()
 United Republic of Tanzania
 
 ```
+### Callback Abstration
+In this section will be spending some time on clean up app.js
+
+But we want to focus on is how we're going to transfer information first then we'll actually bring in the code that gets the puzzle.
+
+```
+> request.js
+const getPuzzle = () =>{
+    return 'My new puzzle'
+}
+```
+
+```
+> app.js
+//calling of function
+const puzzle = getPuzzle()
+console.log(puzzle)
+
+Expected output:My new puzzle
+```
+So in the above case we are indeed going to get everything working as expected. The puzzle variable is going to equal the string returned and I can log it to `console.log`. This is clearly it works for the current set up.
+
+The problem is that the `getPuzzle()` function has the data to return right away. This is not going to be the case when we actually introduce the `HTTP request`. 
+
+We have to wait for the callback function to fire first then and only then do we have access to the data.
+
+So returning directly from `getPuzzle()` is not going to be possible.
+
+> Let's go ahead and actually prove that:
+
+> request.js
+```
+const getPuzzle = () =>{
+    const request = new XMLHttpRequest()
+    //setting an eventListener when the response is returned
+    request.addEventListener('readystatechange',(e)=>{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4 && e.target.status === 200){
+        //capture the responseText content and parse it 
+        const data = JSON.parse(e.target.responseText)
+        console.log(data)
+    }else if(e.target.readyState === 4){
+        console.log('An error has taken place')
+    }
+
+    })
+    // open request: HTTP method and path of where Jason is 
+    request.open('GET','https://puzzle.mead.io/puzzle?wordCount=3')
+    //send off the request
+    request.send()
+}
+```
+Now if we were to run the program what would happen. Yes we would still see the data printing to the console, that's fine but that's not what we want.
+
+We don't want to print the data to the console.
+
+We want to be able to access the data ad `console.log(puzzle)` so we can do something meaningful with it like pass it into new hangman constructor function to actually start the game with whatever puzzle comes back.
+
+> Inside `request.js` we might think we can solve this using return, like `return data`
+
+Well this isn't actually going to work and there are few important reasons why?
+* The first is that its returning from the wrong function. When we use the return statement we return from the function we are currently in.
+
+Where is this code?
+
+It is not directly inside of `getPuzzle()`, there is a closer function, it's related to that is the callback function.
+
+```
+{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4 && e.target.status === 200){
+        //capture the responseText content and parse it 
+        const data = JSON.parse(e.target.responseText)
+        console.log(data)
+        return data
+    }else if(e.target.readyState === 4){
+        console.log('An error has taken place')
+    }
+
+    }
+
+    Expected output: undefined
+```
+
+So you cannot return from the parent function inside of a child function. The return statement applies to the function that the code is executing from.
+
+That means return data isn't going to solve our problem.
+
+* Now this bring us to the second important reason why this return statement isn't going to work.
+
+Look at the order that things are happening here.
+
+![Order of Exectution](../10%20Advanced%20Objects%20and%20Functions/hangman/img/orderOfExecuction.png)
+
+> Undefined from app.js -> Puzzle from request.js
+
+And this might not have been the order we expected but it is indeed the correct order.
+
+That is because going off and making an HTTP request takes a bit of time.Now in the grand scheme of things it's a very short amount of time maybe 100 milliseconds but that's a whole lot of time, when it comes to executing javascript code, executing code that lives on your machines is super fast, we could execute thousands and thousands of lines of code before a single HTTP request is actually made and processed.
+
+That is because going off to the network and finding  that server letting the server process your request and then sending the data back all takes time.
+
+So the order that's happening over here is just further proof that at no point, `return` is going to work.
+
+Because this code `console.log(puzzle)` that's we are suppose to use it actually runs before we ever have access to the data.
+
+And we just proved that by seeing `undefined` printing before the data prints.
+
+But there's one more common solution that people usually turn to or try to turn when they want to keep their code looking like this. and that is the following.
+
+> They start by creating some sort of variable up above `let data` then they try to manipulate data inside of the callback function, going to set data from up above equal to what is return by parse, see code below then return `data`
+
+```
+const getPuzzle = () =>{
+    let data
+    const request = new XMLHttpRequest()
+    //setting an eventListener when the response is returned
+    request.addEventListener('readystatechange',(e)=>{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4 && e.target.status === 200){
+        //capture the responseText content and parse it 
+        data = JSON.parse(e.target.responseText)
+        
+    }else if(e.target.readyState === 4){
+        console.log('An error has taken place')
+    }
+
+    })
+    // open request: HTTP method and path of where Jason is 
+    request.open('GET','https://puzzle.mead.io/puzzle?wordCount=3')
+    //send off the request
+    request.send()
+
+    return data
+}
+```
+
+
+
+
+
+
+
+ 
+
 
  
 ## Summary
