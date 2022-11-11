@@ -1,12 +1,3 @@
-
-
-//HTTP (Hypertext Transfer Protocol)
-// Request - What do we want to do
-// Response - What was actually done
-
-
-
-//Selectors
 const puzzleEl = document.querySelector('#puzzle')
 const guessesEl = document.querySelector('#guesses')
 
@@ -26,21 +17,15 @@ window.addEventListener('keypress',(e)=>{
 
 })
 
-/**
- * Going to fetch the puzzle 
- * It will going to give it back to us
- */
-const puzzle = getPuzzle()
-console.log(puzzle)
 
-// //Making an HTTP request 
-// //initialize a request using constructor function provided with a browser
+getPuzzle((error,puzzle)=>{
+    if(error){
+        console.log(`Error: ${error}`)
+    }else{
+        console.log(puzzle)
+    }
+})
 
-
-//1. Make a new request for all countries
-
-
-//4. Print the full country name (name property)
 
 const countryCode = 'TZ'
 

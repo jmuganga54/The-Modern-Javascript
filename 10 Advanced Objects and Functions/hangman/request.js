@@ -1,15 +1,15 @@
-const getPuzzle = () =>{
-    let data
+const getPuzzle = (callback) =>{
     const request = new XMLHttpRequest()
     //setting an eventListener when the response is returned
     request.addEventListener('readystatechange',(e)=>{
     //fired whenever readState is Done
     if(e.target.readyState === 4 && e.target.status === 200){
         //capture the responseText content and parse it 
-        data = JSON.parse(e.target.responseText)
+        const data = JSON.parse(e.target.responseText)
+        callback(undefined,data.puzzle)
         
     }else if(e.target.readyState === 4){
-        console.log('An error has taken place')
+        callback('An error has taken place',undefined)
     }
 
     })
@@ -18,5 +18,5 @@ const getPuzzle = () =>{
     //send off the request
     request.send()
 
-    return data
+  
 }

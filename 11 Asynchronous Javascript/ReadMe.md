@@ -356,6 +356,179 @@ const getPuzzle = () =>{
     return data
 }
 ```
+So none of these solutions are going to help us solve the problem.
+
+Let's talk about what is going to help us solve the problem and that is the `callback function`.
+
+> Callback Function is a function which is passed to another function.
+
+```
+    request.addEventListener('readystatechange',(e)=>{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4 && e.target.status === 200){
+        //capture the responseText content and parse it 
+        data = JSON.parse(e.target.responseText)
+        
+    }else if(e.target.readyState === 4){
+        console.log('An error has taken place')
+    }
+
+    })
+
+```
+```
+> This is a callback function from the above
+(e)=>{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4 && e.target.status === 200){
+        //capture the responseText content and parse it 
+        data = JSON.parse(e.target.responseText)
+        
+    }else if(e.target.readyState === 4){
+        console.log('An error has taken place')
+    }
+
+```
+
+So in the end of the day we're not going to return anything from `getPuzzle()`, instead of relying on a return value we're going to rely on a callback function.
+
+Instead we pass a function in to `getPuzzle()`
+
+Now the callback functions gets called with some information. We've seen the eventListeners get called with their `(e)` argument. We can have our callback function called with as many arguments as we like. 
+
+> app.js
+```
+getPuzzle((puzzle)=>{
+    console.log(puzzle)
+})
+```
+
+The above is how we use callback function, but the question is how do we set the callback function?
+
+>request.js
+```
+const getPuzzle = (callback) =>{
+}
+```
+
+So callback is a function like any other function like `getPuzzle` which means we can execute it whenever we nee to and we can pass arguments to it but we're going to do right here is all it.
+
+```
+const getPuzzle = (callback) =>{
+    //calling callback function
+    callback('Some fake puzzle')
+}
+Expected output: Some fake puzzle
+```
+Using callback function in our project
+
+>request.js
+```
+getPuzzle((puzzle)=>{
+    console.log(puzzle)
+})
+```
+
+> request.js
+```
+const getPuzzle = (callback) =>{
+    const request = new XMLHttpRequest()
+    //setting an eventListener when the response is returned
+    request.addEventListener('readystatechange',(e)=>{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4 && e.target.status === 200){
+        //capture the responseText content and parse it 
+        const data = JSON.parse(e.target.responseText)
+        callback(data.puzzle)
+        
+    }else if(e.target.readyState === 4){
+        console.log('An error has taken place')
+    }
+
+    })
+    // open request: HTTP method and path of where Jason is 
+    request.open('GET','https://puzzle.mead.io/puzzle?wordCount=3')
+    //send off the request
+    request.send()
+
+  
+}
+```
+
+```
+Expected output: United Republic of Tanzania
+```
+![callback](../10%20Advanced%20Objects%20and%20Functions/hangman/img/callback.png)
+
+It is not showing up because it's logged in the request file. It is showing up because it's log out from app.js, meaning that our call back pattern worked successfully.
+
+So by taking advantage of nested functions and lexical scope, we're able to access the parent scope's callback variable from this function allowing us to respond to the request from `app.js`.
+
+Now when we're working with this callback pattern it's actually common to accept two arguments to the callback. 
+> 1. The first is any potential error
+> 2. The second is your sucess data which in this case is a puzzle 
+
+That makes it really easy to do one thing if the program crashes, if the puzzle can't do it's job and another things if get puzzle does it job correctly
+
+```
+getPuzzle((error,puzzle)=>{
+    if(error){
+        console.log(`Error: ${error}`)
+    }else{
+        console.log(puzzle)
+    }
+})
+
+```
+
+So when we're working with the callback pattern we define at most one, one of those is always going to be defined but never both and never one. Things either went well or they did not go well. There is no alternative, where both things happen where we got an error and things went well.
+
+```
+const getPuzzle = (callback) =>{
+    const request = new XMLHttpRequest()
+    //setting an eventListener when the response is returned
+    request.addEventListener('readystatechange',(e)=>{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4 && e.target.status === 200){
+        //capture the responseText content and parse it 
+        const data = JSON.parse(e.target.responseText)
+        callback(undefined,data.puzzle)
+        
+    }else if(e.target.readyState === 4){
+        callback('An error has taken place',undefined)
+    }
+
+    })
+    // open request: HTTP method and path of where Jason is 
+    request.open('GET','https://puzzle.mead.io/puzzle?wordCount=3')
+    //send off the request
+    request.send()
+
+  
+}
+```
+
+>Summary
+The big picture goal in this section was to create a function that we can call from `app.js` to get the puzzle. Now we originally tried to solve this using the `return` by expecting the puzzle to be `returned` from `getPuzzle()`, but as we saw that wasn't possible because what we have here is an eventListener which does not fire untill after `request.open() and request.send()` completes.
+
+Which means that we cannot use `return` anywhere inside of this file `request.js` to solve the problem.
+
+So the solution was to use the callback pattern, in the callback pattern we don't expect anything to be returned from `getPuzzle()`. Instead we pass in a function and we expect that function to be called with the information when it's actually ready.
+
+In this case we used a pretty standard callback pattern where the first argument is a potential error and the second argument is your success data. Only one of these is ever going to be defined either things went wrong or thing went well.
+
+Now to actually use this over inside of `request.js`. All we did is we call that when we had the data, we called it providing the second argument when things went well and down below we call that providing only the first argument when things went poorly.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
