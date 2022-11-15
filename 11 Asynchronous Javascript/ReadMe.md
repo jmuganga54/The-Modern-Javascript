@@ -519,11 +519,122 @@ In this case we used a pretty standard callback pattern where the first argument
 
 Now to actually use this over inside of `request.js`. All we did is we call that when we had the data, we called it providing the second argument when things went well and down below we call that providing only the first argument when things went poorly.
 
+### Asynchronous vs. Synchronous Execution
+In this section we're going to explore the differences between synchronous and asynchronous execution.
+
+Now the example from previous section is an example of asynchronous execution. 
+
+When we execute something `synchronously`, we start some sort of task like fetching a puzzle and then we have to wait for it to finish before we move on to the next thing.
+
+```
+> Example of Asynchronously execution
+getPuzzle((error,puzzle)=>{
+    if(error){
+        console.log(`Error: ${error}`)
+    }else{
+        console.log(puzzle)
+    }
+})
+```
+
+When we execute something `asynchronously`, we can start some task then we can actually get other work done before the task completes.
+
+```
+getPuzzle((error,puzzle)=>{
+    if(error){
+        console.log(`Error: ${error}`)
+    }else{
+        console.log(puzzle)
+    }
+})
+
+console.log('Do something else')
+```
+When we run the above program, we're going to see `do something else` print before we either get our puzzle or the error message. That's because we're using asynchronous execution.
+
+Yes, we start the process of getting the puzzle before the log `Do Something else`, but it doesn't complete until after this log runs.
+
+So if we run the program the below will occur.
+![Asynchronous execution](../10%20Advanced%20Objects%20and%20Functions/hangman/img/async.png)
+
+We get the expected results, we get `Do something else` showing up right away then you could see about a fraction of a second later, we go the puzzle. So this is asynchronous execution.
+
+We can actually creates a synchronous version of `getPuzzle` and we're going to do that just to illustrate the difference between the two.
+
+
+So we an `asynchronous request` we can do other things while we're waiting for that data to come back from the server.
 
 
 
+```
+> request.js
+const getPuzzleSync = () =>{
+    const request = new XMLHttpRequest()
+    // third argument, def sync or async
+    request.open('GET','https://puzzle.mead.io/puzzle?wordCount=3', false)
+    //send off the request
+    request.send()
 
+    if(request.target.readyState === 4 && request.target.status === 200){
+        //capture the responseText content and parse it 
+        const data = JSON.parse(request.target.responseText)
+       return data.puzzle
+        
+    }else if(request.target.readyState === 4){
+        throw new Error('Things did not go well')
+    }
+}
+```
 
+```
+> app.js
+const puzzle = getPuzzleSync()
+console.log(puzzle)
+
+console.log('Do something else')
+```
+
+And this is good because as I mentioned in the last section this could take a decent amount of time maybe `100 milliseconds` that might not seem like a lot but if you browser stopped for a tenth of a second every once in a while you would definitely notice.
+
+```
+ if(request.target.readyState === 4 && request.target.status === 200){
+        //capture the responseText content and parse it 
+        const data = JSON.parse(request.target.responseText)
+       return data.puzzle
+        
+    }else if(request.target.readyState === 4){
+        throw new Error('Things did not go well')
+    }
+```
+On `getPuzzle()` the code above is never going to run until after the server responds with data. That's why we don't have to rely on an eventListener.
+
+> Expected output
+![getPuzzleSync](../10%20Advanced%20Objects%20and%20Functions/hangman/img/getPuzzleSync.png)
+
+On the above output, we get the puzzle first, then after that we're getting `Do something else`.
+
+So with the `asynchronous approach` we're able to start a process and continue running other code eventually. Then thing that we run completes we get our data back and we run the callback function.
+
+This allows us to keep running other code while we're waiting 100 milliseconds or whatever the time.
+
+For `synchronous execution`, we actually have to wait all 100 milliseconds even if something else that runs later on it, isn't related to this data at all.
+
+So in `getPuzzleSync()` example we see that the puzzle print first then down below, we're able to run our other task so we can see why this is not what we want, I don't want task to need to wait on task one if task 2, does it need any information from task 1.
+
+This can be very bad for end user, we are preventing other unrelated javascript code from running and getting some work done.
+
+> Visualization 
+![Sync vs Async](../10%20Advanced%20Objects%20and%20Functions/hangman/img/visualization.png)
+
+Looking at the visualization, you will understand that there is a big difference between the two.
+
+`In left hand side` you'll notice that no point, there is overlap. So at no point we can draw a vertical line an run into two vertical line. This means that we're doing one thing at a time.
+
+`In right hand side` we have a ton of overlpa in waiting for the two request and we are even able to start requests and print the end of program message while we're waiting for some of those requests to complete.
+
+As our synchronous example, not only is it a lot faster it also does not block the user from interacting with the user interface and it doesn't prevent other unrelated code from running.
+
+Now, here we're using the terms `synchronous` and `asynchronous`. You might also see people refer to this as blocking and non-blocking.
 
 
 
