@@ -636,6 +636,51 @@ As our synchronous example, not only is it a lot faster it also does not block t
 
 Now, here we're using the terms `synchronous` and `asynchronous`. You might also see people refer to this as blocking and non-blocking.
 
+### Callback Abstraction Challenge
+This is challenge section which we are going to be using callback and asynchronous execution to create another function similar to `getPuzzle`, so instead of getting a `puzzle`, we're going to be getting the details of a country based off its country code.
+
+```
+> request.js
+const getCountry = (countryCode,callback)=>{
+    //make HTTP request
+    const request = new XMLHttpRequest()
+   
+    request.addEventListener('readystatechange',(e)=>{
+        if(e.target.readyState === 4 && e.target.status === 200){
+            const data = JSON.parse(e.target.responseText)
+            let sameCountryCode = data.filter((country)=> country.cca2 === countryCode)
+          
+            callback(undefined,sameCountryCode[0]['name']['official'])
+        }else if(e.target.readyState ===4){
+        
+            callback('An error has taken place')
+        }
+
+    })
+  
+    request.open('GET', 'https://restcountries.com/v3.1/all')
+    request.send()
+   
+
+}
+
+```
+
+```
+> app.js
+getCountry('TZs',(error,country)=>{
+    if(error){
+        console.log(`Error:${error}`)
+    }else{
+        console.log(`Country name:${country}`)
+    }
+})
+
+```
+```
+Expected output: Country name: United Republic of Tanzania
+
+```
 
 
 
