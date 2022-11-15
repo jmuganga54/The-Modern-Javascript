@@ -466,7 +466,7 @@ So by taking advantage of nested functions and lexical scope, we're able to acce
 
 Now when we're working with this callback pattern it's actually common to accept two arguments to the callback. 
 > 1. The first is any potential error
-> 2. The second is your sucess data which in this case is a puzzle 
+> 2. The second is your success data which in this case is a puzzle 
 
 That makes it really easy to do one thing if the program crashes, if the puzzle can't do it's job and another things if get puzzle does it job correctly
 
@@ -509,7 +509,7 @@ const getPuzzle = (callback) =>{
 ```
 
 >Summary
-The big picture goal in this section was to create a function that we can call from `app.js` to get the puzzle. Now we originally tried to solve this using the `return` by expecting the puzzle to be `returned` from `getPuzzle()`, but as we saw that wasn't possible because what we have here is an eventListener which does not fire untill after `request.open() and request.send()` completes.
+The big picture goal in this section was to create a function that we can call from `app.js` to get the puzzle. Now we originally tried to solve this using the `return` by expecting the puzzle to be `returned` from `getPuzzle()`, but as we saw that wasn't possible because what we have here is an eventListener which does not fire until after `request.open() and request.send()` completes.
 
 Which means that we cannot use `return` anywhere inside of this file `request.js` to solve the problem.
 
@@ -630,7 +630,7 @@ Looking at the visualization, you will understand that there is a big difference
 
 `In left hand side` you'll notice that no point, there is overlap. So at no point we can draw a vertical line an run into two vertical line. This means that we're doing one thing at a time.
 
-`In right hand side` we have a ton of overlpa in waiting for the two request and we are even able to start requests and print the end of program message while we're waiting for some of those requests to complete.
+`In right hand side` we have a ton of overlap in waiting for the two request and we are even able to start requests and print the end of program message while we're waiting for some of those requests to complete.
 
 As our synchronous example, not only is it a lot faster it also does not block the user from interacting with the user interface and it doesn't prevent other unrelated code from running.
 
