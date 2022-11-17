@@ -682,7 +682,88 @@ Expected output: Country name: United Republic of Tanzania
 
 ```
 
+### Closures | Asynchronous Javascript
+In this section we are going to learn about `closures` in javascript.
 
+`Closures` is closely related to function and function scope.
+
+```
+> closures.js
+const myFunction = ()=>{
+    const message = 'This is my message'
+    const printMessage = ()=>{
+         console.log(message)
+    }
+    printMessage()
+ }
+ 
+ myFunction()
+
+ //Expected output: This is my message
+```
+
+On above code, this is at its very basic an examples of a closure but this one's a bit too straightforward to see where closures actually become useful.
+
+Let's make a little tweak
+```
+const myFunction = ()=>{
+    const message = 'This is my message'
+    const printMessage = ()=>{
+         console.log(message)
+    }
+    return printMessage
+ }
+ 
+ const  myPrintMessage =  myFunction()
+ myPrintMessage()
+
+ //Expected output: This is my message
+
+```
+> What is happening on the above code?
+
+The first thing that's worth noting is that we don't call `printMessage` until after `myFunction` has return.
+
+Now what's interesting though, is that even though we call `myPrintMessage()`, after `myFunction()` is done, `printMessage()` still works.
+
+Our function `printMessage()` still has access to the `message` variable from the parent function.
+
+So this is a `Closure`
+
+A `closure` is the combination of a function with the lexical scope in which it was defined.
+
+In this case when `printMessage()` was defined it had access to `message`. So it's always going to have access to `message`.Even if `myFunction()` completes.
+
+> Check! See what happen on Hangman, request.js
+
+Both `getPuzzle()` and `getCountry()` use the `addEventListener` to setup a callback function that gets fired later when the HTTP request completes.
+
+Now we know that it takes time for the HTTP request to completed, maybe 50 milliseconds or something along those lines. This is much longer than it'll take for the `getPuzzle()` and `getCountry()` to finish.
+
+So `getPuzzle()` and `getCountry()` actually complete. Then at some point sown the line these callback function fire. In this case it had access to `callback`. It also had access to `wordCount`, it just happened to not use it.
+
+It's because of closures that bellow inner function has access to callback. So because we have a closure our function has access to the lexical scope in which it was defined.
+```
+//request.js
+// request.addEventLiseter('readystatechange',belowFuction)
+(e)=>{
+        if(e.target.readyState === 4 && e.target.status === 200){
+            const data = JSON.parse(e.target.responseText)
+            let sameCountryCode = data.filter((country)=> country.cca2 === countryCode)
+            console.log(sameCountryCode)
+            let country = sameCountryCode[0]['name']['official']
+          
+            callback(undefined,country)
+        }else if(e.target.readyState ===4){
+        
+            callback('An error has taken place')
+        }
+
+    })
+
+```
+
+So using closures and actually having support for them is essential for patterns like this to actually work. Without it we wouldn't be able to do the stuff we've already been doing.
 
 
 
