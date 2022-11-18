@@ -765,6 +765,123 @@ It's because of closures that bellow inner function has access to callback. So b
 
 So using closures and actually having support for them is essential for patterns like this to actually work. Without it we wouldn't be able to do the stuff we've already been doing.
 
+> Other Closures Examples
+
+How we can use a closure to create a way to have a private variable in javascript, the variable that is only accessible or modifiable via a very specific set of rules.
+
+```
+> Closures.js
+let createCounter = () =>{
+     let count = 0
+
+     return {
+          increment(){
+               count ++
+          },
+          decrement(){
+               count --
+          },
+          get(){
+               return count
+          }
+     }
+
+}
+
+const counter = createCounter()
+```
+
+From the above `createCounter` we are return an object with many function in it.
+
+Now on this object what do we have? We have a bunch of functions. All of these functions are using closures to access count a variable defined inside `createCounter` function. All the function in returned object, are using closures to access `count`.
+
+The end result is that the person who's using our `counter` tool cannot hack the system. They can ony ever increment the counter by one, decrement by one or  get it.
+
+There's no way to increment the count by 100 to cheat the system, there's no way to change the counter variable, over to a string. It is only modifiable by a very specific set of methods down below.
+
+Let's go and use those methods.
+
+```
+let createCounter = () =>{
+     let count = 0
+
+     return {
+          increment(){
+               count++
+          },
+          decrement(){
+               count--
+          },
+          get(){
+               return count
+          }
+     }
+
+}
+
+const counter = createCounter()
+counter.increment()
+counter.decrement()
+counter.decrement()
+console.log(counter.get())
+
+//Expected output: -1
+```
+
+Now the cool thing about using a closure in this way is that I cannot modify the count other than through these two methods `increment() and .decrement()`
+
+So using a `closure` in this way we are able to create variable or a set of variables that are only modifiable via the interface we provide. You can't just do anything you want with them. You have to use our methods to actually work with the data and depending on your application this could be a very useful thing to be able to do.
+
+> Another Example of `Closures`
+
+```
+//closure.js
+const createAdder = (a) =>{
+     return (b) =>{
+          return a + b
+     }
+}
+
+const add10 = createAdder(10)
+console.log(add10(-2))
+console.log(add10(20))
+
+//Expected output:
+8 
+30
+```
+
+```
+const add100 = createAdder(100)
+console.log(add100(-90))
+//Expected output : 10
+```
+
+The above code is using `closure` to get its work done, but it's also using another pattern worth defining called `currying` 
+
+`Currying` refers to the process of transforming a single function that takes a lot of arguments to multiple function that take a subset of those arguments.
+
+```
+//Standard Function
+const add = (a,b) => a + b
+```
+
+```
+//currying Function
+const createAdder = (a) =>{
+     return (b) =>{
+          return a + b
+     }
+}
+
+```
+
+Currying function, is useful when we want to generate functions with some sort of base value.
+
+
+
+
+
 
 
 
