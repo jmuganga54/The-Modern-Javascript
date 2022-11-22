@@ -878,7 +878,33 @@ const createAdder = (a) =>{
 
 Currying function, is useful when we want to generate functions with some sort of base value.
 
+> Another Example of Closure | Challenge
 
+```
+// Tipper
+
+// 1. Create createTipper which takes in the base tip (.15 for 15% tip)
+// 2. Set it up to return a function that takes in the bill amount 
+// 3. Call createTipper to generate a few function for different percentage.
+// 4. Use the generated function to calculate tips and print them
+
+const createTipper = (baseTip)=>{
+     return (amount)=>{
+          return baseTip * amount
+     }
+}
+
+const tip20 = createTipper(.2)
+const tip30 = createTipper(.3)
+console.log(tip20(100))
+console.log(tip30(100))
+
+//Expected output:
+20
+30
+```
+
+So to recap a closure is the combination of a function and lexical scope in which it was defined.
 
 
 
