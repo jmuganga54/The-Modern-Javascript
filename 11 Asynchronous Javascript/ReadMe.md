@@ -906,6 +906,13 @@ console.log(tip30(100))
 
 So to recap a closure is the combination of a function and lexical scope in which it was defined.
 
+### Exploring Promises
+In this section I want to push our discussion of Asynchronous Javascript forward by talking about promises in javascript.
+
+We're going to be learning about the promise API and how that is going to allow us a different and in my opinion a better way to structure our asynchronous code.
+
+Currently we have structuring things using `callback` function approach, which did indeed make it very easy to separate the usage of the data `app.js` from how the data is actually fetched `request.js`. 
+
 
 
 
