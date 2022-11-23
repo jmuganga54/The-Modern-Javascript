@@ -909,9 +909,176 @@ So to recap a closure is the combination of a function and lexical scope in whic
 ### Exploring Promises
 In this section I want to push our discussion of Asynchronous Javascript forward by talking about promises in javascript.
 
-We're going to be learning about the promise API and how that is going to allow us a different and in my opinion a better way to structure our asynchronous code.
+We're going to be learning about the `promise API` and how that is going to allow us a different and in my opinion a `better way to structure our asynchronous code`.
 
 Currently we have structuring things using `callback` function approach, which did indeed make it very easy to separate the usage of the data `app.js` from how the data is actually fetched `request.js`. 
+
+In this case we pass a function go `getPuzzle()`. And I hope that in the future this future gets called with the correct arguments in the correct order. 
+
+This is via `callbacks` what we're going to do is explore how we can structure this using promises.
+
+> Tip! New Features
+
+As will all new features it's usually best to explore them in isolation then and bring them into the application where we're actually working on. That's going to make sure we actually understand how things are working and then integrate them into the program.
+
+Also we're going to directly compare and contrast the `standard callback pattern` with the promise pattern.
+
+In `promise.js` we are going to stimulate a delay instead of sending the actual `HTTP request`, we can simulate a day in javascript by using `setTimeout()`.
+
+`setTimeout()`, allows us to run some code after a certain amount of time has passed. It takes two arguments, the first one is the code to run after a certain amount of time has passed and the other argument is how much time you want to wait and this time is represented in milliseconds.
+
+```
+setTimeout(()=>{
+    console.log('This time is up')
+}, 2000)
+
+//Expected output:
+When we run it we see we get a blank screen for 2 seconds, then we get our message `This time is up` then the program completes.
+```
+
+Now It's going to be important to compare and contrast the different between standard `callbacks` and `promises`
+
+>> Callback Approach
+
+So we're going to start by creating a standard callback example `getDataCallback()`.
+
+```
+//def func and pass callback
+const getDataCallback = (callback)=>{
+    setTimeout(()=>{
+        callback(undefined, 'This is the data')
+    }, 2000)
+}
+
+//using the defined function
+getDataCallback((err,data)=>{
+    if(err){
+
+    }else{
+        console.log(data)
+    }
+})
+
+//Expected output:
+Waiting for 2 seconds and printing data will be
+This is the data
+```
+
+This is exactly what we did by creating a `getPuzzle()` in `request.js` and use it  in `app.js`
+
+
+
+>> Promise Approach
+Now we want to explore how we can get something very similar done with the `promise API`. Then we'll be able to easily compare and contrast the two techniques.
+
+So the promise techniques starts by creating a `new promise` using a `new`, with the `promise constructor` function. 
+
+Now the `promise constructor` function is not something that we create.
+
+It's built right into the language and it does indeed expect a single argument, which is a function. This function actually gets called right away.
+
+```
+const myPromise = new Promise(()=>{
+    
+})
+```
+
+This is where we can perform our long running process. So that could be us making an HTTP request to save some data to a database or in this particular example, it could be us  using `setTimeout()` to simulate a delay.
+
+>> Note! argument in a promise constructor
+
+It's more than `Ok` to use an `arrow function` in this situation since we're not going to be using `this` or arguments.
+
+
+```
+const myPromise = new Promise(()=>{
+    setTimeout(()=>{
+
+    },2000)
+
+})
+```
+
+Well when the promised constructor function calls this function, it calls it with two arguments, we can use, the first argument is `resolve` and the second argument is `reject`.
+
+We can call `resolve` to say that things went well that we were able to successfully perform this long running operation.
+
+We call `reject` if things went poorly. If something failed along the way whether we used invalid arguments or the data we tried to access didn't exist.
+
+So inside the function we're going to call either `resolve` or `reject`.
+
+So when using `callback approach` we had to call the callback, we had to fake the `first` argument setting equal to `undefined` saying there was no `error` and we passed in our data for the `second` argument
+
+```
+const getDataCallback = (callback)=>{
+    setTimeout(()=>{
+        callback(undefined, 'This is the data')
+    }, 2000)
+}
+```
+
+With `promises`, we actually have two separate functions. So if nothing went wrong I just call `resolve` and pass to it my data
+
+```
+const myPromise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        resolve('This is the data')
+
+    },2000)
+
+})
+```
+
+Now at this point we have set up a promise. Let's go ahead and actually use it. 
+
+What we're going to do is call a method on our promise instance, remember we're creating a new instance of promise by using new with the promise constructor 
+
+```
+new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        resolve('This is the data')
+
+    },2000)
+
+})
+
+```
+
+ So `myPromise` is the promise instance. The methods that we're going to be accessing on it is called `then`. 
+ 
+ `then` lets us define what we want to do when we actually have the information. In this case when we have our fake data, in the case of a real application when we have the HTTP request information.
+
+ For now we are going to call `then` and we pass to `then` a function. This function gets called when the promise resolves, meaning that things went well and we get access to the data via a first argument.
+
+ ```
+ //Promise
+const myPromise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        resolve('This is the promise data')
+
+    },2000)
+
+})
+
+//using the promise
+myPromise.then((data)=>{
+    console.log(data)
+})
+
+//Expected output:
+This is the promise data
+
+ ```
+
+
+
+
+
+
+
+
+
+
 
 
 
