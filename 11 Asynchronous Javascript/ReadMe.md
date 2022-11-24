@@ -1306,6 +1306,8 @@ This is my promise error
 
 Now we are waiting on the single promise to either `resolve` or `reject` and when it does we run the appropriate function. By using `then` twice, we are not requesting the data twice. We are just doing different things with the same information.
 
+`The expected output is` because we have two calls to `then`, but we did not have to wait four seconds. We just had to wait two seconds. We waited for the promise to `resolve` or `reject` then both methods responded to it.
+
 
 
 
