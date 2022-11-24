@@ -1070,13 +1070,241 @@ This is the promise data
 
  ```
 
+Now before we really analyze this syntax and start comparing and contrasting let's just look at how we could potentially have an error be the result instead of the success case.
 
+> Callback Approach | Unsuccessfully
 
+For the callback solution we know how we would do that we would provide the first argument instead of the second.
 
+```
+//callback
+const getDataCallback = (callback)=>{
+    setTimeout(()=>{
+        callback('This is my callback error', undefined)
+    }, 2000)
+}
 
+//using the defined function
+getDataCallback((err,data)=>{
+    if(err){
+        console.log(err)
+    }else{
+        console.log(data)
+    }
+})
+```
 
+> Promise Approach | Unsuccessfully
 
+How do we do the same thing when unsuccessfully on promise approach. 
 
+So instead of calling `resolve`  we just call `reject`.
+
+```
+//Promise
+const myPromise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        //resolve('This is the promise data')
+        reject('This is my promise error')
+
+    },2000)
+
+})
+
+//using the promise
+myPromise.then((data)=>{
+    console.log(data)
+})
+
+//Expected output
+(node:5416) UnhandledPromiseRejectionWarning: This is my promise error
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:5416) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 1)
+(node:5416) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+```
+At this point if we were to save the program and rerun the above, we will get all sorts of errors and warming, as shown on expected output.
+
+`The bunch of errors` is because we do not have a `handler set up` for it.
+
+```
+//using the promise
+myPromise.then((data)=>{
+    console.log(data)
+})
+```
+The above function is only ever going to fire, when the promise resolves. 
+
+If we want to do something for when things go `poorly` we have to set up a second argument for `then`. This second argument is only ever going to get called when things go poorly and it gets called with the `error`.
+
+```
+//using the promise
+myPromise.then((data)=>{
+    console.log(data)
+},(err)=>{
+    console.log(err)
+})
+
+```
+
+> Note ! Why all the warning
+
+All of the warning in the console are just letting you know that you have a `promise` that `rejected` but at no point are you doing anything with that error information. 
+
+```
+//Promise
+const myPromise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        //resolve('This is the promise data')
+        reject('This is my promise error')
+
+    },2000)
+
+})
+
+//using the promise
+myPromise.then((data)=>{
+    console.log(data)
+},(err)=>{
+    console.log(err)
+})
+
+//Expected output:
+This is my callback error
+This is my promise error
+```
+
+now that we've seen a basic example I want to dive deep into how promises work comparing and contrasting the two.
+
+1. The first thing we're going to notice with the promise API is that it's much easier to reason about, now it might not be easier to reason about at first because it's a new tool.
+
+> Let explore callback approach
+
+```
+//callback approach 
+const getDataCallback = (callback)=>{
+    setTimeout(()=>{
+        callback('This is my callback error', undefined)
+    }, 2000)
+}
+```
+On `callback approach` we have a single argument callback. This callback argument doesn't necessarily denote whether things are going well or poorly when we call it. It's name isn't specific because we just have one. It is the order of the arguments which allows us to determine whether things went well or whether things went poorly.
+
+```
+const getDataCallback = (callback)=>{
+    setTimeout(()=>{
+        << callback('This is my callback error', undefined) >>
+    }, 2000)
+}
+```
+
+> Let explore promise approach
+
+On `promise approach` we have clearer semantic we have `resolve` and `reject`. We know that if we see `resolve` things went well. We know that if we see `reject` things went poorly.
+
+```
+const myPromise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        //resolve('This is the promise data')
+        reject('This is my promise error')
+
+    },2000)
+
+})
+```
+
+You don't have to look at which argument was provided and which argument wasn't in order to figure out if things are going well or if things are going bad.
+
+2. Now the other nice thing is  that with callbacks, it's totally possible to call your callback twice. These is not something we're going to want to do for application because it could result in extremely unexpected behavior. It might try to start to causing something weird to occur.
+
+With `promise` it is impossible to run more than just one of these functions and it's only ever going to run once. You cannot resolve twice, yo can not reject twice, you can not resolve and then reject or reject and then resolve. You can call 1 one time, everything else is going to be ignored.
+
+> Example of the above | reject twice
+```
+//Promise
+const myPromise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        //resolve('This is the promise data')
+        reject('This is my promise error')
+        reject('This is my promise error')
+
+    },2000)
+
+})
+
+//using the promise
+myPromise.then((data)=>{
+    console.log(data)
+},(err)=>{
+    console.log(err)
+})
+
+//Expected output
+//reject error shows up once
+This is my promise error
+```
+
+So with `promises` we can `reject` or `resolve` the promise a single time with a single value. There's only one argument for each of these functions `resolve` and `reject`.
+
+3. Another nice feature of promises is that we don't have to know what we're going to do with the code before we start the process of fetching the information.
+
+So `on callback` I have to define my callback that uses the data before I can fetch the data by nature because I have to call get data callback with it.
+
+```
+//using the defined function
+getDataCallback((err,data)=>{
+    if(err){
+        console.log(err)
+    }else{
+        console.log(data)
+    }
+})
+```
+
+So `on promise` once the promise starts its process. We do not need to attach `then` to start waiting.
+```
+//Promise
+const myPromise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        //resolve('This is the promise data')
+        reject('This is my promise error')
+    },2000)
+
+})
+```
+
+If I was to add this code in it would still reject just the same. We've just chosen to do nothing with it. We could do something right away like what we had before we could access it multiple times. For example I can take the same code and past it down below.
+
+```
+//Promise
+const myPromise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+        //resolve('This is the promise data')
+        reject('This is my promise error')
+      
+
+    },2000)
+
+})
+
+//using the promise
+myPromise.then((data)=>{
+    console.log(data)
+},(err)=>{
+    console.log(err)
+})
+
+myPromise.then((data)=>{
+    console.log(data)
+},(err)=>{
+    console.log(err)
+})
+
+//Expected output:
+This is my promise error
+This is my promise error
+```
+
+Now we are waiting on the single promise to either `resolve` or `reject` and when it does we run the appropriate function. By using `then` twice, we are not requesting the data twice. We are just doing different things with the same information.
 
 
 
