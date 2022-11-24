@@ -913,7 +913,7 @@ We're going to be learning about the `promise API` and how that is going to allo
 
 Currently we have structuring things using `callback` function approach, which did indeed make it very easy to separate the usage of the data `app.js` from how the data is actually fetched `request.js`. 
 
-In this case we pass a function go `getPuzzle()`. And I hope that in the future this future gets called with the correct arguments in the correct order. 
+In this case we pass a function  `getPuzzle()`. And I hope that in the future gets called with the correct arguments in the correct order. 
 
 This is via `callbacks` what we're going to do is explore how we can structure this using promises.
 
@@ -921,11 +921,11 @@ This is via `callbacks` what we're going to do is explore how we can structure t
 
 As will all new features it's usually best to explore them in isolation then and bring them into the application where we're actually working on. That's going to make sure we actually understand how things are working and then integrate them into the program.
 
-Also we're going to directly compare and contrast the `standard callback pattern` with the promise pattern.
+Also we're going to directly compare and contrast the `standard callback pattern` with the `promise pattern`.
 
-In `promise.js` we are going to stimulate a delay instead of sending the actual `HTTP request`, we can simulate a day in javascript by using `setTimeout()`.
+In `promise.js` we are going to stimulate a delay instead of sending the actual `HTTP request`, we can simulate a delay in javascript by using `setTimeout()`.
 
-`setTimeout()`, allows us to run some code after a certain amount of time has passed. It takes two arguments, the first one is the code to run after a certain amount of time has passed and the other argument is how much time you want to wait and this time is represented in milliseconds.
+`setTimeout()`, allows us to run some code after a certain amount of time has passed. It takes two arguments, the first one is the `code to run` after a certain amount of time has passed and the other argument is `how much time you want to wait` and this time is represented in milliseconds.
 
 ```
 setTimeout(()=>{
@@ -933,7 +933,7 @@ setTimeout(()=>{
 }, 2000)
 
 //Expected output:
-When we run it we see we get a blank screen for 2 seconds, then we get our message `This time is up` then the program completes.
+When we run it, we see we get a blank screen for 2 seconds, then we get our message `This time is up` then the program completes.
 ```
 
 Now It's going to be important to compare and contrast the different between standard `callbacks` and `promises`
