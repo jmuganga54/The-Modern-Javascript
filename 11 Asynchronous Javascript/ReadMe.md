@@ -1308,13 +1308,229 @@ Now we are waiting on the single promise to either `resolve` or `reject` and whe
 
 `The expected output is` because we have two calls to `then`, but we did not have to wait four seconds. We just had to wait two seconds. We waited for the promise to `resolve` or `reject` then both methods responded to it.
 
+### Converting to Promises
+In this section we're going to be integrating promises into the `request.js` file. We're going to convert `getPuzzle()` and `getCountry()` from using `callback` pattern to using the `promises` pattern
+
+`request.js`
+```
+const getPuzzle = (callback) =>{
+    const request = new XMLHttpRequest()
+    //setting an eventListener when the response is returned
+    request.addEventListener('readystatechange',(e)=>{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4 && e.target.status === 200){
+        //capture the responseText content and parse it 
+        const data = JSON.parse(e.target.responseText)
+        callback(undefined,data.puzzle)
+        
+    }else if(e.target.readyState === 4){
+        callback('An error has taken place',undefined)
+    }
+
+    })
+    // open request: HTTP method and path of where Jason is 
+    request.open('GET','https://puzzle.mead.io/puzzle?wordCount=3')
+    //send off the request
+    request.send()
+}
 
 
 
+const getCountry = (countryCode,callback)=>{
+    //make HTTP request
+    const request = new XMLHttpRequest()
+   
+    request.addEventListener('readystatechange',(e)=>{
+        if(e.target.readyState === 4 && e.target.status === 200){
+            const data = JSON.parse(e.target.responseText)
+            let sameCountryCode = data.filter((country)=> country.cca2 === countryCode)
+            console.log(sameCountryCode)
+            let country = sameCountryCode[0]['name']['official']
+          
+            callback(undefined,country)
+        }else if(e.target.readyState ===4){
+        
+            callback('An error has taken place')
+        }
+
+    })
+  
+    request.open('GET', 'https://restcountries.com/v3.1/all')
+    request.send()
+   
+
+}
+```
+
+`app.js`
+```
+
+getPuzzle((error,puzzle)=>{
+    if(error){
+        console.log(`Error: ${error}`)
+    }else{
+        console.log(puzzle)
+    }
+})
+
+getCountry('TZs',(error,country)=>{
+    if(error){
+        console.log(`Error:${error}`)
+    }else{
+        console.log(`Country name:${country}`)
+    }
+})
+```
+
+One more small tweak to make our example on `promises.js`. This is going to be the last piece of the puzzle for figuring out how we're going to get that done. The code has been tweaked instead of using `const myPromise = new Promise`, we have created a function which will return a promise, then assign the return promise to `myPromise`.
+
+```
+/Promise
+const getDataPromise = ()=>{
+    return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            //resolve('This is the promise data')
+            reject('This is my promise error')
+            reject('This is my promise error')
+    
+        },2000)
+    
+    })
+}
+
+const myPromise = getDataPromise()
+
+//using the promise
+myPromise.then((data)=>{
+    console.log(data)
+},(err)=>{
+    console.log(err)
+})
+```
+
+Hopefully you see this subtle difference between the two. I could call `getDataPromise()` with some random data like `123`. I can access that data and I could use it within the function when i'm actually making my request.
+
+```
+//Promise
+const getDataPromise = (data)=>{
+    return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            //resolve('This is the promise data')
+            reject('This is my promise error')
+            reject('This is my promise error')
+    
+        },2000)
+    
+    })
+}
+
+const myPromise = getDataPromise(123)
+
+//using the promise
+myPromise.then((data)=>{
+    console.log(data)
+},(err)=>{
+    console.log(err)
+})
+```
+
+The reason that I'm pointing this out is because we're going to have to do the exact same thing with `getPuzzle` and `getCountry`.
+
+Yes we are going to remove `the callback arguments` but if want an option we still have to pass that via a function argument and now we have a way to get that done.
 
 
+There is one way we can improve the syntax even further, we have a arrow function that just returns something. So we can take that something and we can put that just after the arrow and use the shorthand syntax.
+
+```
+const getDataPromise = (data) => new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            //resolve('This is the promise data')
+            reject('This is my promise error')
+            reject('This is my promise error')
+    
+        },2000)
+    
+    })
+```
+This is the shorthand syntax for a function that returns a promise. 
+
+> Testing the code if it works
+```
+//Promise
+const getDataPromise = (data) => new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            resolve(`This is my success data: ${data}`)
+            // reject('This is my promise error')
+            // reject('This is my promise error')
+    
+        },2000)
+    
+    })
 
 
+const myPromise = getDataPromise(123)
+
+//using the promise
+myPromise.then((data)=>{
+    console.log(data)
+},(err)=>{
+    console.log(err)
+})
+
+//using the promise
+myPromise.then((data)=>{
+    console.log(data)
+},(err)=>{
+    console.log(err)
+})
+
+//Expected output:
+This is my success data: 123
+This is my success data: 123
+```
+
+Now that we've seen this with out fictitious example let's go ahead and do it with something real. We're going to work on converting `getPuzzle()` over to a `promise API` opposed to a `callback API`
+
+> Below is the converting | using promises instead of callbacks.
+
+`request.js`
+```
+const getPuzzle = (wordCount) =>  new Promise((resolve,reject)=>{
+    const request = new XMLHttpRequest()
+    //setting an eventListener when the response is returned
+    request.addEventListener('readystatechange',(e)=>{
+    //fired whenever readState is Done
+    if(e.target.readyState === 4 && e.target.status === 200){
+        //capture the responseText content and parse it 
+        const data = JSON.parse(e.target.responseText)
+        resolve(data.puzzle)
+        
+        
+    }else if(e.target.readyState === 4){
+        reject('An error has taken place')
+       
+    }
+
+    })
+    // open request: HTTP method and path of where Jason is 
+    request.open('GET',`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`)
+    //send off the request
+    request.send()
+   })
+
+```
+
+`app.js`
+```
+
+getPuzzle('2').then((puzzle)=>{
+    console.log(puzzle)
+},(error)=>{
+    console.log(`Error: ${error}`)
+})
+
+//Expected output: Lucky Shot
+```
 
 
 

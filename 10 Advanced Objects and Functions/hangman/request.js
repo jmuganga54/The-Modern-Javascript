@@ -1,4 +1,4 @@
-const getPuzzle = (callback) =>{
+const getPuzzle = (wordCount) =>  new Promise((resolve,reject)=>{
     const request = new XMLHttpRequest()
     //setting an eventListener when the response is returned
     request.addEventListener('readystatechange',(e)=>{
@@ -6,18 +6,21 @@ const getPuzzle = (callback) =>{
     if(e.target.readyState === 4 && e.target.status === 200){
         //capture the responseText content and parse it 
         const data = JSON.parse(e.target.responseText)
-        callback(undefined,data.puzzle)
+        resolve(data.puzzle)
+        
         
     }else if(e.target.readyState === 4){
-        callback('An error has taken place',undefined)
+        reject('An error has taken place')
+       
     }
 
     })
     // open request: HTTP method and path of where Jason is 
-    request.open('GET','https://puzzle.mead.io/puzzle?wordCount=3')
+    request.open('GET',`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`)
     //send off the request
     request.send()
-}
+   })
+
 
 
 
