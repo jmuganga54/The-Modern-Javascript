@@ -24,12 +24,12 @@ getPuzzle('2').then((puzzle)=>{
     console.log(`Error: ${error}`)
 })
 
-getCountry('TZs',(error,country)=>{
-    if(error){
-        console.log(`Error:${error}`)
-    }else{
-        console.log(`Country name:${country}`)
-    }
+
+getCountry('TZ').then((country)=>{
+    console.log(`Country name:${country}`)
+},(error)=>{
+    console.log(`Error:${error}`)
 })
+
 
 

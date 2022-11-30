@@ -1313,7 +1313,7 @@ In this section we're going to be integrating promises into the `request.js` fil
 
 `request.js`
 ```
-const getPuzzle = (callback) =>{
+const getPuzzle = (callback) => {
     const request = new XMLHttpRequest()
     //setting an eventListener when the response is returned
     request.addEventListener('readystatechange',(e)=>{
@@ -1532,6 +1532,61 @@ getPuzzle('2').then((puzzle)=>{
 //Expected output: Lucky Shot
 ```
 
+Now the challenge is to do the same thing using getCountry()
+
+```
+> Steps
+1. Convert getCountry to return a new promise
+2. Call getCountry and use then to print count name or the error
+```
+
+> The code after completing the challenge
+
+```
+> request.js
+const getCountry = (countryCode) =>{
+    return new Promise((resolve,reject)=>{
+        //make HTTP request
+        const request = new XMLHttpRequest()
+      
+     
+        request.addEventListener('readystatechange',(e)=>{
+            if(e.target.readyState === 4 && e.target.status === 200){
+                const data = JSON.parse(e.target.responseText)
+                
+                let country = data.find((country)=>{
+                    return country.cca2 === countryCode
+                })
+                let countryName = country[`name`][`official`]
+              
+                resolve(countryName)
+            }else if(e.target.readyState ===4){
+            
+                reject('An error has taken place')
+            }
+    
+        })
+      
+        request.open('GET', 'https://restcountries.com/v3.1/all')
+        request.send()
+       
+  })
+}
+```
+
+```
+> app.js
+getCountry('TZ').then((country)=>{
+    console.log(`Country name:${country}`)
+},(error)=>{
+    console.log(`Error:${error}`)
+})
+
+//Expected output: Country name: United Republic of Tanzania
+
+```
+
+Now we've converted both our functions over to the promise API and that's where I'd like to stop.
 
 
 
