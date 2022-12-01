@@ -1588,10 +1588,74 @@ getCountry('TZ').then((country)=>{
 
 Now we've converted both our functions over to the promise API and that's where I'd like to stop.
 
+### Promise Chaining
+In this section we are going to continue learning about `promises`, we're going to talk about a more advanced way we can structure our `promises`. This is known as `promise changing promise`.
+
+`Promise Chaining` is super useful when we're trying to do two things in a row. Both end up being just `promise calls`.
+
+So imagine that we had another function similar to `getCountry()` called `getCountries()` in a region, and what we really wanted to do was not just one thing we wanted to do two things. We wanted to start with the `country code` to find out what region this country is in then based off of their region, we wanted to get all of our countries in that region and print them.
+
+That would require us to create two functions with two separate promises where the data for the `first promise` needs to be `received` before we can start the `second one`. We have to know what region `Mexico` is in before We can make the second request by region to get all countries that happen to be nearby.
+
+What I want to start with though is just us messing around dummy callbacks and dummy promises over inside of `promises.js`.
+
+Now I actually want to start by `modifying the callback` example once again comparing and contrasting the two techniques with how they handle this sort of situation.
+
+So inside `promises.js` on callback approach we going to remove our current callback calls and we're going to make a small change to `getDataCallback()`.
+
+We are going to take in a number. And the goal here is to just multiply that number by 2, if it's type of is a `number`, if it's not, well call back with an error instead.
+
+```
+const getDataCallback = (num, callback)=>{
+    setTimeout(()=>{
+       if( typeof num === 'number'){
+            callback(undefined, num*2)
+       }else{
+            callback('Number must be provided')
+       }
+    }, 2000)
+}
+```
+
+Now let's say that we call `getDataCallback()` using the function. I will provide the number that first argument and I'm going to start with `2`, so `2*2 is 4`. So we would expect that data would be `4`.
+
+Now this is `OK` but the goal here it to do something twice. So we're actually going to use data and pass it into a new version of `getDataCallback()` to multiply that too.Now when we want to do this with `callbacks` I have to remove the `console.log` and all I do is I call our function again `getDataCallback()` passing in the data and then passing in another callback function, where I have error and I have my new data.
+
+```
+//using the defined function
+getDataCallback(2, (err,data)=>{
+    if(err){
+        console.log(err)
+    }else{
+       getDataCallback(data,(err, data)=>{
+            if(err){
+                console.log('err')
+            }else{
+                console.log(data)
+            }
+
+       })
+    }
+})
+
+//Expected output:
+8
+```
+All right so this is the general structure that we would use if we were to work with callbacks.
+
+Eventually the callback completes it takes twice as long since we do the same thing twice.But in the end of the day we do get `8` printing.
+
+So this is indeed working as we wanted it to. Even if it's not the nicest looking piece of code.
+
+So what we're seeing here is commonly called `callback hell`. And this is just `spaghetti code`. It's just a hot mess of code. It is hard to follow, it's even harder to maintain
+
+And if we wanted to expand it any further that would be pretty challenging task. So the problem with this code is that we are getting deeply nested.
+
+We are four layers deep for the final code and this creates code that is just unnecessarily complex to work with and read.
+
+So callbacks don't handle this sort of thing, well. If I want to do `two asynchronous things` using the data from the first to start the process for the second callbacks fall short.
 
 
-
- 
 
 
  
