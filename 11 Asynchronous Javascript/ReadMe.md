@@ -1593,14 +1593,16 @@ In this section we are going to continue learning about `promises`, we're going 
 
 `Promise Chaining` is super useful when we're trying to do two things in a row. Both end up being just `promise calls`.
 
-So imagine that we had another function similar to `getCountry()` called `getCountries()` in a region, and what we really wanted to do was not just one thing we wanted to do two things. We wanted to start with the `country code` to find out what region this country is in then based off of their region, we wanted to get all of our countries in that region and print them.
+> Callback Approach
+
+So imagine that we had another function similar to `getCountry()` called `getCountries()` in a region, and what we really wanted to do was not just one thing we wanted to do two things. We wanted to start with the `country code` to find out what region this country is and then based off of their region, we wanted cto get all of our countries in that region and print them.
 
 That would require us to create two functions with two separate promises where the data for the `first promise` needs to be `received` before we can start the `second one`. We have to know what region `Mexico` is in before We can make the second request by region to get all countries that happen to be nearby.
 
 What I want to start with though is just us messing around dummy callbacks and dummy promises over inside of `promises.js`.
 
 Now I actually want to start by `modifying the callback` example once again comparing and contrasting the two techniques with how they handle this sort of situation.
-
+ 
 So inside `promises.js` on callback approach we going to remove our current callback calls and we're going to make a small change to `getDataCallback()`.
 
 We are going to take in a number. And the goal here is to just multiply that number by 2, if it's type of is a `number`, if it's not, well call back with an error instead.
@@ -1655,8 +1657,213 @@ We are four layers deep for the final code and this creates code that is just un
 
 So callbacks don't handle this sort of thing, well. If I want to do `two asynchronous things` using the data from the first to start the process for the second callbacks fall short.
 
+Now I want to explore the exact same thing with `promises` and we're going to see how the end code is a whole lot nicer to work with using promised chaining.
+
+> Promise Approach
+
+`Using promise example` we are going to make the exact same modifications to `getDataPromise`. We're going to take in that number, will resolve the number times two. If the type of the number is indeed `number`,it what gets passed, if what gets passed is not a number, we will reject with some sort of error message.
+
+```
+> promises.js
+const getDataPromise = (num) => new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+           typeof num === 'number' ? resolve(num*2) : reject('Number must be provided')
+    
+        },2000)
+    
+    })
+
+```
+So now we have our promise set up to do the exact same thing. We still wait two seconds, we multiply the number by two if it is a number. If it's not a number we reject. 
+
+```
+> promises.js
+//Using the function
+getDataPromise(2).then((data)=>{
+    getDataPromise(data).then((data)=>{
+        console.log(`Promise data: ${data}`)
+    },(err)=>{
+        console.log(err)
+    })
+},(err)=>{
+    console.log(err)
+} )
+
+//Expected output:
+Promise data: 8
+```
+
+So at this point we have the exact same functionality accomplished with callbacks and down below with  promises. And you can see that already just by using `promises` we're getting a slightly better structure instead of needing to use if and else to determine if things went right or wrong. 
+
+We have our separate functions preventing us from needing to get to nested. Not this is not to say there's no room for improvement. Based on the above approach we have duplicate function for error handlers.
+
+It would be nice to only have one function since we're doing the exact same thing and we are still nesting. We're going to avoid all of that using promise chaining. We're going to explore that down below.
+
+```
+getDataPromise(10).then((data)=>{
+    return getDataPromise(data)
+})
+```
+When we return a `promise` from another promises handler we create promise chaining. So in this case we can actually chain another then call to do something when this promise resolves. That's exactly what we're going to do.
+
+```
+getDataPromise(10).then((data)=>{
+    return getDataPromise(data)
+}).then((data)=>{
+    console.log(data)
+})
+```
+
+Now this is known as `promise chaining` because we are chaining multiple promise calls together and we have this chain of vendors.
+
+```
+getDataPromise(2).then((data)=>{
+    getDataPromise(data).then((data)=>{
+        console.log(`Promise data: ${data}`)
+    },(err)=>{
+        console.log(err)
+    })
+},(err)=>{
+    console.log(err)
+})
+
+getDataPromise(10).then((data)=>{
+    return getDataPromise(data)
+}).then((data)=>{
+    console.log(data)
+})
+
+//Expected output:
+40
+```
+
+So what we have on the above approach is similar to what we have on the other above approach, but you can see that we've avoided nesting things. Everything is still flat.
+
+The nice thing is that we could expand this out, add in a third or fourth promise without adding any complexity.
+
+```
+getDataPromise(2).then((data)=>{
+    getDataPromise(data).then((data)=>{
+        console.log(`Promise data: ${data}`)
+    },(err)=>{
+        console.log(err)
+    })
+},(err)=>{
+    console.log(err)
+})
+
+getDataPromise(10).then((data)=>{
+    return getDataPromise(data)
+}).then((data)=>{
+   return getDataPromise(data)
+}).then((data)=>{
+    console.log(data)
+})
+
+//Expected output: 80
+```
+
+So with very little extra code and code that's no more complex we're able to add a third promised call into the mix. And this is going to allow us to create complex asynchronous programs without complex asynchronous code.
+
+So with promises and with the promise changing we can keep our complex asynchronous code supper simple.
+
+Now the next step to do is about error handling something that we currently do not have. If we pass in a values that's not a number. Things are going to go wrong and the terminal is going to complain letting us know that we haven't handled our promise rejection to do this as you might expect.
+
+The method we use for this is called `catch`, it takes a single argument.
+
+When working with promised chaining we can actually use `catch` set up a single error handler for all of our `promises`. So if either of these three promises rejected things would immediately stop and it would move down to catch.
+
+So if the first one rejects, it will never actually going to run the code in `then`, because nothing successfully happened. Instead it is going to `jump` down to catch and just run our error handler function.
+
+We can actually prove this by running the file over from the terminal.
+
+```
+const getDataCallback = (num, callback)=>{
+    setTimeout(()=>{
+       if( typeof num === 'number'){
+            callback(undefined, num*2)
+       }else{
+            callback('Number must be provided')
+       }
+    }, 2000)
+}
+
+//using the defined function
+getDataCallback(2, (err,data)=>{
+    if(err){
+        console.log(err)
+    }else{
+       getDataCallback(data,(err, data)=>{
+            if(err){
+                console.log('err')
+            }else{
+                console.log(data)
+            }
+
+       })
+    }
+})
+
+//Promise
+const getDataPromise = (num) => new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+           typeof num === 'number' ? resolve(num*2) : reject('Number must be provided')
+    
+        },2000)
+    
+    })
 
 
 
+getDataPromise('10').then((data)=>{
+    return getDataPromise(data)
+}).then((data)=>{
+   return getDataPromise(data)
+}).then((data)=>{
+    console.log(data)
+}).catch((err)=>{
+    console.log(err)
+})
+
+//Expected output: Number must be provided
+```
+
+So in this particular case sine the first promise was the one that failed we never actually run any of the functions in our three then methods calls. We immediately jumped down to catch printing the message which is exactly why we're seeing it up above.
+
+So this is promise chaining in a nutshell and we can see taht as we add more promises into the mix. Our code really doesn't get any more complex. That was not true up above with our promise example (below), using nesting and it was definitely not true with our callback example which required even more nesting and more complexity.
+
+```
+const getDataCallback = (num, callback)=>{
+    setTimeout(()=>{
+       if( typeof num === 'number'){
+            callback(undefined, num*2)
+       }else{
+            callback('Number must be provided')
+       }
+    }, 2000)
+}
+
+//using the defined function
+getDataCallback(2, (err,data)=>{
+    if(err){
+        console.log(err)
+    }else{
+       getDataCallback(data,(err, data)=>{
+            if(err){
+                console.log('err')
+            }else{
+                console.log(data)
+            }
+
+       })
+    }
+})
+```
+
+So the goal here is not to change what we're going in all three examples. We're still just trying to do two asynchronous actions. The goal here was to better structure things and with promise chaining we do indeed get that better structure.
+
+This allows us to add complex asynchronous functionality without complex asynchronous code.
+
+In this section we got a high level look at `Promise chaining` but we've only seen it with our dummy example. 
  
 ## Summary
