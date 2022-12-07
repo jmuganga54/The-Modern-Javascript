@@ -519,6 +519,26 @@ In this case we used a pretty standard callback pattern where the first argument
 
 Now to actually use this over inside of `request.js`. All we did is we call that when we had the data, we called it providing the second argument when things went well and down below we call that providing only the first argument when things went poorly.
 
+> Simple code concept reminder
+```
+// defining a function
+const displayMessage = (callback) =>{
+    callback(undefined,'My name is Joseph Muganga')
+}
+
+//calling a function
+displayMessage((err,msg)=>{
+    if(err){
+        console.log(err)
+    }else{
+        console.log(msg)
+    }
+   
+})
+
+//Expected output: My name is Joseph Muganga
+```
+
 ### Asynchronous vs. Synchronous Execution
 In this section we're going to explore the differences between synchronous and asynchronous execution.
 
