@@ -31,5 +31,14 @@ getCountry('TZ').then((country)=>{
     console.log(`Error:${error}`)
 })
 
+fetch('http://puzzle.mead.io/puzzle',{}).then ((response)=>{
+    if(response.status === 200){
 
+    }else{
+        throw new Error('Unable to fetch the puzzle ')
+    }
+
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
 

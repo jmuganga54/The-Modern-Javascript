@@ -1936,5 +1936,70 @@ getCalculatedNumber(`4`).then((data)=>{
     console.log(err)
 })
 ```
+
+### The Fetch API
+In this section we are going to continue to look at `Promise Chaining` and we're going to explore a second way we can make HTTP request in javascript. Currently the only way we know about is via `XMLHTTPRequest()` but this is not the only way to get the  job done.
+
+In newer version of javascript we have access to the `fetch API`. This is a different way to make our request and this new API has `promises` built right.
  
+ We are going to need to know about promise chaining in order for `fetch` to make sense but since we already know how promised Chaining works, we're going to be able to explore `fetch`.
+
+We're going to start by exploring this new API. Then we'll work on replacing `XMLHTTPRequest` in both of these scenarios.
+
+Over an `app.js` we're just going to write some standalone code to explore this new thing then we'll worry about integrating it into `getPuzzle` and `getCountry`. For now just pretend it's its own thing, it's like we have an empty file.
+
+We access the `fetch API` calling `fetch()`, we pass in it couple of arguments
+1. The fist one is the `URL` where we are going to fetch something
+2. Now there is also a second optional argument where we can further customize our request, check the [documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). You can leave it empty for now or you can remove it completely. I'm going to leave it empty so I remember that it actually exist.
+
+```
+fetch('http://puzzle.mead.io/puzzle',{})
+```
+
+> Now what comes back from fetch?
+
+Well what fetch return is actually a promise. We can wait for this promise to either resolve or reject to do something with the data from our request.
+
+I'm going to attach a `then()` methond and what do we get access to for our `success handler`?, we get access to the `response` so right here we can toss a response on it naming that argument.
+
+```
+fetch('http://puzzle.mead.io/puzzle',{}).then ((response)=>{
+
+})
+```
+
+Now we'll worry about what goes inside of the response in just a second. We can also attach a `catch handler`, this is going to catch any potential errors that might have occurred with our request and all we're going to do for now is name the argument I'll call it `error`, and we will print it.
+
+```
+
+fetch('http://puzzle.mead.io/puzzle',{}).then ((response)=>{
+
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+```
+So now we have things in place and we're going to do something with the response.
+
+So now we have things in place and we're going to do something with the response. Now in our case we still want to do something pretty similar to what we did over here in `request.js`. Just want to make sure that the `status code is 200` if it's, we actually want to get access to adjacent information in this case `data.puzzle`
+
+Now the nice thing about the `fetch API` is that we no longer have to worry about `readyState`. This `fetch()` is only going to resolve or reject when it's actually read for us. So we know that the request completed, we don't have to figure out if it completed. We just have to figure out how it completed, did things go well, did we get a `200` or did things go poorly. Maybe we got `404` or `400` for usng one of those `invalid query strings`
+
+We can access status via the `status property on response`, if it does we'll put some code to do something with the puzzle. If it doesn't in `else` we can run some error handling code.
+
+Now when things go wrong we actually want the `catch to run`. We know what that if any of the promises in our promised chain `reject`, catch would execute the same thing is true if we manually `throw an error` from the `then` function themselves. If we want to trigger this `catch` callback because this `else` because else clause run. We can just throw a new error that will cause `catch` to get fired down below. Much like `throwing` a new error inside of `try block` would cause the catch block to run in a `try catch statement`
+
+
+```
+fetch('http://puzzle.mead.io/puzzle',{}).then ((response)=>{
+    if(response.status === 200){
+
+    }else{
+        throw new Error('Unable to fetch the puzzle ')
+    }
+
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+```
+
 ## Summary
