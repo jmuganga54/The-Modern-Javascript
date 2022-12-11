@@ -1885,5 +1885,56 @@ So the goal here is not to change what we're going in all three examples. We're 
 This allows us to add complex asynchronous functionality without complex asynchronous code.
 
 In this section we got a high level look at `Promise chaining` but we've only seen it with our dummy example. 
+
+```
+//Personal practice | ignore
+//Callback Approach
+const calculateNumber = (num, callback) =>{
+    if(typeof num === 'number'){
+         return callback(undefined, num*2)
+        
+    }else{
+         return callback('Provide a number', undefined)
+    }
+   
+}
+
+calculateNumber('4',(err,data)=>{
+    if(err){
+        console.log(err)
+    }else{
+       calculateNumber(data,(err,data)=>{
+           if(err){
+               console.log(err)
+           }else{
+               console.log(data)
+           }
+       })
+    }
+// })
+
+
+//Promise Approach
+const getCalculatedNumber = (num) =>{
+    return new Promise((resolve,reject)=>{
+        if(typeof num === `number`){
+            resolve(num*2)
+        }else{
+            reject('Provide a number')
+        }
+    })
+}
+
+getCalculatedNumber(`4`).then((data)=>{
+   return getCalculatedNumber(data)
+
+}).then((data)=>{
+  return getCalculatedNumber(data)
+}).then((data)=>{
+    console.log(data)
+}).catch((err)=>{
+    console.log(err)
+})
+```
  
 ## Summary
