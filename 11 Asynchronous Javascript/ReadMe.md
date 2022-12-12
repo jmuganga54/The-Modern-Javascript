@@ -2095,5 +2095,5 @@ const getPuzzle = (wordCount) => {
     })>>
 }
 ```
-So I could just copy the <<code>> go to app.js and replace all with that code inside it.
+So I could just copy the `<<code>>` go to `app.js` and replace all with that code inside it.
 ## Summary
