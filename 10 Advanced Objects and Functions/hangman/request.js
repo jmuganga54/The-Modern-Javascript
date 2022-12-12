@@ -1,25 +1,12 @@
-const getPuzzle = (wordCount) =>  new Promise((resolve,reject)=>{
-    const request = new XMLHttpRequest()
-    //setting an eventListener when the response is returned
-    request.addEventListener('readystatechange',(e)=>{
-    //fired whenever readState is Done
-    if(e.target.readyState === 4 && e.target.status === 200){
-        //capture the responseText content and parse it 
-        const data = JSON.parse(e.target.responseText)
-        resolve(data.puzzle)
-        
-        
-    }else if(e.target.readyState === 4){
-        reject('An error has taken place')
-       
-    }
-
+const getPuzzle = (wordCount) => {
+   return fetch(`http://puzzle.mead.io/puzzle?wordCount=${wordCount}`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch puzzle')
+        }
     })
-    // open request: HTTP method and path of where Jason is 
-    request.open('GET',`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`)
-    //send off the request
-    request.send()
-   })
+}
 
 const getCountry = (countryCode) =>{
     return new Promise((resolve,reject)=>{

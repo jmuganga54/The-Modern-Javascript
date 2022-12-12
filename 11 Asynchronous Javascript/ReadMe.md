@@ -2002,4 +2002,98 @@ fetch('http://puzzle.mead.io/puzzle',{}).then ((response)=>{
 })
 ```
 
+Now that we have the error path handled we can go ahead and figure out how to do something with our data, when we get a success with the `fetch API`.
+
+`on response` you have access to a method called `json()` is going to take the response body and parse it as jason. Now we could have done the same thing for the error.
+
+In this case though we're just going to parse the data for the successful request because that's what we know we have the puzzle accessible.
+
+Now the catch here is that wen we call the `json()` method what we get back is not the javascript object. It's actually a promise and that promise is going to resolve with the object at some point in the future.
+
+So this is where promise chaining is going to come into effect. We have two option here.
+
+We can attach then on `json()` method, or we can `return` the promise adding another then into the chain, as we did on chaining concept introduction above.
+
+The second way is the way that we're going to go. So we have `response.json()` calling it with no arguments that return a promise, we are going to return that promise and then at a then call before catch.
+
+```
+fetch('http://puzzle.mead.io/puzzle',{}).then ((response)=>{
+    if(response.status === 200){
+        return response.json()
+    }else{
+        throw new Error('Unable to fetch the puzzle ')
+    }
+
+}).then(()=>{
+
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+
+```
+
+The handler is going to have access to the data and can do something with the parsed json data.
+
+```
+fetch('http://puzzle.mead.io/puzzle',{}).then ((response)=>{
+    if(response.status === 200){
+        return response.json()
+    }else{
+        throw new Error('Unable to fetch the puzzle ')
+    }
+
+}).then((data)=>{
+    console.log(data.puzzle)
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+
+//Expected output:Vast Open Landscapes
+```
+
+Now that we've seen how `fetch API` is used, we are going to convert `getPuzzle()` and `getCountry()` to use `fetch API` instead of `XMLHTTPRequest()`
+
+>Convert `getPuzzle() to use `fetch API`
+
+
+`request.js`
+```
+const getPuzzle = (wordCount) => {
+   return fetch(`http://puzzle.mead.io/puzzle?wordCount=${wordCount}`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch puzzle')
+        }
+    })
+}
+```
+
+`app.js`
+```
+//calling of the function
+getPuzzle('2').then((data)=>{
+    console.log(data.puzzle)
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+```
+
+All we've really done is we've taken the promised chain in place in two location. In this case part of it is in defining the function in `request.js` and part of it just on calling the function on `app.js` 
+
+Now this process is actually the source of a lot of confusion for people who are new to promises. If you ever get confused just think about it like this.
+
+Why can I add then onto what comes back from `getPuzzle()` because what comes back from `getPuzzle()` is all of this stuff below
+```
+const getPuzzle = (wordCount) => {
+   return <<fetch(`http://puzzle.mead.io/puzzle?wordCount=${wordCount}`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch puzzle')
+        }
+    })>>
+}
+```
+So I could just copy the <<code>> go to app.js and replace all with that code inside it.
 ## Summary

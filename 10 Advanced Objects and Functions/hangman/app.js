@@ -18,27 +18,29 @@ window.addEventListener('keypress',(e)=>{
 })
 
 
-getPuzzle('2').then((puzzle)=>{
-    console.log(puzzle)
-},(error)=>{
-    console.log(`Error: ${error}`)
-})
-
-
-getCountry('TZ').then((country)=>{
-    console.log(`Country name:${country}`)
-},(error)=>{
-    console.log(`Error:${error}`)
-})
-
-fetch('http://puzzle.mead.io/puzzle',{}).then ((response)=>{
-    if(response.status === 200){
-
-    }else{
-        throw new Error('Unable to fetch the puzzle ')
-    }
-
+getPuzzle('2').then((data)=>{
+    console.log(data.puzzle)
 }).catch((err)=>{
     console.log(`Error: ${err}`)
 })
+
+
+// getCountry('TZ').then((country)=>{
+//     console.log(`Country name:${country}`)
+// },(error)=>{
+//     console.log(`Error:${error}`)
+// })
+
+// fetch('http://puzzle.mead.io/puzzle',{}).then ((response)=>{
+//     if(response.status === 200){
+//         return response.json()
+//     }else{
+//         throw new Error('Unable to fetch the puzzle ')
+//     }
+
+// }).then((data)=>{
+//     console.log(data.puzzle)
+// }).catch((err)=>{
+//     console.log(`Error: ${err}`)
+// })
 
