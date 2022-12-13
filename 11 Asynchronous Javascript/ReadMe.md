@@ -2096,4 +2096,165 @@ const getPuzzle = (wordCount) => {
 }
 ```
 So I could just copy the `<<code>>` go to `app.js` and replace all with that code inside it.
+
+All we've really done is we've taken the `promised chain` from `fetch API approach` above  and broken it up to be in multiple locations. In this case part of it is in a function and part of that it just sits in `request.js` and the other in `app.js`.
+
+Now this process is actually the source of a lot of confusion for people who are new to promises.If you ever get confused just think about it like this.
+
+Why can I add then onto what comes back from `getPuzzle()`
+
+```
+getPuzzle('2').then((data)=>{
+    console.log(data.puzzle)
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+```
+
+because what comes back from `getPuzzle` is all of the stuff for `def getPuzzle()`
+```
+const getPuzzle = (wordCount) => {
+   return fetch(`http://puzzle.mead.io/puzzle?wordCount=${wordCount}`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch puzzle')
+        }
+    })
+}
+``` 
+
+So I could just copy the return code and head over to `app.js` and replace the call with the code
+
+```
+//the call
+getPuzzle('2').then((data)=>{
+    console.log(data.puzzle)
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+
+//replaced with
+fetch(`http://puzzle.mead.io/puzzle?wordCount=${wordCount}`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch puzzle')
+        }
+    }).then((data)=>{
+    console.log(data.puzzle)
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+
+```
+
+Sure we don't have `wordCount` defined but we can see now how everything works. What we have here is basically exactly the same as what we had down below from `fetch API approach introduction`
+
+```
+fetch('http://puzzle.mead.io/puzzle',{}).then ((response)=>{
+    if(response.status === 200){
+        return response.json()
+    }else{
+        throw new Error('Unable to fetch the puzzle ')
+    }
+
+}).then((data)=>{
+    console.log(data.puzzle)
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+```
+The only thing we've done is we've taken this portion `->`
+
+```
+fetch(`http://puzzle.mead.io/puzzle?wordCount=${wordCount}`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch puzzle')
+        }
+    }).then((data)=>{
+    console.log(data.puzzle)
+})
+``` 
+of the promised chain and I have abstracted it behind the scenes to the `getPuzzle function`
+
+Let's go ahead and make one more change to `getPuzzle` before we're done. Right here
+
+```
+//app.js
+getPuzzle('2').then((data)=>{
+    console.log(data.puzzle)
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+```
+Instead of `<data>`, let's say that we do want what we had before which was just the puzzle. We don't need an object, we really just want a string. So give us the string. So we're going to try to change `getPuzzle()` to support this format. Currently it does not. If we were to say if things were still just printing the object.
+
+We just want a string to be resolved instead of an object. 
+
+There is one thing we going to learn which will make setting up this super straight forward.
+
+Over in `promises.js` for directory `04. Function`, we want to make some small changes to the example below where we used `promise chaining`. We going to remove the string around `10` so we have valid data and all we're going to do is change our third call to get data.
+
+So what we are going to do instead of returning the promise that comes back from `getDataPromise()`. We are going to just return a string.
+```
+//Promise
+const getDataPromise = (num) => new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+           typeof num === 'number' ? resolve(num*2) : reject('Number must be provided')
+    
+        },2000)
+    
+    })
+
+
+
+getDataPromise(10).then((data)=>{
+    return getDataPromise(data)
+}).then((data)=>{
+   return 'this is some test'
+}).then((data)=>{
+    console.log(data)
+}).catch((err)=>{
+    console.log(err)
+})
+
+//Expected output: this is some test
+```
+`Expected output: this is some test` is printing fro the followed `then`. So what does that tells you, is `am returning the string not a promise`. 
+
+`Why is the next then method still getting called?`, when working with promise chaining, we don't have to return a promise form `then()`, I can return anything I'd like and that's going to get passed a long to the next step and the promise chain.
+
+This can be pretty useful, not necessarily in this example where it's useless but if we make a small change to request.js, we can accomplish what we hope to accomplish.
+
+The above concept will be used on `request.js`, below by adding a `then()` on `getPuzzle()`, shown below
+
+
+```
+//request.js
+const getPuzzle = (wordCount) => {
+   return fetch(`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch puzzle')
+        }
+    }).then((data)=>{
+        return data.puzzle
+    })
+}
+```
+
+```
+//app.js
+getPuzzle('2').then((puzzle)=>{
+    console.log(puzzle)
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+```
+
+
 ## Summary

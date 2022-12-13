@@ -18,8 +18,8 @@ window.addEventListener('keypress',(e)=>{
 })
 
 
-getPuzzle('2').then((data)=>{
-    console.log(data.puzzle)
+getPuzzle('2').then((puzzle)=>{
+    console.log(puzzle)
 }).catch((err)=>{
     console.log(`Error: ${err}`)
 })
