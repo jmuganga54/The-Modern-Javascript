@@ -24,6 +24,12 @@ getPuzzle('2').then((puzzle)=>{
     console.log(`Error: ${err}`)
 })
 
+getCountry('TZ').then((countryName)=>{
+  
+    console.log(`Country name: ${countryName[`name`][`official`]}`)
+}).catch((error)=>{
+    console.log(`Error: ${error}`) 
+})
 
 // getCountry('TZ').then((country)=>{
 //     console.log(`Country name:${country}`)

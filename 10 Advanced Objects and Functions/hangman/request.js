@@ -10,34 +10,61 @@ const getPuzzle = (wordCount) => {
     })
 }
 
-const getCountry = (countryCode) =>{
-    return new Promise((resolve,reject)=>{
-        //make HTTP request
-        const request = new XMLHttpRequest()
+
+const getCountry = (countryCode)=>{
+    fetch(`https://restcountries.com/v3.1/all`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch the country')
+        }
+    }).then((data)=>{
+        debugger
+
+      let country = data.find((country) => {
+        return country.cca2 === countryCode;
+      });
+
+      if (country) {
+        debugger
+        return country['altSpellings'][2];
+      } else {
+        throw new Error(`No country found with country code ${countryCode}`);
+      }
+      
+      
+    })
+
+}
+
+// const getCountryOld = (countryCode) =>{
+//     return new Promise((resolve,reject)=>{
+//         //make HTTP request
+//         const request = new XMLHttpRequest()
       
      
-        request.addEventListener('readystatechange',(e)=>{
-            if(e.target.readyState === 4 && e.target.status === 200){
-                const data = JSON.parse(e.target.responseText)
+//         request.addEventListener('readystatechange',(e)=>{
+//             if(e.target.readyState === 4 && e.target.status === 200){
+//                 const data = JSON.parse(e.target.responseText)
                 
-                let country = data.find((country)=>{
-                    return country.cca2 === countryCode
-                })
-                let countryName = country[`name`][`official`]
+//                 let country = data.find((country)=>{
+//                     return country.cca2 === countryCode
+//                 })
+//                 let countryName = country[`name`][`official`]
               
-                resolve(countryName)
-            }else if(e.target.readyState ===4){
+//                 resolve(countryName)
+//             }else if(e.target.readyState ===4){
             
-                reject('An error has taken place')
-            }
+//                 reject('An error has taken place')
+//             }
     
-        })
+//         })
       
-        request.open('GET', 'https://restcountries.com/v3.1/all')
-        request.send()
+//         request.open('GET', 'https://restcountries.com/v3.1/all')
+//         request.send()
        
-  })
-}
+//   })
+// }
 
  
 

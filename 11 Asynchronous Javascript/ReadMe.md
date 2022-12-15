@@ -2255,6 +2255,15 @@ getPuzzle('2').then((puzzle)=>{
     console.log(`Error: ${err}`)
 })
 ```
+### A Fetch Challenge
+In this challenge section, I will be converting `getCountry()` to use fetch just like we did for `getPuzzle()` in the last one and there are three steps for getting this done.
 
+```
+> Steps for getting this done
+1. Convert getCountry to use fetch and return a promise
+2. Make sure getCountry still resolves with the country that matches
+3. Change getCountry usage to use 
+
+```
 
 ## Summary
