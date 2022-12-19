@@ -2264,6 +2264,48 @@ In this challenge section, I will be converting `getCountry()` to use fetch just
 2. Make sure getCountry still resolves with the country that matches
 3. Change getCountry usage to use 
 
+
+> Complete code after completing the challenge
+
 ```
+> app.js
+//definition of the function <getCountry()>
+const getCountry = (countryCode)=>{
+    return fetch(`https://restcountries.com/v3.1/all`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch the country')
+        }
+    }).then((data)=>{
+      let country = data.find((country) => {
+        return country.cca2 === countryCode;
+      });
+
+      if (country) {
+        
+        return country['altSpellings'][2];
+      } else {
+        throw new Error(`No country found with country code ${countryCode}`);
+      }
+      
+      
+    })
+
+}
+```
+
+```
+> app.js
+// Use of the function <getCountry()>
+getCountry('TZ').then((countryName)=>{
+  
+    console.log(`Country name: ${countryName}`)
+}).catch((error)=>{
+    console.log(`Error: ${error}`)
+})
+
+```
+
 
 ## Summary

@@ -12,21 +12,19 @@ const getPuzzle = (wordCount) => {
 
 
 const getCountry = (countryCode)=>{
-    fetch(`https://restcountries.com/v3.1/all`).then((response)=>{
+    return fetch(`https://restcountries.com/v3.1/all`).then((response)=>{
         if(response.status === 200){
             return response.json()
         }else{
             throw new Error('Unable to fetch the country')
         }
     }).then((data)=>{
-        debugger
-
       let country = data.find((country) => {
         return country.cca2 === countryCode;
       });
 
       if (country) {
-        debugger
+        
         return country['altSpellings'][2];
       } else {
         throw new Error(`No country found with country code ${countryCode}`);
