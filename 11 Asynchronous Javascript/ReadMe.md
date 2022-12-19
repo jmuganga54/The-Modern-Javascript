@@ -2307,5 +2307,20 @@ getCountry('TZ').then((countryName)=>{
 
 ```
 
+### A Promise Challenge
+Being able to write `asynchronous code` and being able to work with promises are two very important things in javascript. They're very important and they're also very tricky.
+
+In this Promise challenge section, we're going to be creating a brand new function like `getPuzzle()` and `getCountry()` but for a brand new API, we're going to be working with an API that guesses your location based of your `IP address`. So it'g going to allow us to figure out what country where you are in.
+
+
+Let's go and talk about how we're going to get this done. [Link to API](https://ipinfo.io/), let explore.
+
+If you go the the API link, you can actually see what Jason and data were going to get back based of just your `IP address`. We can see we get the `city, region, country, timezone`.
+
+Now this API is not open. That just means we do have to sign up for an account and authenticate ourselves in order to make request. That''s common with most API, there aren't a lot of API that are completely open like the `rest countries` or the `puzzle generator` which we have already use them.
+
+Now there is a `paid plan for this API` for more complex use cases, especially if you're making a lot of requests. For our purposes. If we're just testing things out and messing around with how  the technology works,  they have a free tier, we can make a thousand requests a month, and just for this course we can just make six or less than ten requests.
+
+`So we need to sign up for new account`, just the normal procedure.
 
 ## Summary
