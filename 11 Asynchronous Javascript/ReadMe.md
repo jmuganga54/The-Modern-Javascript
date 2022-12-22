@@ -2310,17 +2310,134 @@ getCountry('TZ').then((countryName)=>{
 ### A Promise Challenge
 Being able to write `asynchronous code` and being able to work with promises are two very important things in javascript. They're very important and they're also very tricky.
 
-In this Promise challenge section, we're going to be creating a brand new function like `getPuzzle()` and `getCountry()` but for a brand new API, we're going to be working with an API that guesses your location based of your `IP address`. So it'g going to allow us to figure out what country where you are in.
+In this `Promise challenge section`, we're going to be creating a brand new function like `getPuzzle()` and `getCountry()` but for a brand new API, we're going to be working with an API that guesses your location based of your `IP address`. So it's going to allow us to figure out what country where you are in.
 
 
 Let's go and talk about how we're going to get this done. [Link to API](https://ipinfo.io/), let explore.
 
 If you go the the API link, you can actually see what Jason and data were going to get back based of just your `IP address`. We can see we get the `city, region, country, timezone`.
 
-Now this API is not open. That just means we do have to sign up for an account and authenticate ourselves in order to make request. That''s common with most API, there aren't a lot of API that are completely open like the `rest countries` or the `puzzle generator` which we have already use them.
+`Now this API is not open`. That just means we do have to sign up for an account and authenticate ourselves in order to make request. That's common with most API, there are a lot of API that are completely open like the [restcountries](https://restcountries.com/) or the [puzzle generator](http://puzzle.mead.io/puzzle) which we have already use them.
 
-Now there is a `paid plan for this API` for more complex use cases, especially if you're making a lot of requests. For our purposes. If we're just testing things out and messing around with how  the technology works,  they have a free tier, we can make a thousand requests a month, and just for this course we can just make six or less than ten requests.
+Now there is a `paid plan for this API` for more complex use cases, especially if you're making a lot of requests. For our purposes, if we're just testing things out and messing around with how  the technology works,  they have a free tier, we can make a thousand requests a month, and just for this course we can just make six or less than ten requests.
 
-`So we need to sign up for new account`, just the normal procedure.
+`So we need to sign up for new account`, just like other normal procedure of signing to any account. So after signing up and creating an account, you will see the `access token` which you will use to have an access to API. For testing you can use the [ipinfo](https://ipinfo.io/) link and at the end add your access token to access the api, `https://ipinfo.io/json?token=30215cf9b60933`, this is a `query parameters`.
+
+If we go ahead and visit this URL:`https://ipinfo.io/json?token=30215cf9b60933` it's going to try to find the location for us based off our IP.
+
+>Expected output, after visiting the above URL
+```
+{
+  "ip": "197.150.327.46",
+  "city": "Dar es Salaam",
+  "region": "Dar es Salaam",
+  "country": "TZ",
+  "loc": "-6.9239,39.7895",
+  "org": "AS36908 Vodacom Tanzania Ltd",
+  "timezone": "Africa/Dar_es_Salaam"
+}
+```
+> Note ! IP based Geo location
+Now it's important to note that `IP based geo location` isn't perfect. If you pull up this location in Google Maps that's not where I live. In fact it's probably about five or six miles away from where I live. So the city might not be correct but typically the region is and almost always  the country is and that's were we're interested in here, is actually being able to figure out which country someone`s living in.
+
+
+So this is the URL `https://ipinfo.io/json?token=30215cf9b60933` that we are going to be making a fetch request for, over inside of the javascript file.
+
+There are three steps for getting this one done.
+
+```
+1. Create geoLocation function which takes no arguments
+2. Setup geoLocation to make a request to the url and parse the data
+3. Use getLocation to print the city, region and country information.
+```
+
+> Code after solving a challenge
+
+```
+//request.js
+// definition of a function
+const geoLocation = ()=>{
+  return fetch('https://ipinfo.io/json?token=30215cf9b60933').then((response)=>{
+    if(response.status === 200){
+        return response.json()
+    }else{
+      throw new Error('Unable to fetch the IP address')
+    }
+  })
+}
+```
+
+```
+//app.js
+//use of a function
+geoLocation().then((location)=>{
+    console.log(`Your current in ${location.country}, ${location.city}, ${location.region}`)
+}).catch((error)=>{
+    console.log(`Error: ${error}`)
+})
+
+```
+
+Now let move to a second challenge for this one, it's going to be easy. This is going to require you to use a bit of promise chaining to combine, `getLocation()` and `getCountry()`.
+
+So what you're going to do is use the `getLocation()` to get the `country code` and then you're going to pass that country code into `getCountry()` to get the details for the country that the user is currently located. All we're going to do from there is print the country's full name so that is going to combine both of these.
+
+We make one asynchronous request getting the `country code`. We use that country code to make another asynchronous request and then get the full country name. 
+
+> Code after solving the challenge
+
+```
+//request.js
+//function definition
+
+const getCountry = (countryCode)=>{
+    return fetch(`https://restcountries.com/v3.1/all`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch the country')
+        }
+    }).then((data)=>{
+      let country = data.find((country) => {
+        return country.cca2 === countryCode;
+      });
+
+      if (country) {
+        
+        return country['altSpellings'][2];
+      } else {
+        throw new Error(`No country found with country code ${countryCode}`);
+      }
+      
+      
+    })
+
+}
+
+const geoLocation = ()=>{
+  return fetch('https://ipinfo.io/json?token=30215cf9b60933').then((response)=>{
+    if(response.status === 200){
+        return response.json()
+    }else{
+      throw new Error('Unable to fetch the IP address')
+    }
+  })
+}
+```
+
+```
+//app.js
+//function call
+geoLocation().then((location)=>{
+    return getCountry(location.country)
+}).then((countryName)=>{
+    console.log(`Country name: ${countryName}`)
+}).catch((error)=>{
+    console.log(`Error: ${error}`)
+})
+
+```
+
+
 
 ## Summary
