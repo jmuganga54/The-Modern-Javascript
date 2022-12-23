@@ -2307,7 +2307,6 @@ getCountry('TZ').then((countryName)=>{
 })
 
 ```
-
 ### A Promise Challenge
 Being able to write `asynchronous code` and being able to work with promises are two very important things in javascript. They're very important and they're also very tricky.
 
@@ -2439,6 +2438,140 @@ geoLocation().then((location)=>{
 
 ```
 
+### AsyncAwait
+
+In this section you're going to start learning about one of the final features of asynchronous programming in javascript.
+
+`AsyncAwait` is the combination of two new javascript tools. We have the `async function` and the `await operator`, when we use them together we get a new way to structure and work with our promises that makes codes a whole lot easier to work with. 
+
+Now we are going to explore this, as always first isolation then we'll integrates it into the hangman application.
+
+`In function` directory, we are going to create an brand new file, whis is `asyc-await.js`.
+
+The good news is that understanding this feature is going to be relatively simple because it really just builds off of what we already known about promises. 
+
+So all the work we put into learning promises in the last section is going to make understanding  `async-await` pretty eassy and we're going to kick things off with a basic example.
+
+Let's go ahead and kick things off by creating a basic function.
+
+```
+const processData = () =>{
+
+}
+console.log(processData())
+
+//Expected output: undefined
+```
+now based off of what we learned about functions in one of the first sections of this course, we know that undefined is going to print.
+
+`Undefined` is the default return value if you don't explicits return anything.
+
+Now what I want to do is start introducing `async await`. And we're going to do this by adding a single word into the code and viewing how that changes the output. This is the `async` keyword.
+
+When we create a function we can choose to create a function as an `async function` to do that, all we do is before the function definition, we use `async` just like below code.
+
+```
+const processData = async () =>{
+
+}
+console.log(processData())
+
+//Expected output: Promise {undefined}
+```
+
+Now we have successfully create an async function that is the `async` portion of `async await`.
+
+After running the script, we are getting a `promise`. And that brings us to the first important feature of the `async function` 
+
+`async function` always return a promise. That promise is resolved with the value that you the developer choose to return from the function. So let's go ahead and clarify that. Let's say that the developer choose to `return 12` from this function, what comes back from process data is not `12`.
+
+```
+const processData = async () =>{
+return 12
+}
+console.log(processData())
+
+//Expected output: Promise {12}
+```
+
+It would if we were to remove the `async` keyword, in this case we would see 12 printing, when we add on a `async`. We always get a promise back, the promise gets resolved with whatever value we return. So that means we can structure our code a bit differently down below.
+
+```
+const processData = async () =>{
+return 12
+}
+
+processData().then((data)=>{
+    console.log('Data',data)
+})
+
+//Expected output: Data 12
+```
+When we pass multiple arguments into `console.log`, it log them all in order. So the end result of this is just going to be us, seeing our data.
+
+We know that `async functions` return a promise and we also know that the value return from `async function` is the value that promise gets resolved with.Now we can also have a `catch handler` for our `async function`, promise is going to `reject` if we the developer choose to `throw an error` from the function.
+
+```
+const processData = async () =>{
+    throw new Error('Something went wrong')
+    return 12
+}
+
+processData().then((data)=>{
+    console.log('Data',data)
+}).catch((error)=>{
+    console.log('Error',error)
+})
+
+//Expected output: Error Error: Something went wrong
+```
+
+Let's go ahead and grab one of our dummy promise functions from promise.js 
+
+```
+const getDataPromise = (num) => new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+           typeof num === 'number' ? resolve(num*2) : reject('Number must be provided')
+    
+        },2000)
+    
+    })
+```
+We're going to use this to simulate how `async-await` works.
+
+Now we are going to delete everything from inside of process data and talked about the second half of `async-await`.We have already seen how we can use the `async` keyword to define an `async function`. We also have the `await operator`. it's important to known what the `await operator` can only be used with `async functions`.So that why when people refer to this feature they usually refer to it as one thing `async-await` as opposed to two separated features. The `async function` and the `await operator`, if you use one you're most likely using the other.
+
+Now what I like to do is figure out how we can actually use `await` and let's say the goal is to use `getDataPromise()` a couple of times inside a `processData`. If we didn't use the async function we know what that would look like.
+
+```
+const getDataPromise = (num) => new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+       typeof num === 'number' ? resolve(num*2) : reject('Number must be provided')
+
+    },2000)
+
+})
+
+
+const processData = async () =>{
+    
+    return getDataPromise(2).then((data)=>{
+       return data
+    })
+   
+    
+}
+
+processData().then((data)=>{
+    console.log('Data',data)
+}).catch((error)=>{
+    console.log('Error',error)
+})
+
+//Expected output: 4
+```
+
+Not particularly intrested with the above,we already know how to do that. Let's go ahead and see how we can get the exact same thing done using the `wait operator`.
 
 
 ## Summary
