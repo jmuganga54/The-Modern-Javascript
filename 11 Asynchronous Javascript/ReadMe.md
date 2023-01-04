@@ -2446,11 +2446,11 @@ In this section you're going to start learning about one of the final features o
 
 Now we are going to explore this, as always first isolation then we'll integrates it into the hangman application.
 
-`In function` directory, we are going to create an brand new file, whis is `asyc-await.js`.
+`In function` directory, we are going to create an brand new file, which is `asyc-await.js`.
 
 The good news is that understanding this feature is going to be relatively simple because it really just builds off of what we already known about promises. 
 
-So all the work we put into learning promises in the last section is going to make understanding  `async-await` pretty eassy and we're going to kick things off with a basic example.
+So all the work we put into learning promises in the last section is going to make understanding  `async-await` pretty easy and we're going to kick things off with a basic example.
 
 Let's go ahead and kick things off by creating a basic function.
 
@@ -2462,7 +2462,7 @@ console.log(processData())
 
 //Expected output: undefined
 ```
-now based off of what we learned about functions in one of the first sections of this course, we know that undefined is going to print.
+now based of what we learned about functions in one of the first sections of this course, we know that undefined is going to print.
 
 `Undefined` is the default return value if you don't explicits return anything.
 
@@ -2571,7 +2571,246 @@ processData().then((data)=>{
 //Expected output: 4
 ```
 
-Not particularly intrested with the above,we already know how to do that. Let's go ahead and see how we can get the exact same thing done using the `wait operator`.
+Not particularly interested with the above,we already know how to do that. Let's go ahead and see how we can get the exact same thing done using the `wait operator`.
+
+So right here on the first line of the function where we're going to do is call our function with the `await operator` upfront.
+
+```
+const processData = async () =>{
+     await getDataPromise(2)
+    // return getDataPromise(2).then((data)=>{
+    //    return data
+    // }) 
+}
+```
+
+Now the syntax should look relatively familiar. We did something very similar when we created a `new instance of one of our classes`. We used the `new operator` with the constructor function that allowed us to create a new instance in this case we are using the `await operator` with a function that returns a promise.
+
+now this is where things get cool. We don't have to attach `then` and set up a callback function. We don't have to do any of that. 
+
+`The above looks like synchronous code` which means if we want the value that comes back from `getDataPromise()`, we just store it in a variable upfront.
+
+```
+const processData = async () =>{
+    const data = await getDataPromise(2)
+    // return getDataPromise(2).then((data)=>{
+    //    return data
+    // })
+}
+```
+
+Now on the next line like it was normal regular code we can `console.log(data)`.
+
+```
+const processData = async () =>{
+    const data = await getDataPromise(2)
+    console.log(data)
+    // return getDataPromise(2).then((data)=>{
+    //    return data
+    // })
+}
+```
+
+Let go ahead and actually test things out
+
+```
+const getDataPromise = (num) => new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+       typeof num === 'number' ? resolve(num*2) : reject('Number must be provided')
+
+    },2000)
+
+})
 
 
+const processData = async () =>{
+    const data = await getDataPromise(2)
+    console.log(data)
+    // return getDataPromise(2).then((data)=>{
+    //    return data
+    // })
+   
+    
+}
+
+processData().then((data)=>{
+    console.log('Data',data)
+}).catch((error)=>{
+    console.log('Error',error)
+})
+
+//Expected output:Data 4
+```
+Now we could actually expand on this further previously if we wanted to use a `promise multiple times`. We had to use promise chaining with `async-await` we can just add a few more lines to the program, nothing complex.
+
+`On async-await.js` on processData function, lets go ahead and switch data from a `const` to `let` so we can reassign it's value, and on the very next we are going to set `data equal to await getDataPromise(data)`, 
+
+```
+const processData = async () =>{
+    let data = await getDataPromise(2)
+    data = await getDataPromise(data)
+    console.log(data)
+    // return getDataPromise(2).then((data)=>{
+    //    return data
+    // })
+}
+```
+
+The end result should be eight. So instead of printing 8 `console.log(data)`, we can actually go ahead and just `return 8` by `returning data` and we know that whatever we return is going to be resolved value.
+
+```
+const processData = async () =>{
+    let data = await getDataPromise(2)
+    data = await getDataPromise(data)
+    return data
+    // return getDataPromise(2).then((data)=>{
+    //    return data
+    // })
+}
+```
+
+So let again rerun the program
+
+```
+const getDataPromise = (num) => new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+       typeof num === 'number' ? resolve(num*2) : reject('Number must be provided')
+
+    },2000)
+
+})
+
+
+const processData = async () =>{
+    let data = await getDataPromise(2)
+    data = await getDataPromise(data)
+    return data
+    // return getDataPromise(2).then((data)=>{
+    //    return data
+    // })
+}
+
+processData().then((data)=>{
+    console.log('Data',data)
+}).catch((error)=>{
+    console.log('Error',error)
+})
+
+//Expected output: Data 8
+```
+So with `asynnc` and `await` operator we can structure our code that uses promises to look more like regular old `synchronous code`. We can perform one operation after the other.
+
+
+```
+const processData = async () =>{
+    let data = await getDataPromise(2)
+    /*
+    * The below code is never going to run
+    * until `let data = await getDataPromise(2)` res or rej
+    */
+    data = await getDataPromise(data)
+
+    /*
+    * The return wont run, until ` data = await getDataPromise(data)`
+    * either resolves or rejects
+    */
+    return data
+  
+}
+```
+
+Now in this case we've only seen the happy path where all of the promise do indeed resolve.
+
+Let's go ahead and explore what happens when one of them `rejects`. 
+
+Let pass the string `abc`. So this should cause the condition to fail which should cause `reject` to be fired.
+
+```
+const processData = async () =>{
+    let data = await getDataPromise('abc')
+    data = await getDataPromise(data)
+    return data
+   
+}
+```
+
+Which will cause the condition in below code to fail which should cause reject to be fired.
+
+```
+const getDataPromise = (num) => new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+       typeof num === 'number' ? resolve(num*2) : reject('Number must be provided')
+
+    },2000)
+
+})
+```
+
+That means I would expect the below code to `throw an error and that's exactly what's going to happen if I rerun the program
+
+```
+const processData = async () =>{
+    let data = await getDataPromise('abc')
+    data = await getDataPromise(data)
+    return data
+   
+}
+
+processData().then((data)=>{
+    console.log('Data',data)
+}).catch((error)=>{
+    console.log('Error',error)
+})
+
+//Expected output: Error Number must be provided
+```
+
+So in this particular case we can see that when one of our `promise reject` and we're using `await` with it. It's like we're throwing an error from `processData` function.
+
+We're able to `catch that error` where we use the `promise to return` 
+
+Now there we have it , we can see that promise chaining is no longer a daunting thing. You can chain as many logic as you wanted, and chaining number of different promises, but in the end of the day, I don't have confusing promise code.
+
+```
+const processData = async () =>{
+    let data = await getDataPromise('abc')
+    data = await getDataPromise(data)
+    data = await getDataPromise(data)
+    data = await getDataPromise(data)
+    return data
+   
+}
+```
+
+I just have the `async function` with a few `await operator`. It's pretty easy to read through this file and figure out exactly how things work. 
+
+In this case If I were to rerun the program after switching abc over to a real value like 2. We would be able to see the final result pring that would be 32.
+
+```
+const getDataPromise = (num) => new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+       typeof num === 'number' ? resolve(num*2) : reject('Number must be provided')
+
+    },2000)
+
+})
+
+
+const processData = async () =>{
+    let data = await getDataPromise(2)
+    data = await getDataPromise(data)
+    data = await getDataPromise(data)
+    data = await getDataPromise(data)
+    return data
+   
+}
+
+processData().then((data)=>{
+    console.log('Data',data)
+}).catch((error)=>{
+    console.log('Error',error)
+})
+
+//Expected output: Data 32
+```
 ## Summary

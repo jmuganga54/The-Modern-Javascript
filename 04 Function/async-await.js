@@ -8,12 +8,12 @@ const getDataPromise = (num) => new Promise((resolve, reject)=>{
 
 
 const processData = async () =>{
-    
-    return getDataPromise(2).then((data)=>{
-       return data
-    })
+    let data = await getDataPromise(2)
+    data = await getDataPromise(data)
+    data = await getDataPromise(data)
+    data = await getDataPromise(data)
+    return data
    
-    
 }
 
 processData().then((data)=>{
