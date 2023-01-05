@@ -1,16 +1,13 @@
-const getPuzzle = (wordCount) => {
-   return fetch(`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`).then((response)=>{
-        if(response.status === 200){
-            return response.json()
-        }else{
-            throw new Error('Unable to fetch puzzle')
-        }
-    }).then((data)=>{
-        return data.puzzle
-    })
+const getPuzzle = async (wordCount) => {
+   const response = await fetch(`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`)
+
+   if(response.status === 200){
+    const data = await response.json()
+    return data.puzzle
+   }else{
+    throw new Error('Unable to get puzzle')
+   }
 }
-
-
 const getCountry = (countryCode)=>{
     return fetch(`https://restcountries.com/v3.1/all`).then((response)=>{
         if(response.status === 200){

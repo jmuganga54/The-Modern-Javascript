@@ -2813,4 +2813,168 @@ processData().then((data)=>{
 
 //Expected output: Data 32
 ```
+
+We want to figure out how we can make use of this technique in our actual code. 
+
+We're going to go ahead and convert the code that gets the puzzle for us instead of working with fetch and attaching them to it. 
+
+We're going to work with fetch and use it with the `await operator` just like we've done in this section with a dummy function `getDataPromise()`.
+
+We are going to make change to `request.js` (function definition)
+
+```
+const getPuzzle = (wordCount) => {
+   return fetch(`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch puzzle')
+        }
+    }).then((data)=>{
+        return data.puzzle
+    })
+}
+```
+
+Now the nice thing about `getPuzzle()` is that it already returns a promise when we convert it to an `async` function. We know that by default it's going to `return a promise` which means that we don't need to change anything in app.js `(when calling a function)`.
+
+The below code is going to stay exactly the same
+``` 
+getPuzzle('2').then((puzzle)=>{
+    console.log(puzzle)
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+```
+
+`async-await` is going to help `when making function definition in request.js`. when we have some more complex `asynchronous looking code`.
+
+Let starting by converting a function `getPuzzle()` by adding the `async` keyword before function definition.
+
+```
+const getPuzzle = async (wordCount) => {
+   return fetch(`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`).then((response)=>{
+        if(response.status === 200){
+            return response.json()
+        }else{
+            throw new Error('Unable to fetch puzzle')
+        }
+    }).then((data)=>{
+        return data.puzzle
+    })
+}
+```
+
+Then after that we can take advantage of `await`. The first thing that we're going to `await`  is the promise tha comes back from `fetch api`.
+
+When fetch resolves its promise, we know we get access to response instead of setting up `then`, we're going to set up a `constant`.
+
+```
+const getPuzzle = async (wordCount) => {
+   const response = await fetch(`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`)
+}
+```
+
+No need for `then`, no need for any sort of `callback function`. We just run one line of code. Then we move on to the next line.
+
+Now the next thing we're gong to do is look at the `the response` status because that's important. We want to figure out if it was a `200`, if it was great, if it wasn't that is fine too, we just want to run different code.
+
+```
+const getPuzzle = async (wordCount) => {
+   const response = await fetch(`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`)
+
+   if(response.status === 200){
+    
+   }else{
+    throw new Error('Unable to get puzzle')
+   }
+}
+```
+Now what do we want to do in the success case. Well previously if things went well we returned whatever comes back from json, see code below `getPuzzleOld()`, we get access to the promise data which is parse json
+
+```
+const getPuzzleOld = (wordCount) => {
+  return fetch(`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`).then((response)=>{
+       if(response.status === 200){
+           return response.json()
+       }else{
+           throw new Error('Unable to fetch puzzle')
+       }
+   }).then((data)=>{
+       return data.puzzle
+   })
+}
+```
+
+With `async-await` we can do all of that in if success block, without any additional complexity, we can create a constant, `const data = await response.json()`, so the next line of the program isn't goint to run untill I have that parsed data.
+
+```
+const getPuzzle = async (wordCount) => {
+   const response = await fetch(`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`)
+
+   if(response.status === 200){
+    const data = await response.json()
+   }else{
+    throw new Error('Unable to get puzzle')
+   }
+}
+```
+
+Now what is the real goal. The goal is to give us access to the puzzle. So if I want that as the value I know I need to `return` that from the `async` function.
+
+```
+const getPuzzle = async (wordCount) => {
+   const response = await fetch(`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`)
+
+   if(response.status === 200){
+    const data = await response.json()
+    return data.puzzle
+   }else{
+    throw new Error('Unable to get puzzle')
+   }
+}
+```
+
+This is how we can convert a function from using promises to using a `async-await`.
+
+Now we have our function in place let's go ahead and rerun the program.
+
+```
+//from request.js
+//function definition
+const getPuzzle = async (wordCount) => {
+   const response = await fetch(`https://puzzle.mead.io/puzzle?wordCount=${wordCount}`)
+
+   if(response.status === 200){
+    const data = await response.json()
+    return data.puzzle
+   }else{
+    throw new Error('Unable to get puzzle')
+   }
+}
+```
+
+```
+//from app.js
+//calling a function
+getPuzzle('2').then((puzzle)=>{
+    console.log(puzzle)
+}).catch((err)=>{
+    console.log(`Error: ${err}`)
+})
+
+//Expected output: Spinning Pinwheels
+```
+
+When we work with `promises and then` it can be very clear what's happening if we have a simpler example. But when we have a bit more complexity with promises and we're trying to work with promise chaining. It's typically best to put that in an `async function` allowing us to easily structure the code in a way that is more readable easier to write and more maintainable.
+
+So we're going to be favoring `async functions` when possible.
+
+
+
+
+
+
+
+
 ## Summary
