@@ -2970,10 +2970,136 @@ When we work with `promises and then` it can be very clear what's happening if w
 
 So we're going to be favoring `async functions` when possible.
 
+### AsyncAwait Challenge
+#### Challenge 1
+In this section we're going to get a bit of experience working with `async-await`. There are a couple of different challenges we're going to work through and the first challenge is going to require to convert both `getCountry()` and `getLocation` from being regular function to begin `async-await` that use the wait operator.
+
+So there are two steps for this first challenge 
+
+```
+//Steps
+1. Convert getCountry to an async function that uses await
+2. Convert getLocation to an async function that uses await
+```
+
+Now you shouldn't need to make any changes to the code in `app.js` that uses those two functions. Everything that's over here can stay it's perfectly fine the way it is.
+
+What we want to do is just change the `function definitions` themselves switching them to `async functions`, and using `await` instead of `then` to chain together various piece of code.
+
+> Solution the Challenge
+
+```
+//request.js
+//function definition
+const getCountry = async (countryCode)=>{
+    const response = await fetch(`https://restcountries.com/v3.1/all`);
+    if(response.status === 200){
+      const data = await response.json()
+      let country = data.find((country) => {
+        return country.cca2 === countryCode;
+      });
+      if (country) {
+        return country['altSpellings'][2];
+      } else {
+        throw new Error(`No country found with country code ${countryCode}`);
+      }
+
+    }else{
+      throw new Error('Unable to fetch the country')
+    }
+
+}
 
 
+const geoLocation = async ()=>{
+  const response = await fetch('https://ipinfo.io/json?token=30215cf9b60933')
+  if(response.status === 200){
+    return response.json()
+
+  }else{
+    throw new Error('Unable to get the current location')
+  } 
+}
+```
+No any changes have been made on function calling on `app.js`
+```
+//app.js
+//Calling functions
+
+geoLocation().then((location)=>{
+    return getCountry(location.country)
+}).then((countryName)=>{
+    console.log(`Country name: ${countryName}`)
+}).catch((error)=>{
+    console.log(`Error: ${error}`)
+})
+
+//Expected output: Country: United Republic of Tanzania
+```
+#### Challenge 2
+Let move on to the second challenge for this section. I have some comments describing what I'd like you to do for this challenge.
+
+```
+//Create a new function called getCurrentCountry
+//Should return a promise that resolves the country for your current location
+//Use async/await for the new function
+```
+
+> Solution to the Challenge
+
+```
+//request.js
+//function definition
+const getCurrentCountry = async () =>{
+    const location = await geoLocation();
+    const country = await  getCountry(location.country);
+    return country
+
+}
+const getCountry = async (countryCode)=>{
+    const response = await fetch(`https://restcountries.com/v3.1/all`);
+    if(response.status === 200){
+      const data = await response.json()
+      let country = data.find((country) => {
+        return country.cca2 === countryCode;
+      });
+      if (country) {
+        return country['altSpellings'][2];
+      } else {
+        throw new Error(`No country found with country code ${countryCode}`);
+      }
+
+    }else{
+      throw new Error('Unable to fetch the country')
+    }
+
+}
 
 
+const geoLocation = async ()=>{
+  const response = await fetch('https://ipinfo.io/json?token=30215cf9b60933')
+  if(response.status === 200){
+    return response.json()
+
+  }else{
+    throw new Error('Unable to get the current location')
+  } 
+}
+
+```
+
+```
+//app.js
+//function calling
+
+getCurrentCountry().then((country)=>{
+    console.log(country)
+}).catch((err)=>{
+    console.log(err)
+})
+
+//Expected output: United Republic of Tanzania
+```
 
 
 

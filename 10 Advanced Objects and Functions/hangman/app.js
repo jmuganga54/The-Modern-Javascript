@@ -24,11 +24,8 @@ getPuzzle('2').then((puzzle)=>{
     console.log(`Error: ${err}`)
 })
 
-
-geoLocation().then((location)=>{
-    return getCountry(location.country)
-}).then((countryName)=>{
-    console.log(`Country name: ${countryName}`)
-}).catch((error)=>{
-    console.log(`Error: ${error}`)
+getCurrentCountry().then((country)=>{
+    console.log(country)
+}).catch((err)=>{
+    console.log(err)
 })
