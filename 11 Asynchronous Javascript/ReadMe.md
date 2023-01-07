@@ -3250,3 +3250,10 @@ startGame()
 
 
 ## Summary
+In this section we learned about `callback function`, we learned about promises and we learned about `asyc-await`.
+
+We were able to make `HTTP requests` from other third party servers allowing us to access things like `puzzles`, things like `country information` or things like `geolocation service` that uses your `IP to guess where in the world you are`.
+
+Now if you're interested in backend programming and actually making your own API endpoints like the `one's` we use in this section, I recommend checking out `node.js` in a more detail.
+
+In this course we just use node to run some plain javascript features but nodes comes with its own set of tools for creating your own backend. Thee are a lot of course that show you how to set up, endpoint that return jason like the one's we use in this course, and those are going to allow you to set things up like data persistence database, user accounts, profile login/logout all those great authentication features. All of that can easily be done by taking a course on node.js.
