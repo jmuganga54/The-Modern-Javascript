@@ -3101,6 +3101,152 @@ getCurrentCountry().then((country)=>{
 //Expected output: United Republic of Tanzania
 ```
 
+### Integrating Data into the Application
+In this section we're going to integrate the `data fetching` for getting the puzzle within the Hangman
+game itself to finalize the game functionality.
+
+Now what I'd like to do is focus on starting up the game the right way after we fetch a puzzle.
+
+There are two ways we're going to start a game. 
+ * We're going to start a game when the user first loads the page and 
+
+ * We're also going to set up a reset button allowing them to reset the game, picking a new puzzle and starting with all of the guesses that you originally had.
+
+ ```
+ //from app.js
+
+ const puzzleEl = document.querySelector('#puzzle')
+const guessesEl = document.querySelector('#guesses')
+let game1 
+
+puzzleEl.textContent = game1.puzzle
+guessesEl.textContent = game1.statusMessage
+
+
+
+
+window.addEventListener('keypress',(e)=>{
+    const guess = String.fromCharCode(e.charCode)
+    game1.makeGuess(guess)
+    puzzleEl.textContent = game1.puzzle
+    guessesEl.textContent = game1.statusMessage
+    
+
+})
+
+
+const startGame = async () =>{
+    const puzzle = await getPuzzle('2')
+    game1 = new Hangman(puzzle, 5)
+
+}
+
+document.querySelector('#reset').addEventListener('click', startGame)
+
+startGame()
+ ```
+ So right away we want to start up a new game even if you've never clicked the button.
+
+ We're also going to wire up a click event Listener to call start game. When that reset button gets clicked.
+
+ ```
+ document.querySelector('#reset').addEventListener('click', startGame)
+ ```
+
+We want to go ahead and make sure to correctly render both the puzzle and the number guesses they left.
+
+This is also something we're going to end up doing in multiple places.
+
+So we're going to create a little render function, all this render function is going to do is essentially what we're doing up above.
+
+```
+const render = () =>{
+    puzzleEl.textContent = game1.puzzle
+    guessesEl.textContent = game1.statusMessage
+
+
+}
+```
+
+Now the last thing we need to do to start our game successfully is to call render.
+
+```
+const startGame = async () =>{
+    const puzzle = await getPuzzle('2')
+    game1 = new Hangman(puzzle, 5)
+    render()
+
+}
+```
+So now we're starting a game right away. We're also starting a game when someone clicks the reset button.
+
+The process of starting the game is fetching the puzzle, creating the new game instance and then rendering the instance to the browser.
+
+```
+const puzzleEl = document.querySelector('#puzzle')
+const guessesEl = document.querySelector('#guesses')
+let game1 
+
+
+const render = () =>{
+    puzzleEl.textContent = game1.getPuzzle()
+    guessesEl.textContent = game1.getStatusMessage()
+}
+
+const startGame = async () =>{
+    const puzzle = await getPuzzle('2')
+    game1 = new Hangman(puzzle,5)
+    render()
+
+}
+
+document.querySelector('#reset').addEventListener('click', startGame)
+
+startGame()
+```
+
+When we refresh the page you can see that, we have two words but clearly the new first word is longer than the old first word.
+
+So every time you refresh, we are indeed getting a random puzzle from the API. And this is a great first step.
+
+So at this point the initial game is set up, what we need to do is focus on actually responding to keyboard events.
+
+The code for responding to the key presses is something we've already set up.
+
+```
+const puzzleEl = document.querySelector('#puzzle')
+const guessesEl = document.querySelector('#guesses')
+let game1 
+
+
+
+
+window.addEventListener('keypress',(e)=>{
+    const guess = String.fromCharCode(e.charCode)
+    game1.makeGuess(guess)
+    render()
+    
+
+})
+
+const render = () =>{
+    puzzleEl.textContent = game1.getPuzzle()
+    guessesEl.textContent = game1.getStatusMessage()
+}
+
+const startGame = async () =>{
+    const puzzle = await getPuzzle('2')
+    console.log(puzzle)
+    game1 = new Hangman(puzzle,5)
+    render()
+
+}
+
+document.querySelector('#reset').addEventListener('click', startGame)
+
+startGame()
+
+```
 
 
 ## Summary
