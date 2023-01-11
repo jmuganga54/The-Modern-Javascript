@@ -102,5 +102,159 @@ In this section we took a look on the basics of CSS, we figured our how we can l
 
 We learned that a rule is made up of a set of selectors as well as a set of style declarations.
 
+### Setting Hangman Theme
+In this section we're going to style the hangman application using the theme that I've set up.
+
+There are going to be a few steps to get this done. The first thing we're going to do is grab and explore the CSS theme. 
+
+Then once we have the theme code inside of our CSS file, we're going to need to make changes to HTML file, if the CSS file sets up a class for warning. We have to actually use that class for the styles to be applied.
+
+So we'll be making some small structural changes to the HTML file as well.
+
+That last thing we'll end up doing is modifying one of our javascript files to conform to the setup that the theme expects.
+
+So let's go ahead and kick this off by grabbing the theme code and exploring it to see at a high level, what it does over.
+
+```
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background: #2B292E;
+    color: #fafafa;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+span {
+    border-bottom: 1px solid #534f59;
+    display: inline-block;
+    font-size: 2rem;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    margin: 0 .1rem;
+    text-align: center;
+    text-transform: uppercase;
+    width: 2.4rem;
+}
+
+p {
+    font-weight: 300;
+    margin-bottom: .8rem;
+}
+
+.puzzle {
+    display: flex;
+    margin-bottom: 4.8rem;
+}
+
+.button {
+    background: #7044a0;
+    border: none;
+    border-bottom: 2px solid #603a88;
+    cursor: pointer;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 300;
+    padding: .8rem;
+    transition: background .3s ease, color .3s ease;
+}
+
+.button:hover {
+    background: #5F3A87;
+}
+```
+In CSS file this file starts with some generic selectors that aren't targeting classes or IDs. These are just tags selectors like `HTML body(html)`, `span` and the universal selector(`*`).
+
+The first nine line just override browser defaults.
+
+```
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+```
+
+So all browsers have their own set of defaults and all we're doing here is we're trying to start from a unified place, so our styles that we apply actually look standardized.
+
+If browsers start off various spacing sizes each browser being a bit different I'm never going to get user interface to look the same. So all we're doing here is we're starting from a nice clean.
+
+Correctly centering things has to do with our body selector the `body selector` ses up quite a few rule definition down below.
+
+```
+body {
+    background: #2B292E;
+    color: #fafafa;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+```
+Using CSS flex box, were able to center the element inside of the body. Here we are making it a single `div` which is why we have our centered content the content. We are making it a single div which is why we have our centered content the content inside of their stacks as we normally do by default which is top to bottom. That's what we saw, when we didn't have any styles applied.
+
+```
+  <div>
+        <p id="puzzle" class="warning"></p>
+        <p id="guesses" class="warning"></p>
+        <button id="reset">Reset</button>
+    </div>
+```
+All of the rules that allow us to style the button, live over in theme.
+
+```
+.button {
+    background: #7044a0;
+    border: none;
+    border-bottom: 2px solid #603a88;
+    cursor: pointer;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 300;
+    padding: .8rem;
+    transition: background .3s ease, color .3s ease;
+}
+```
+`transition` is what allow us to smoothly switch between the lighter purple and the darker purple. So you can see it fades in as opposed to just jumping from one to the other
+
+Changing the selector of puzzle from `paragraph` to `div`. CSS rule of puzzle
+
+```
+.puzzle {
+    display: flex;
+    margin-bottom: 4.8rem;
+}
+```
+
+Now let's go ahead and customize some Javascript code. The only file we need to change is `app.js`. And the only part of `js` we're going to change is `render function`.
+
+```
+const render = () =>{
+    puzzleEl.textContent = game1.getPuzzle()
+    guessesEl.textContent = game1.getStatusMessage()
+}
+```
+
+The first line of this function adds the text content into the puzzle element which is currently why 
+
+
+
+
+
 
 ## Summary
