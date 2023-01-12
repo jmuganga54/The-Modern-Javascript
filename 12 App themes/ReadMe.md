@@ -250,11 +250,59 @@ const render = () =>{
 }
 ```
 
-The first line of this function adds the text content into the puzzle element which is currently why 
+The first line of this function adds the text content into the puzzle element which is currently why we're seeing it showing up, instead of doing that though, we're going to start with actually clearing the element.
 
+What we're going to do is store each HTML inside of it so we can clear all HTML inside the puzzle element using innerHTML.
 
+```
+const render = () =>{
+    puzzleEl.innerHTML = ''
+    guessesEl.textContent = game1.getStatusMessage()
+}
+```
 
+This is where we are going to manipulate what actually goes inside of the puzzle element.
 
+```
+const render = () =>{
+    puzzleEl.innerHTML = ''
+    guessesEl.textContent = game1.getStatusMessage()
 
+    game1.getPuzzle().split('').forEach((letter)=>{
+        const letterEl = document.createElement('span')
+        letterEl.textContent = letter
+        puzzleEl.appendChild(letterEl)
+    })
+
+```
+
+If we go to our CSS we can see where our CSS live.
+
+```
+span {
+    border-bottom: 1px solid #534f59;
+    display: inline-block;
+    font-size: 2rem;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    margin: 0 .1rem;
+    text-align: center;
+    text-transform: uppercase;
+    width: 2.4rem;
+}
+```
+Creating Title in html page and favicon
+
+```
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="icon" href="./images/favicon.png">
+    <title>Hangman</title>
+
+</head>
+```
 
 ## Summary
