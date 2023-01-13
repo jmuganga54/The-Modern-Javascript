@@ -305,4 +305,38 @@ Creating Title in html page and favicon
 </head>
 ```
 
+### Setting up Notes Theme: Part I
+
+Now that we have these styles for hangman application in place, let's go ahead and move on to the `Notes application`, which is a vastly more complex app.
+
+The notes application has way more content on the page and there are actually two pages that we are going to work with.
+
+Naming convention in CSS
+```
+BEM (block, element, modifier)
+
+Block     ->  house
+Element   ->  house__kitchen
+Modifier  ->  house--condo
+
+*/
+```
+`Block` is a high level contract I might use a block for a letter for example a big container on a page
+
+```
+<header class="header">
+            <div class="container">
+                <h1 class="header__title">Notes App</h1>
+                <h2 class="header__subtitle">Take notes and never forget</h2>
+            </div>
+        </header>
+```
+
+`Element` is just a piece of block. So for that matter we have a piece of the block called `title` and `subtitle` for a house, I might have piece of house referred to as the kitchen, so here we have the original block name followed by two underscores to signify it's an element followed by the element name.So in this case we have a `house__kitchen`
+
+`Modifier` we have a `house--condo`. So there are a lot of different types of house. They probably all share some attributes but each version might want something a little bit different. I might have a condo in which case I might not have my own roof, it might be the building's roof or I might have a different type of house like a row home in which case  I am attached to neighbors on both sides.
+
+So we create a modifier by adding `--` folowed by some sort of name for the modifier. In this case `house--condo` gets the job done.
+
+
 ## Summary
