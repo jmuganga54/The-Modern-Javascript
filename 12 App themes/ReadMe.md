@@ -338,5 +338,20 @@ Modifier  ->  house--condo
 
 So we create a modifier by adding `--` folowed by some sort of name for the modifier. In this case `house--condo` gets the job done.
 
+### Setting up the Notes Theme Part II
+
+### Setting up the Todo Theme Part I
+
+You can noteice that the icon is still the icon from the old application even though the New is clearly purple, This is just due to a bit of caching that's taking place in the browser. After a little while or while switching to private mode you will see that the correct icon is actually the one you are hoping for.
+
+You can always cash but that icon by adding something dynamic on the URL, like a query string which isn't going to affect how the images is loaded but it is going to make it a unique URL, so the cached version won't be used `?v=1`. 
+
+```
+<link href="images/favicon.png?v=1"> rel="icon"
+```
+
+So this is a handy technique for when you're going local development and you just want to make sure things are actually working even through you have some stuff cached.
+
+
 
 ## Summary

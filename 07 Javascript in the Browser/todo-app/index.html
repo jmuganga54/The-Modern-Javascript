@@ -1,31 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo</title>
-</head>
+<html>
+    <head>
+        <title>To-do App</title>
+        <link href="./styles/styles.css" rel="stylesheet">
+        <link href="./images/favicon.png?v=1" rel="icon">
+    </head>
+    <body>
+        <div class="header">
+            <div class="container">
+                <h1 class="header__title">To-do App</h1>
+                <h2 class="header__subtitle">What do you need to do?</h2>
+            </div>
+        </div>
 
-<body>
-    <h1>Todos</h1>
-    <input type="text" name="filterTodo" id="filterTodoItems" placeholder="filter Todo">
+        <div class="actions">
+            <div class="actions__container">
+                <input id="search-text" class="input" type="text" placeholder="Filter todos">
+                <label class="checkbox">
+                    <input type="checkbox" id="hide-completed"> Hide completed
+                </label>
+            </div>
+        </div>
 
-    <label for="hide-completed">Hide Completed:</label>
-    <input type="checkbox" name="hide-completed" id="hide-completed">
+        <div class="container">
+            <div id="todos"></div>
+            <form id="new-todo">
+                <input type="text" class="input" placeholder="Something to do" name="text">
+                <button class="button">Add Todo</button>
+            </form>
+        </div>
 
-    <div id="searchedTodo"></div>
-
-    <form action="">
-        <input type="text" name="" id="todoText" name="todoText" placeholder="add Todo">
-        <button type="submit">AddTodo</button>
-    </form>
-
-    <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
-    <script src="todo-functions.js"></script>
-    <script src="todos-app.js"></script>
-
-</body>
-
+        
+        <script src="./scripts/uuidv4.js"></script>
+        <script src="./scripts/todo-functions.js"></script>
+        <script src="./scripts/todo-app.js"></script>
+    </body>
 </html>
