@@ -353,5 +353,32 @@ You can always cash but that icon by adding something dynamic on the URL, like a
 So this is a handy technique for when you're going local development and you just want to make sure things are actually working even through you have some stuff cached.
 
 
+> Note Technique
+Now when we have a property whose values comes from variable with the exact same name. We can use the ES6 object definition shorthand and we can set it up just like this.
+
+```
+const text = e.target.elements.text.value.trim()
+
+todo.push({
+    id: uuidv4,
+    text:text,
+    completed:false
+
+})
+```
+
+Insteade use, note text in a object.
+
+```
+const text = e.target.elements.text.value.trim()
+
+todo.push({
+    id: uuidv4,
+    text,
+    completed:false
+
+})
+```
+
 
 ## Summary
