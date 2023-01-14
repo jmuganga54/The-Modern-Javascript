@@ -380,5 +380,67 @@ todo.push({
 })
 ```
 
+### Hosting Your Application 
+In this section we're going to explore some options for hosting your websites and we're actually going to go through the process of using two of those to get two of our apps up.
 
+Now the nice thing about what we have here is that we have `static websites`. These are just a collection of static files. We save the files into the foler and all we need to do to run the website is to have all of these files in some directory and serve it up locally, we are serving it up with the live server program.
+
+When we give it to a actual hosting platform they're going to serve it up using their own infrastructure.
+
+So all we really need to do is copy the contents of any three of these folders over to a web server. And that's pretty much the only thing we have to do to deploy.
+
+So let's start off with some more generic options.
+* The first one I want to talk about is [hostgator](https://www.hostgator.com/) which I used in the past they ahve pretty good support. It's really easy to get up with. These guys are great if you're `looing to get your own domain and do some static hosting`. They have a pretty good set of services at a pretty cheap rate.
+
+* Something very similar to `hostgator` is [blue host](https://www.bluehost.com/content/bluehost/en), they have the same pricing, those are competitors. They also do great static hosting and you get a domain when you sign up.
+
+But neither of those services have a free trial where you can actually use them without entering some sort of credit card.
+
+* [netlify](https://www.netlify.com/)
+* [surge](https://surge.sh/)
+
+The first one is [netlify](https://www.netlify.com/) and the other one is [surge](https://surge.sh/), both of these make it dead simple to actually get your static websites served up. And the nice thing is that they have a reasonable `free tier` so we can get our websites up for free, and then if we want more advanced features like HTTPS or some other fancy features they offer those just at a paid price so it's a great way to get started.
+
+Both of these services do require you to actually sign up they are completely free and they don't require a credit card to sign up. All you have to do is sign up with your email.
+
+> Point to note
+Inside console, we're getting a warning about trying to `load mixed content`, this comes up when you're trying to load `HTTP content` on an `HTTPS site`, or `HTTPS content` on an `HTTP site`. Either way we want those thing to match.
+
+In our case we have an `htttps site`(this is secure) we are making a request to `http content` (this is not), so it's not going to actually let us make that request.
+
+We can make a small change though over inside of our code to fix this.
+
+There is another service that I want to talk about very similar but with a slight twist that is called `surge`.
+
+`Surge` is awesome because there actually isn't a web interface. We do everything from the command line.
+
+We can create an account log in and then we can go ahead and push our changes up to their servers.
+
+Remember way earlier in the course when we used the NPM command to actually install live server which we've been using throughout the course what we're going to use that same NPM command to install something. We're going to be installing these `surge software instead of the live server software`.
+
+```
+npm install -g surge
+```
+When we run this it's going to go through the process of installing surge. Then we're going to be able to use `cd` to change into one of our application directories and actually serve it up. We've already served up notes and hangman. So let's go ahead and use surge to deploy the todo app. I'm going to use `clear` to just clear the terminal output and all we need to do is to run `surge`.
+
+```
+surge
+```
+
+I'm going to run the command and it's going to ask us to either `log in` or create an account. I'm going to go ahead and create account, enter email and password. When your done, it's going to actually go through the process of taking that folder, you can see it's allowing you to customize that folder by using the actual keyboard but a default is just the folder that you can the command from.
+
+We ran the command from the right folder. So we don't have to change anything.If we hit again it's asking us to set up a domain. Once again we can't use custom domain just yet. Let's leave that as it is and if we hit enter again it's actually going to go through the process of deploying the site. And when it's done what do we get, we get a URL I can take this URL I can copy it to the clipboard I can head over to the browser open an new tab and pase it.
+
+![surge](./imgs/surge.png)
+
+[Todo App](https://fair-shoe.surge.sh/)
+
+So working with surge command line tool is really really nice and makes it supper easy to get your local static site deployed on the web and these surge software comes with an extensive list of commands, we can use to do anything that we would be able to do from a web interface.
+
+If we clear the output we can run `surge --help`. And this is going to print a bunch of outputs and documentation on how we can use it down below.
+
+So there we have it, in this video we covered a few different ways we can deploy our applications. If you're more inclined to use the command line `surge` is a great free way to go. If you want a simpler web interface I recommend checking out and using `netlify`, find both of them come with nice generous free tier you can always upgrade to more advanced features, when you're ready.
+
+We not only know how to make meaningful applications with javascript. We also know how to get those application live on the web so we can actually share them with others and they can use them as we add new features we can redeploy to make sure that users can always access the latest.
 ## Summary
+
