@@ -23,4 +23,27 @@ The first problem `older browsers` are never going to update to support these ne
 
 The second problem is that there are newer javascript features out there that currently aren't supported by any browser or even the latest and greatest, so the tooling that we're going to set up is going to solve that problem too allowing us to use the most advanced, cutting edge features in the language.
 
+### Exploring Babel
+We now have a goal in mind, the goal is to create javascript application that actually work in all browser but still use cutting edge features. To get that done, we're going to be using a tool and that tool si called `Babel(babo)`
+
+The babel is going to take our javascript code and convert it to something that all browsers understand. So if we use a fancy cutting edge feature when we're writing our script, Babel is going to convert that  to a dumber feature that all browser understand and that's what's actually going to run behind the scenes. This still allows us to work with and write code using the cutting edge features but our application will work pretty much everywhere.
+
+So let's go ahead and kick this section off by messing around with this tool in the browser then we're actually going to integrate it into our application to start.
+
+Let's go to [babeljs](babejs.io/)
+
+Babel takes code we write with the latest features and it complies it down into more simple code that older browsers can understand. This is exactly what we're going to be setting up and that's what I want to do next to actually be able to perform this conversion process with files locally on our machine.
+
+So we're going to install it just like we installed live server earlier in the course.
+
+```
+npm install -g babel-cli@7.11.0
+```
+`babel-cli` stands for Babel command line interface. This is the version of Babel that lets us run commands from the terminal 
+
+It's actually going to go through the installation process and once it's done all I want to do is verify that things actually installed correctly by running a test command
+
+```
+babel --version
+```
 ## Summary
