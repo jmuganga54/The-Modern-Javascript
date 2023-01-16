@@ -46,4 +46,88 @@ It's actually going to go through the installation process and once it's done al
 ```
 babel --version
 ```
+We now have babeljs installed on our computers and we're going to move over to Visual Studio code and actually create an input file that we can run through Babel.
+
+Changing directory to `boilerplate folder` then create a file naming `input.js`, then change directory to that file. For here we can now use the babel command to process the input.js file, the command we're going to run it needs two piece of information. It needs to know what file we're going to use as the input and it needs to know where we want to save the output, we have to provide both of these with the command.
+
+The first thing we provide is the name of the file that we want to use as the input. In our case the file is `input.js`. The next thing we have to do is provide the output file name. This file is a file that doesn't exit, the babel command is actually going to create it. The command below
+
+```
+babel input.js -o output.js
+```
+Nothing will appear on the terminal, but that indicate that the `output.js` file has already being created.
+
+The problem here is that we've run babel but we haven't specified any of the babel plug ins we want to use, by default babel does almost nothing, if we actually want to convert constant, class and the other  ES6 and ES7 features which we do we have to set up just one more thing.
+
+What we're going to be installing is called babel preset. This is what's going to give us the functionality that we actually saw from babel over inside of the browser.
+
+So that's going to make sure babel actually converts those ES6 and ES7 features down into regular boring old javascript that older browsers can understand.
+
+To install this preset we're not going to be installing it as global NPM module. Instead we're going to be installing it as a local NPM module local to our project, local to the `boilerplate` directory.
+
+Now we're going to be using `local modules` quite a bit in this section.
+
+The first thing we have to do is set up the boiler plate project to actually be able to install local module and to do this we just need to run a single command from the terminal.
+
+```
+npm init
+```
+No need to change any entry, just click enter for each entry. It is will ask you a permission to create a file. It will create a file called `package.json` in the boilerplate folder and it will put the displayed content, will different `key value pair`. All we have to to is hit yes, hit enter.
+
+Now we have a `json` file with simple configuration inside it. We're going to be using this in just a moment to store the various dependencies our project needs, one of them being that present that we're going to use.
+
+The install another command
+
+```
+clear
+npm install babel-present-env@1.6.1
+```
+
+It's going to take the module code and it is going to dump it in a new directory in the root of our project. This one is called `node modules`. This is where the installed code lives in this folder contains the module that we just installed. It is not a folder we're going to be diving into and you shouldn't change any of the code inside  of there. We can click it open for a moment just to see what lives inside of there. And it is essentially a long set of directories where we have our module that we installed as well as it's dependencies.
+
+You can just pick a random folder and click it open and see that there are more files and folders inside of there.
+
+So this is all of the code necessary to get the `env` pre-set up and running. We were able to get all of it by installing the module.
+
+We also noticed that inside of `package.json`, we now have that module listed in a new property called `dependencies`
+
+```
+{
+  "name": "boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "input.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-preset-env": "^1.7.0"
+  }
+}
+```
+
+We have the module name and we have the version that we're currently depending on.
+
+We have one brand new file called `package-lock.json` this just keeps track of the version of module we're using to make sure we don't run into any conflicts later on.
+
+> Note!!
+You should never change anything in `mode modules`. You should never manually change anything in `package-lock.json` either. We are going to be making some changes to `package.json` throughout the course and that is perfectly fine.
+
+Running babel command by telling it to use our brand new present tha we have just installed. `babel input.js -o` youcould have also used a `babel input.js --out-file` both of them are identical. The one is just a shorthand for the other.
+
+```
+babel input.js --out-file output.js --presents env
+```
+
+A lot of students usually mess that up and right after `presents` we're just going to provide the one present we want to use , the one we just install the `env`, you don't have to provide `babel-present-env`. All you have to do is give babel the last piece.
+
+The run the command, we get the new output. This is modified version of our file that's going to work in a wider range of browsers.
+
+
+
+
+
+
 ## Summary
