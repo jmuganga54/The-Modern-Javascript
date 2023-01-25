@@ -125,6 +125,106 @@ A lot of students usually mess that up and right after `presents` we're just goi
 
 The run the command, we get the new output. This is modified version of our file that's going to work in a wider range of browsers.
 
+### Setting up our Boilerplate
+In the last section we learned a lot about babel, we saw how babel allows us to create javascript applications that work in a wider range of browsers even if we're using those supper modern javascript features.
+
+In this section we are going to convert boilerplate from just a set of script in a folder to a web application that we can actually view in the browser.
+
+
+> Note!!
+
+Now the first thing I want to talk about has to do with the `node modules folder` if you remember from the last section, we never put anything inside node modules and we didn't even create it.
+
+It was created for us when we ran `npm install` with the package we installed which happened to be `babel present-emv` package.
+
+Now what does these means, well, that means that we're not going to be keeping `node modules` around. `Node modules` is a generated directory. 
+
+So for example if I was to give you a copy of this code I wouldn't include node modules because it takes up a ton of space, `node modules` can be rebuilt by running a single command.
+
+Now the question is how do I get the node modules folder back so I can actually work with this project. And the answer is to run a single command, the command that you need to run is `npm install`
+
+If you run `npm install` just like this with no package name afterwards it's going to look in your `package json file` and install everything in `dependencies`.
+
+You don't need to specify modules or module version because all of that lives in package. This makes it really easy to pass our projects around, when I you a zip, I don't have to give you a `huge node modules folder`. You can get that back by seeing changing directory to `boiler plate folder` and running `npm install`.
+
+Now the next thing I want to do has to do with the directory structure. So what we're going to do is create two folders. The first folder inside the `boiler plate` it will be called `public`. So we still need a public folder that contains everything we want to serve up to our web server.
+
+The second folder that we're going to create inside of boilerplate is going to be called source, `src` for short, inside here we're going to put our javascript code before it was processed by `babeljs`, inside `public` we are going to put the javascript code that was processed by babeljs because remember things  that are in public are the things we use for the application, and in this case we want to use this `output.js` file for our web app so it works in a wider range of browser.
+
+So `src folder` will contain all the file which are original file, before conversion. For example `input.js`
+
+The next thing we're going to do inside of public is create a new folder called `scripts` and this is where we're going to dump the `output script`.
+
+So all of the code we type lives inside of the source folder. Then the babel output gets dumped inside of the script folder. So it can actually be used by the web application.
+
+Before we go ahead and run the `babel script again` I'm going to change the name of `input.js` and `output.js` to make the last section easier to follow. But in the real world I would most likely call this file `index.js` as the starting point for our app.
+
+So we have `index.js`, this is the file we now want to run through Babel. So let's go ahead and explore how we can set up the modified version of our previous command. so we are still going to start with babel like we had before.
+
+```
+babel src/index.js --out-file public/scripts/bundle.js --presents env
+```
+
+Now if you're like me you're probably pretty sick already of writing this command out in the terminal.
+
+So the next thing I want to do is give you a better way to run scripts when you're just going to be typing the same thing over and over again like we would be here.
+
+This is using these scripts property in `package.json`, what we are going to do is copy the command exactly as we have it above. So I'm going to take this and copy this to the clipboard and then I'm going to move over into package.json
+
+```
+{
+  "name": "boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "input.js",
+  "scripts": {
+    "build": "babel src/index.js --out-file public/scripts/bundle.js --presents env"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-preset-env": "^1.7.0"
+  }
+}
+
+```
+
+> Note | scripts
+
+```
+"scripts": {
+    "build": "babel src/index.js --out-file public/scripts/bundle.js --presents env"
+  }
+```
+
+Now we can run this long command over and over again using this shorthand `build`, let's see how we get that done from the terminal right here.
+
+```
+npm run build
+```
+
+The good new is that we can make a small change to our scripts to actually have babel watch for changes. So let's go ahead and explore how to set that up, over `package.json` all we have todo is add a new option. so right at the very end of this script, we are going to add a space then two hyphens followed by watch. When we add on and watch it is not going to jus run babel once it'g going to run babel once then it is going to watch the input for changes when the input changes. When the input changes it is going to rerun babel and generate a new out file.
+```
+{
+  "name": "boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "input.js",
+  "scripts": {
+    "build": "babel src/index.js --out-file public/scripts/bundle.js --presents env --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-preset-env": "^1.7.0"
+  }
+}
+
+```
+When we add on watch, it is not going to just run babel once it's going to run babel once then it is going to watch the input for changes when the input changes, when the input changes it is going to rerun babel and generate a new out file.
+
+So with this in place we can now automate our workflow.
+
 
 
 
