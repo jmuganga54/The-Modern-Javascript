@@ -1,22 +1,25 @@
 ## Topics
+
 > In this section we are going to learn about `Arrays` in javascript. Arrays allows us to store lists of information, you might have a list of string, a list of numbers, a list of objects, a list of whatever we like.
 
 `So why are list so important to software development.`
 Well think about any application that you use day to day whether on your computer or you phone or even TV.
 When we open up our phones to respond to a text what do we see.We see a list of all of the message we sent back and forth between that friend.
 
-If I go over to the weather app we have a list of locations.If I click one of the location I have a list of temperatures for the week when I turn on my TV  I get a list of all of the app's I have installed.
+If I go over to the weather app we have a list of locations.If I click one of the location I have a list of temperatures for the week when I turn on my TV I get a list of all of the app's I have installed.
 
 If I go to the Netflix app I have a list of all the shows available to me.So being comfortable working with list based information is essential to creating these real world applications.
 
 ## Keywords & notes
+
 ### [Array Basics](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+
 > In this section we are going to learn the basic syntax for creating an array.And we're going to figure out how we can interact with those array items like reading their values for example.
 
--`./notes.js` This is were we are building out a little note taking script
--`./todo.js` Practice when building note.js script
+-`./notes.js` This is were we are building out a little note taking script -`./todo.js` Practice when building note.js script
 
 Creating an array
+
 ```
 //Creating an array and assign values to it
 const notes = ['Note 1','Note 2','Note 3']
@@ -24,13 +27,16 @@ console.log(notes);
 
 //Expected output: ['Note 1', 'Note 2', 'Note 3']
 ```
+
 One of the most basic things is to figure out how many items are in your array.To do this we can use the `.length` property of an array.
+
 ```
 const notes = ['Note 1','Note 2','Note 3']
 console.log(notes.length);
 
 //Expected output: 3
 ```
+
 How we can grap an individual item from the list.And this is done via `bracket notation`It's what allows us to grab an individual item from the list and we grab it by its position.So let's say you want to grab the first item in the list and do something with that string.
 
 ```
@@ -43,12 +49,14 @@ console.log(notes[0])
 The `index` is nothing more than the order the item comes in the array.Now it's important to not that indexes start at 0 for arrays and this isn't specific to javascript.You're going to see this with pretty much any programming language you use which means that this would.
 
 Now if you access an item by its index and it doesn't exist you're just going to get `undefined` back.
+
 ```
 const notes = ['Note 1','Note 2','Note 3']
 console.log(notes[20])
 
 //Expected output: undefined
 ```
+
 We can also access items starting at the end of the list and to do this we just perform a little calculation right here inside of the square brackets.
 
 ```
@@ -58,9 +66,11 @@ console.log(notes[notes.length-1])
 
 //Expected output: Note 3
 ```
+
 So this is just the very basics of working with arrays
 
 ### Manipulating Arrays with Methods
+
 > In this section we are going to learn how to manipulate your arrays.So we'll figure out how we can add new items remove items or replace existing ones.
 
 And we're really just going to be running through a series of methods on the array.The array has a ton of very useful methods.So we're going to be able to tackle quite a few in just a single video.
@@ -76,6 +86,7 @@ console.log(notes)
 
 //Expected output:[ 'Note 1', 'Note 2', 'Note 3', 'My new note' ]
 ```
+
 `Remove an item from the array`
 
 We can also remove something from the end.This is done via push his companion is called `pop`[array pop method (.pop())]. The pop method return the removed item.
@@ -87,20 +98,23 @@ console.log(notes)
 
 //Expected output:'Note 1', 'Note 2']
 ```
+
 > So the push and pop method focus on manipulating the array from the end.We have two other methods that focus on manipulating the array from the start. This is `shift` and `unshift`
 
 Let's go ahead and explore how both of those work.So the shift method removes the very first item from your array.The shift method return the removed item.
 
 `Remove the first item of an array`
+
 ```
 const notes = ['Note 1', 'Note 2', 'Note 3']
 console.log(notes.shift())
 console.log(notes)
 
-//Expected output: 
+//Expected output:
 Note 1
 [ 'Note 2', 'Note 3' ]
 ```
+
 `Adding item on the start of an array can be achieved using unshift() method.`
 
 ```
@@ -110,6 +124,7 @@ console.log(notes)
 
 //Expected output: ['My first Item','Note 1', 'Note 2', 'Note 3']
 ```
+
 > You have push and pop for the end of the array and you have shift and unshift for the beginning of an array.
 
 Now aside from manipulating an array from either the beginning or the end.There are other methods that allow us to do something from the middle of the array.
@@ -130,10 +145,13 @@ console.log(notes)
 
 //Expected output:[ 'Note 1', 'Note 3' ]
 ```
- > Now you might be asking why would you evr provide zero as the second argument.This basically does nothing it says hey start at 1 and then delete nothing.
+
+> Now you might be asking why would you evr provide zero as the second argument.This basically does nothing it says hey start at 1 and then delete nothing.
+
 ```
 splice(1,0)
 ```
+
 Well that's because the third arguments of splice, if you want to provide it allows you to add an item at that point in time.So let's say I do want to add a new item as the second item in my array.All I do is I provide zero right there.
 
 ```
@@ -147,15 +165,18 @@ const notes = ['Note 1', 'Note 2', 'Note 3']
 notes[2] = "This is the new note 3"
 console.log(notes)
 ```
+
 So `spice()` is great when you're trying to remove items.It's also nice when you're trying to remove an item. But if you're just trying to swap out one item for another you can use the basic old bracket notation to get that done.
 
 ### Looping over Arrays
+
 Now that we know how to manipulate our arrays I want to talk about something else which is looping over arrays which is run some code for each item in array.
 
 > So imagine if I really do have a list of todo's and I'm trying to print them to the screen I would want to go through the entire list get the text for each one and use console.log to print it or later on use different javascript methods to render it in the browser.Either way I want to go through the list of items running some code for each.This is know as looping and with arrays we have a method that makes a looping over our arrays pretty easy.
 
 The method to get this done is called `forEach()` because we do something for each item in the array.We can access it via `notes.forEach()`
-* .forEach() methods takes a single argument and this argument is actually a function. 
+
+- .forEach() methods takes a single argument and this argument is actually a function.
 
 So in the past everything we've called a function we've passed in argument values like strings numbers,booleans and objects but we can pass anything in as a function argument including arrays which will see later.
 
@@ -175,6 +196,7 @@ testing 123
 testing 123
 testing 123
 ```
+
 After running the code above , and when I do the first thing we see is testing 123 is printing three times, why this is because we have three items in our array.So we've never seen something like this before, passing a function into a function, when we do this we're creating what's known as a `callback function`.
 
 `So a callback function is nothing more than a function that is passed to a function.`Now in this particular case you'll notice that we have never call this function `function(){
@@ -183,7 +205,7 @@ After running the code above , and when I do the first thing we see is testing 1
 
 Now in this case this function that we have defined gets called, that we've already proved that we see the message printing three times but it also gets called with some arguments that we can access in our code. We get two arguments.
 
-* The `first arguments` we get is the individual item.So we're running the function three times because we have three different items in the array.We can access the individual item hre which we'll see in just a second.Let's go ahead and do that instead.Right here instead of printing `testing123`.I'm just going to reference the item arguments, let's save the script and run thing form the terminal.
+- The `first arguments` we get is the individual item.So we're running the function three times because we have three different items in the array.We can access the individual item hre which we'll see in just a second.Let's go ahead and do that instead.Right here instead of printing `testing123`.I'm just going to reference the item arguments, let's save the script and run thing form the terminal.
 
 ```
 const notes = ['Note 1', 'Note 2', 'Note 3']
@@ -191,7 +213,7 @@ const notes = ['Note 1', 'Note 2', 'Note 3']
 notes[2] = "This is new the new note 3"
 notes.forEach(function(item){
     console.log(item)
-   
+
 })
 
 //Expected output:
@@ -213,10 +235,10 @@ notes[2] = "This is new the new note 3"
 notes.forEach(function(item,index){
     console.log(index)
     console.log(item)
-   
+
 })
 
-//Expected output: 
+//Expected output:
 0
 Note 1
 1
@@ -224,6 +246,7 @@ Note 2
 2
 Note 3
 ```
+
 The code above shows the index followed by the individual note.
 
 So using for each we're going to be able to do something meaningful for each item in our array.And this is probably the most common array method that will end up using throughout the course.
@@ -235,7 +258,8 @@ Now in this case we saw that our function got called one time for each item in t
 Now forEach is not the only array method that's goint to use callback as we'll see throughout the section, almost all of them will.
 
 ### For loop
-In this section we are going to learn about for statement which is an alternative looping mechanism.So it's an alternative to using forEach(), the `for statement` also known as the `for loop` is great because it doesn't require us to have array  of data.
+
+In this section we are going to learn about for statement which is an alternative looping mechanism.So it's an alternative to using forEach(), the `for statement` also known as the `for loop` is great because it doesn't require us to have array of data.
 
 > forEach is array of method so we have to have some sort of array in order to work with forEach, the for Loop, we had a whole lot more flexibility what I'd like to do is mess around with.
 
@@ -243,9 +267,10 @@ Imagine you want to do something three times.Maybe you're trying to print the to
 
 > Now obviously if I only wanted to count to three I could add three console.log() statements in.But now let's say I want to count to 1000.You don't want to add 1000 console.log() statement in.And we also can't use forEach method call unless we had array with a thousand different items.So if we did want to do something like this.
 
-When we want to run a code a specific number of times we don't have a way to get that done without the for statement 
+When we want to run a code a specific number of times we don't have a way to get that done without the for statement
 
 `Syntax of for statment`There are three thing we need to provided when writing for statement.The `first is an initializer`.The second is a `condition` and the third is the final expression.
+
 ```
 for(let count=0; count<=2; count= count + 1){
     console.log(count)
@@ -255,6 +280,7 @@ for(let count=0; count<=2; count= count + 1){
 1
 2
 ```
+
 `Using for loop with Array`
 So what we're going to do is use the for statement to recreate the functionality from for loop.
 
@@ -272,6 +298,7 @@ ICF Translation
 Entering Data
 Learning Javascript
 ```
+
 So when we use for each we have to have an array and we have to count from beginning to end, when we use a for statement we have a bit more flexibility making it a great tool to have it in our tool belts.
 
 > If I have an array and I am counting in order, I like to stick to the forEach method.If I don't have an array or I'm trying to count in a different order I'll use the for statement in this case.
@@ -279,6 +306,7 @@ So when we use for each we have to have an array and we have to count from begin
 Documentation of for statement: [for statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for)
 
 ### Searching Array
+
 In this section we're going to take a look at how we can see if something exists in an array.Now there are a few different ways we can get this done.And in this section we're going to make the transition from array of strings in both cases to an array of objects because a note isn't just a string a note probably contains other pieces of information we want to model as well like a title and a body.
 
 > Maybe when the note was created who created it all sorts of different information and the same with a todo, a todo is not just a string.It might be assign it to a specific date or a specific user in your application.It might be completed or uncompleted.
@@ -291,6 +319,7 @@ console.log(notes.indexOf('Note 2'));
 
 //Expected output: 1
 ```
+
 The indexOf() return the index or position of the values entered in a method.So if it was the first item, we would get zero back. If it was the second item, we would get one back.And if it doesn't exist at all, we get -1 back.
 
 ```
@@ -301,6 +330,7 @@ console.log(notes.indexOf('note 2'));
 
 //Expected output: -1
 ```
+
 So when we see -1 from indexOf() we know that the item you searched for was not anywhere in the array.If we get any value greater than -1 including 0 then we know the item is indeed somewhere in the array and we could go ahead and do something like remove it or modify it to fit our needs.
 
 > Now let's go ahead and see how switching things over to an array objects is going to affect this behavior.So up above like I mentioned earlier we're going to have strings as the individual array items.Instead we're going to have objects.
@@ -320,7 +350,9 @@ const notes = [{}, {
     body: 'Get a new seat'
 }]
 ```
+
 But when you want to use `indexOf()` to find the position of an empty object in the array above we get -1
+
 ```
 const notes = [{}, {
     title: 'My next trip',
@@ -343,19 +375,23 @@ console.log(notes)
   { title: 'Office modifications', body: 'Get a new seat' }
 ]
 ```
+
 But Right above though I do see an empty object.So what exactly is going on here.
 
 > To explore this behavior. The `indexOf()` method works by going through your array from beginning to end and checking if the item is exists in an array, currently looking at equals the item passed into index of using trippe equals(===).If it finds a match it returns that index.If it gets all the way to the end and it doesn't find a match it returns -1 we already saw that.
 
 But what about an empty object equals another empty object.
+
 ```
 console.log({}==={})
 
 //Expected output: false
 ```
+
 So when we're comparing two object it doesn't matter if they have the same set of object properties and the same object property values.That does not make two objects equal.What makes two objects equal is `if they're exact same object in memory`.
 
 So let's see how this looks like.
+
 ```
 let someObject = {};
 let otherObject = someObject;
@@ -363,11 +399,12 @@ console.log(someObject === otherObject)
 
 //Expected output: true
 ```
+
 So objects are only equal to other objects.If there are actually the exact same object it does not matter if two separate objects have the same properties with the same property values.
 
 > Now we just prove that is going to break indexOf() for our purpose and I mentioned that array of objects are super popular.So why would this supper popular structure an array of objects not be able to use basic methods like indexOf().Well the truth is we can't use indexOf(). But in the array methods list there are a whole bunch of methods specifically designed for use cases like this.
 
-So let's go ahead and explore an alternative way we can get the index of something in our array.Knowing that something is an object.That's going to be `findIndexOf()`
+So let's go ahead and explore an alternative way we can get the index of something in our array.Knowing that something is an object.That's going to be `findIndex()`
 
 [Array.prototype.findIndex()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex)
 The findIndex() method returns the index of the first element in the array that satisfies the provided testing function. Otherwise, it returns -1, indicating that no element passed the test.
@@ -402,17 +439,17 @@ console.log(index)
 2
 ```
 
-If I have an array of 1000 items and the second item in the list is the one I'm looking for.We don't have to spend the computational power to go through the other nine hundred ninety seven.findIndex() return the first item which match the criteria.
+If I have an array of 1000 items and the second item in the list is the one I'm looking for. We don't have to spend the computational power to go through the other nine hundred ninety `seven.findIndex()` return the first item which match the criteria.
 
 `Moment to recap` In this section we learned about `indexOf()` which uses the triple quality operator to go through our array and find an item, we saw that work with an array of strings because a string like 'X' is indeed equal to another string 'X', this is true with strings, numbers and booleans but it is not true with objects as we saw.So we weren't able to use `indexOf()` to find the item in the array of notes.Instead we used `findIndex()`.Instead of using triple equality on the entire object.We can specify our own search criteria.In this case the search criteria was, does this title match the string , in this case we are able to use the triple of qualities because one string does equal in another.
 
-
-findIndex() looks for the first match it finds when it finds that it stops running the function which makes this efficient.
+`findIndex()` looks for the first match it finds when it finds that it stops running the function which makes this efficient.
 
 ### Searching Arrays Part II
-Part two on finding things in an array. In the last one we learned about indexOf() and findIndex() we learned that indexOf() always uses triple equals which means that it's not a great fit for arrays of objects which we want to be able to model in real world things.
 
-> So we switched over to findIndex() which allows us to specify our own way to compare two thing in this case we're looking at the titles.
+Part two on finding things in an array. In the last one we learned about `indexOf()` and `findIndex()` we learned that `indexOf()` always uses triple equals which means that it's not a great fit for arrays of objects which we want to be able to model in real world things.
+
+> So we switched over to `findIndex()` which allows us to specify our own way to compare two thing in this case we're looking at the titles.
 
 In this section we're going to break this out into a more real world example by creating function that works with our notes.
 
@@ -448,7 +485,7 @@ console.log(note)
 
 > To wrap this up there is just one more method I want to explore before closing these section.
 
-This method is called `find()`, in the above case we're using findIndex() to find the index and then we're directly grabbing that item out of the array.There's actually a function that does some of this for us making our life a bit easier in the documentation.
+This method is called `find()`, in the above case we're using `findIndex()` to find the index and then we're directly grabbing that item out of the array.There's actually a function that does some of this for us making our life a bit easier in the documentation.
 
 The one which we're looking for is just called `find()`, pretty much function exactly as we set up the findIndex()
 
@@ -477,9 +514,10 @@ const findNote = function (notes, noteTitle) {
 const note = findNote(notes, 'office modifications');
 console.log(note)
 
-//Expected output: 
+//Expected output:
 { title: 'Office modifications', body: 'Get a new seat' }
 ```
+
 > So if you're looking for item directly `find()` is a great choice.If you're looking for the index to do something like remove it by its index the `findIndex()` is a great choice.Both of them are supper supper similar.The only different is what you get back from the method.
 
 Now we can simply this further. We create a variable and then only thing we ever do with it is return it.We could add the return right away(see the code below). The below is our modified version.Now both of those would be considered fine ways to get the job done interms of code quality and performance.I'm just showing you two different ways we can work with our arrays when it comes to finding thing.
@@ -506,9 +544,10 @@ const findNote = function (notes, noteTitle) {
 const note = findNote(notes, 'office modifications');
 console.log(note)
 
-//Expected output: 
+//Expected output:
 { title: 'Office modifications', body: 'Get a new seat' }
 ```
+
 `Point to note`Arrays are also passed by reference which means that if I pass an array into a function and I make a change to the array I'm going to see it reflected in the original one just like we saw with our objects.
 
 ```
@@ -562,6 +601,7 @@ console.log(todos)
 ```
 
 ### Filtering Arrays
+
 In the last section we've figured out how to find an individual item in our list.This allowed us to pull back a specific item based off of the title in our notes app and it allowed us to find a specific item and delete it in a todo application.
 
 > Now in these cases we're targeting one item in our array.But what if we wanted to do something a bit different.For example what if I didn't know the exact title for my notes something that's probably the case but I know that I put triple p in it or I know that I put office somewhere in the texts.
@@ -572,7 +612,7 @@ What if we want to get a list of just that todo that haven't been completed.So w
 
 So if I were to filter by items by that haven't been completed. I would get a new array of objects back with just his item and this item if I was creating an email application I could filter by a specific author.
 
-I would go from a list of all my emails to a list of emails just by that person.Now that we have a general idea of what we're working towards. Let's go ahead and actually implement this and we're going to start over in notes as what we're going to do is create a companion 
+I would go from a list of all my emails to a list of emails just by that person.Now that we have a general idea of what we're working towards. Let's go ahead and actually implement this and we're going to start over in notes as what we're going to do is create a companion
 
 [Array.prototype.filter()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
 The filter() method creates a new array with all elements that pass the test implemented by the provided function.
@@ -608,6 +648,7 @@ console.log(filteredNotes);
   { title: 'Office modifications', body: 'Get a new seat' }
 ]
 ```
+
 In the code below, we are searching for an object whose title and body includes certain text in it.For example 'ne', so by using .filter(), array method it will return an array which match the specified condition.
 
 ```
@@ -670,6 +711,7 @@ console.log(findNotes(notes,'eating'));
 ```
 
 The code below uses array method filter to return al the todos which are not completed.
+
 ```
 let todos = [
     {
@@ -712,7 +754,9 @@ console.log(getThingToDo(todos,))
   { text: 'Learning Python and Django', completed: false }
 ]
 ```
+
 ### Sorting Arrays
+
 In this section we're going to learn about sorting our arrays.
 
 > Now when it comes to sorting our arrays depending on what data we're storing we want to sort by different things.So for a list of notees we most likely want to sort by title as opposed to by the body.
@@ -732,7 +776,7 @@ So with string sort() can intuitively figure out that we probably want to sort t
 
 > So if we want to use the sort method with an array of objects, it's not going to let us specify the specific criteria we want to sort() but sort() does take a function which allows us to specify the exact comparing behavior.
 
-Sort() takes an optional compare function and this compare function allows us the developer to define the sort order. 
+Sort() takes an optional compare function and this compare function allows us the developer to define the sort order.
 
 > So for notes I want to sort alphabetically by the title, for the todos I want to sort the completed items at the bottom of the list and the ones that haven't been completed I want those to appear up at the top
 
@@ -747,25 +791,30 @@ So in this case it get called with two notes.When we're creating the sort functi
 So we're going to end up returning one of those three values.The trickier part is to figure out how if one comes before or after another when we're trying to figure out if one shrink comes before or after another string alphabetically.All we do is use the less than and greater than operators.So before we try to put that into these sort method let's go ahead and just mess around with it.
 
 Checking if String A comes after string B
+
 ```
 console.log('a' < 'b')
 
 //Expected output:true
 ```
-Checking if String 'March' comes before  String 'January'. In this case I would expect the result to be false, March should come after January since J comes first.
+
+Checking if String 'March' comes before String 'January'. In this case I would expect the result to be false, March should come after January since J comes first.
 
 ```
 console.log('March' < 'January')
 
 //Expected output:false
 ```
+
 The last thing to consider is that the capitalization is important,so does the lower case `a` come before the capital `A`, and the answer is no.Capital letters always come first.So in the end of the day the result of this is going to be false.
+
 ```
 console.log('a' < 'A')
 
 //Expected output: false
 ```
-We're going to address that in our sort function by converting everything to lowercase before we create any comparisons.That's going to make sure that if we did have a uppercase H and a lowercase a for example the a will come first even through it's a lowercase letter and it should come second. 
+
+We're going to address that in our sort function by converting everything to lowercase before we create any comparisons.That's going to make sure that if we did have a uppercase H and a lowercase a for example the a will come first even through it's a lowercase letter and it should come second.
 
 ```
 const notes = [{
@@ -795,16 +844,18 @@ const sortNotes = function (notes){
 sortNotes(notes)
 console.log(notes)
 
-//Expected output: 
+//Expected output:
 [
   { title: 'Habits to work on', body: 'Exercise, Eating a bit better' },
   { title: 'My next trip', body: 'I would like to go to Spain' },
   { title: 'Office modifications', body: 'Get a new seat' }
 ]
 ```
+
 Now the sort method doesn't return much of anything.And actually sorts whatever array it's called.So it's going to modify the notes array directly.That means if we were creating a sort's note function like we are doing on the above code, we no need to have a return value or do anything with the return value.When you call it for our purpose that means down below we just need to call the function and then print the notes array.
 
 > On below code we want to sort an array of object in a such a why that, the todos which are not completed must appear at the top and todo which are completed must appear at the bottom.
+
 ```
 let todos = [
     {
@@ -855,8 +906,10 @@ console.log(todos)
   { text: 'Learning React Framework', completed: true }
 ]
 ```
+
 ### Improve our Expense Tracker
-In this section we are going to improve our expense tracker, previously in the course we did build a little expense tracker app when we learned about objects and function but if you remember we kept track of expenses via a single number and we added  a new expense, on that single number.And this is Ok but it's not really great because we don't have a list of our expenses so I can't figure out how much I'm spending on food for example and I can't see the individual cost of each expense.
+
+In this section we are going to improve our expense tracker, previously in the course we did build a little expense tracker app when we learned about objects and function but if you remember we kept track of expenses via a single number and we added a new expense, on that single number.And this is Ok but it's not really great because we don't have a list of our expenses so I can't figure out how much I'm spending on food for example and I can't see the individual cost of each expense.
 
 Now that we know about arrays of objects we are going to model each expense using an object that's going to allow us to have multiple pieces of data.We're going to have an expenses description as well as the exact amount of the expense that is going to allow us to search our expenses, delete expenses, and we'll still be able to analyze our data and get a total.
 
@@ -902,4 +955,5 @@ console.log(account.getAccountSummary())
 ```
 
 ## Summary
-In this section we learn a bunch about arrays and how they're going to allow us to model real world piece of information like a  list of expenses or an array of notes.And this was also the hardest section in the course.
+
+In this section we learn a bunch about arrays and how they're going to allow us to model real world piece of information like a list of expenses or an array of notes.And this was also the hardest section in the course.

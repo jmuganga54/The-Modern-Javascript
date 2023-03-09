@@ -126,16 +126,16 @@ ps.forEach(function (p) {
 })
 ```
 Expected output
-![Textcontent](../img/textcontent.png)
+![Textcontent](./img/textcontent.png)
 
 
-
+```
 //Query all and remove
 const ps = document.querySelectorAll('p');
 ps.forEach(function (p) {
   p.textContent = '************'
 })
-
+```
 ### Adding Element via the DOM
 In this section we are going to learn how to add a new element to our HTML element to our HTML via the DOM.And this is going to be important because as we saw in the array's section the data for our application is going to be array of objects where each object represents the individual item whether it's an expense todo or a note it's going to be our job, the javascript developers to figure out how to render something new in the browser for each item.
 
