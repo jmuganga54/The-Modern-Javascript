@@ -226,6 +226,150 @@ When we add on watch, it is not going to just run babel once it's going to run b
 So with this in place we can now automate our workflow.
 
 
+## Avoiding Global Modules
+In this section I want to take a few moments to talk about `global modules` and how they're going to relate to a project like `boilerplate` which has its own set of local dependencies.
+
+We're actually going to end up uninstalling all of our global modules and adding them in as a `local dependencies`.
+
+Let's talk about why a couple of section ago, I mentioned that node modules is not a folder we need to keep around or keep track of, I can always delete it and I can reinstall it by running `npm install` which installs all of the dependencies listed in `package.json`, this is really nice because I could zip up the boilerplate project folder without node modules and I could share it with a friend. I could give them a template to start building their next web app from.
+
+The only problem is that when that friend runs `npm install` they're not going to have everything they need to actually work with the code because they don't have `babel cli` which the project depends which is what we're using to serve up our application.
+
+So what we want to do is add both of those as local dependencies. So when we install our projects dependencies they come along for the ride as well.
+
+Let's get started by running two commands from the terminal. We're going to run one command to uninstall both `live server` and `babel cli`. Then we'll talk about the implication of doing that.
+
+I can uninstall local modules with `npm uninstall`, I can uninstall global ones by adding on the `g` flag, like we do with the install command. From here we can just list out separated by spaces all the modules we want to uninstall. 
+```
+npm uninstall -g babel-cli live-server
+```
+
+If we go ahead and run the above command, it is going to uninstall both modules. Then we're going to reinstall both of them locally. So right here `npm install` no g flag we don't want to install them globally.
+
+```
+npm install babel-cli@6.26.0 live-server@1.2
+```
+
+Now the implications of doing this are that we no longer have access to either a live server or babel from the command line something that we're currently relying on for a live server.
+
+If I cycle back through my previous commands and go back to `live server` running the public folder this command no longer works because `live server` is no longer installed.
+
+```
+liver-server public
+```
+
+But let's go ahead and take a look at our other command. If I shutdown the other command and then restart it what happens, it seems to work it seems to be waiting for us to make a change.
+
+```
+npm run build
+```
+
+So why is live server failing while our other command is working. That is because our other command is running from a script. When we run commands from our scripts in package.json we get access to all of the dependencies as if they were installed globally so I can still access Babel from inside of the build script.
+
+Now if I want to try to run babel from the terminal like we did earlier in the course before we added it as a script that would indeed fail.
+
+```
+babel --help
+```
+
+Well it means that we don't have to change this script at all. The build script currently gets the job done, all we have to do is add on another one for a liver server.
+
+
+```
+{
+  "name": "boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "input.js",
+  "scripts": {
+    "serve": "live-server public",
+    "build": "babel src/index.js --out-file public/scripts/bundle.js --presents env --watch"
+    
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "live-server": "1.2"
+  }
+}
+```
+
+Then run the serve
+```
+npm run live-server public
+```
+This is going to use the locally installed version of live server, we can see the server is up and running and I can refresh thing in the background and we can see the page is still live.
+
+> Using local modules in this way it makes life just a little bit easier. All of the dependencies for our project live in package.json and you can run `npm install` to install all of them.
+
+## Exploring Webpack
+In this section we're going to start talking about the second tool we'll be introducing in our javascript project, this is `webpack`, is an awesome tool that opens up a world of new features for us to use.
+
+So what we're going to do in this section is go through quick visualization to talk about exactly how `webpack` fits into the bigger picture.
+
+Then in the next couple of sections we'll actually go through the process of installing it setting it up and using it in our boiler plate project.
+
+Let's start with our current workflow, we have a file called `index.js` which contains the code that we actually write and add it in visual studio code.
+
+![Webpack](./imgs/webpack.png)
+
+We then pass that code through babel which converts the modern javascript into javascript that can be be executed from pretty much anywhere and babel splits out a file.
+
+`bundle.js` this is the file that actually runs in the browser. So this is the set up that we currently have and we are currently using.
+
+When we introduce `webpack` it's going to be very similar with a slight tweak. So we are still going to have some file that contains the code we write and we are still going to pass it through some tool, and in the end of the day we are going to get a single file back which contains all of the code that needs to run in the browser.
+
+The difference is that `webpack` can do way more than `babel`. That's no to say Babel is a bad tool. `Webpack` is just a more flexible tool which allows us to do a few interesting things including running babel. 
+
+So with webpack we're going to continue to run babel as we already have set up. But we're also going to get access to some awesome stuff.
+
+And one thing I want to place an emphasis on in this section is the javascript modules system, when we use the module system we get a brand new way to structure and set up our Javascript code.
+
+I actually want to spend the second part of this section moving through a quick visualization that shows us how the `modules system` is going to change our project structure.
+
+So right here we have the `before` webpack example and the `after` webpack example, we're currently living in the before webpack example.
+
+We start off with public directory and in there we have our assets. One of those being HTML pages we might need in this case I'm just going to stick with one `index.html`. 
+
+We also have those javascript files we have `uuid.js`, `notes-app.js` and `notes-functions.js`. And all three of these needed to be loaded in in a specific order.
+
+If `notes-app.js` file needs something from `uuid.js` file which it does and `note-function.js` file needs to be loaded first.So we have 1,2 and 3 ensuring that both of these files get access to the ID for function defined in here.
+
+Now all of this creates a few problems. First up we have three script tags. That means we're making three requests from the browser to the server for a new javascript file making those requests and then waiting for our response takes time. So we want to minimize the number of requests to get down to just one single file that contains everything.
+
+The other problem is that because the files need to be loaded in a specific order it's really hard to share code between those files. We either end up sharing too much or we share things, but in the wrong order. So if `notes-app.js` need to share something with `notes-functions.js` file it actually can't. Because `notes-app.js` file is `3` and `notes-functions.js` is `2` and we might accidentally expose something from `notes-functions.js` that we didn't really want `note-app` to have access to.
+
+This can create problems when we're defining the same variable name across our files and running into issues.
+
+So we're going to be able to leave all of this in the past after we introduce `webpack` with `webpack`. With webpack our files is going to look a bit different.
+
+The first thing I notice is that we have three directories we have `public folder` still and this is where our `index.html` file is going to live and then we also have a `source folder` and `node modules` folder.
+
+The source folder `src/` is going to contain all of the javascript code that we write, `node modules` is going to contain all of the `third party application code` we need. So we still have the same three files, the're just structured a bit differently.We have the app file and the functions file in the `source directory` and `uuid.js` is going to live in node modules.
+
+We'll talk about how to set all of this up in the next several section, in this section we're just visualizing how this would work.
+
+Now from here wha't going to happen, well our files still need to communicate. So one of these two files `notes-app.js or notes-functions` might need access to `uuid.js` and the `notes-app.js` files might need access to something from `notes functions`.
+
+With modules system in place, any file can try to import something from another file and any given file can export something specific. So `notes-function.js` file could export a function called `get-notes` or `save-notes`. This file could then import that function and actually use it where needed.
+
+So we would have some arrows like the above showed, that `notes-app.js` can access things from the other files in controlled and structured way. The `notes-app.js` file specify what they want to expose and `note-function.js` specifies what it actually needs.
+
+
+Now how is all this work. Well it all works because of webpack. Webpack is going to take all of our assets, it's going to bundle them up into a single file called `bundle.js` and this is going to give us access to this `module's` system which is what we're going to explore in the next section. In the end of the day all we need to do is load in a single script with a single script tag.
+
+So with webpack we're going to be able to reduce the number of script tags making our application faster.
+
+We're also going to be able to reduce the weird ordering in order to share code between our files with the `new import export system`, we're going to have a much better way to structure things.
+
+Excited to get in other weeds with webpack and start installing it and setting it up.
+
+
+
+
+
 
 
 

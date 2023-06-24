@@ -1,5 +1,4 @@
 {
-    "cSpell.words": [
-        "babeljs"
-    ]
+  "cSpell.words": ["babeljs"],
+  "liveServer.settings.port": 5501
 }

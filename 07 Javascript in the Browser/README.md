@@ -1,7 +1,8 @@
 ## Topics
+
 In this section we are going to learn how to integrate javascript into the browser. Up untill now we've learned the basics of javascript running little script on our machine and that is a great way to get started.
 
-But now that we know the fundamentals of the language we want to figure our how we can actually integrate this into a user interface to create an app that's meaningful for user to use.We're going to figure out how we can for example render thing in the browser based  of data in javascript and how we can respond to user interaction.
+But now that we know the fundamentals of the language we want to figure our how we can actually integrate this into a user interface to create an app that's meaningful for user to use.We're going to figure out how we can for example render thing in the browser based of data in javascript and how we can respond to user interaction.
 
 If someone clicks a button or submits a form with some data we want to be able to do something with that information from our javascript.
 
@@ -10,8 +11,10 @@ We're going to kick the section off by setting up a web server on your machine s
 ## keywords & Notes
 
 [HTML: HyperText Markup Language](https://developer.mozilla.org/en-US/docs/Web/HTML)
+
 ### Javascript in a Browser
-This is going to allow us to change what the user sees or respond to thing like user clicks.To do this we are going to use the script tag 
+
+This is going to allow us to change what the user sees or respond to thing like user clicks.To do this we are going to use the script tag
 from HTML.
 
 [<script>: The Script element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)
@@ -44,38 +47,42 @@ This attribute specifies the URI of an external script; this can be used as an a
 
 </html>
 ```
+
 > Another way of running javascript in a browser is to have a separated file which contain all of javascript code.
 
 ```
 <head>
- 
+
     <script src="./notes-app.js">
     </script>
 </head>
 
 <body>
-  
+
 </body>
 
 </html>
 ```
 
 ### DOM Manipulation
+
 So for in this section we learned a few important things. We learned how to create in HTML our document and we learned how to run a script by loading it into the document with a script tag.
 
 > But we haven't' talked about is how to combine the two.How to do something with the documents inside of our javascript.For example listening for a button click or reading the text value in an element removing an element.
 
-What we are going to do in this section is explore the DOM which stand for Document Object Model.So the document in DOM is the HTML document the object in DOM  is a javascript object.So we have an object in javascript that models the HTML documents that all the dogma's.
+What we are going to do in this section is explore the DOM which stand for Document Object Model.So the document in DOM is the HTML document the object in DOM is a javascript object.So we have an object in javascript that models the HTML documents that all the dogma's.
 
 > So if I wanted to find all of my paragraph elements and get all of their text and see if there are any bad words in any of them I could use the DOM to do just that if I wanted to listen for a input fields of value to change I could use the DOM to do tht if I wanted to delete every single form from a web page I could use the DOM and to get that done anytime we're using javascript to do something with our HTML we're most likely going to be using the DOM. So we're going to kick thing off by figuring out how we can perform some basic DOM Manipulations.
 
 The first thing that we're going to try to do is delete one of the elements in our document from our javascript file.I mentioned that the document is modeled using a javascript object and that objects is called document.This is not an object that we create.It's an object provided to us by the browser.We can use document to perform all of those DOM Manipulations.So if we were going to try to delete one of our elements let's say this paragraph tag for example.We can use document to perform all of those DOM manipulations.
 
-So if were going to try to delete one of our elements let's say the paragraph tag for example. Well there are two steps 
-* The first step is to get this element our of the document by querying it.So we're going to be able to search our document for various thing.
-* The second step is what we want to do with the things we find.In this case we want to remove them.In other case we might want to update them or replace them.
+So if were going to try to delete one of our elements let's say the paragraph tag for example. Well there are two steps
+
+- The first step is to get this element our of the document by querying it.So we're going to be able to search our document for various thing.
+- The second step is what we want to do with the things we find.In this case we want to remove them.In other case we might want to update them or replace them.
 
 #### How do we query our document for the various thing inside of it.
+
 I'm going to kick this off by using one method on document, a very popular one this is `document.querySelector()`. It is called with a single value a string and in the method we define what we're looking for.In this case we're looking for a paragraph tag where we put inside of the quotes is actually the tag.Now what comes back from queries selector is a representation of not the whole document but a representation of just the element.So now all we need to do is just do something with the return value from query selector.
 
 [Element.remove()](https://developer.mozilla.org/en-US/docs/Web/API/Element/remove)
@@ -83,6 +90,7 @@ The Element.remove() method removes the element from the tree it belongs to.
 
 `Syntax`
 remove()
+
 ```
 const p = document.querySelector('p')
 p.remove()
@@ -103,6 +111,7 @@ ps.forEach(function (p) {
 
 //Expected output: All the p element were deleted
 ```
+
 `Element.textContent` provide access to text content of an element.
 
 ```
@@ -116,7 +125,9 @@ ps.forEach(function (p) {
 This appliation was created by Joseph Muganga
 Some note text
 ```
+
 Now we can read the value off of text content but we could also write it as well.
+
 ```
 
 //Query all and remove
@@ -125,10 +136,10 @@ ps.forEach(function (p) {
   p.textContent = '************'
 })
 ```
+
 Expected output
 ![Textcontent](./img/textcontent.png)
 
-
 ```
 //Query all and remove
 const ps = document.querySelectorAll('p');
@@ -136,18 +147,22 @@ ps.forEach(function (p) {
   p.textContent = '************'
 })
 ```
+
 ### Adding Element via the DOM
+
 In this section we are going to learn how to add a new element to our HTML element to our HTML via the DOM.And this is going to be important because as we saw in the array's section the data for our application is going to be array of objects where each object represents the individual item whether it's an expense todo or a note it's going to be our job, the javascript developers to figure out how to render something new in the browser for each item.
 
 > For example we might want to render a new paragraph tag for each todo and put little checkbox to it's left, for the note we're probably going to want to render two things the title and the body.
 
 Either way we need to figure out how to add elements.
 
-Step to add element 
-* Create a element you want to add using `.createElement('p')`
-* Update content of created Element for this case is a paragraph `newParagraph.textContent = 'Content'`
-* Select the element of the parent element of where you want to put the new element `document.querySelector('body')`
-* `.appendChild(newParagraph)`, append it to the parent Element
+Step to add element
+
+- Create a element you want to add using `.createElement('p')`
+- Update content of created Element for this case is a paragraph `newParagraph.textContent = 'Content'`
+- Select the element of the parent element of where you want to put the new element `document.querySelector('body')`
+- `.appendChild(newParagraph)`, append it to the parent Element
+
 ```
 const newParagraph = document.createElement('p')
 newParagraph.textContent = 'This is a new element from Javascript'
@@ -155,6 +170,7 @@ document.querySelector('body').appendChild(newParagraph)
 ```
 
 This is the challenge exercise to display all of the todos which are incompleted
+
 ```
 let todos = [{
     text: 'Order cat food',
@@ -193,6 +209,7 @@ incompleteTodos.forEach((todo) => {
 ```
 
 ### Handling User interactions
+
 In this section ware finally going to cover user interaction.So if someone clicks a button and or types a new search string in the search field we should be able to do something in javascript based of that.
 
 > So there are a lot of different events we can listen to.An event is something that the user does an event might be clicking a button or hovering a paragraph or scrolling on the screen.
@@ -221,6 +238,7 @@ document.querySelector('button').addEventListener('click', function () {
 ```
 
 ### Advanced Queries
+
 In this section we're going to learn a bit more about the different ways you can select elements from your document.
 
 So currently we haven't had much trouble selecting the elements we're interested in working with.We select elements to remove, we read their values.
@@ -228,11 +246,13 @@ So currently we haven't had much trouble selecting the elements we're interested
 As we add more elements to the page we're going to run into issues we're selecting by tag isn't going to work very well.
 
 So another way to select element in javascript is using `.querySelectorAll('tag')`
+
 ```
 document.querySelectorAll('button')[1].addEventListener('click', function () {
   console.log('Delete all notes');
 })
 ```
+
 so imagine that I am UI designer and I come in and change the order of the buttons.The problem here is that the order is so important when using `.querySelectorAll()` and when we change the order of the elements this can be a problem.
 
 So there is another way which is more specific way, we can get various elements on our pages as opposed to just targeting them by their tag name and then getting a big old list that works.
@@ -262,18 +282,21 @@ Now if you've worked with CSS before you should be familiar with this syntax (`.
 
 CSS tag selector
 `Single`
-* p - everything with p tag
-* #replaced - an element with an id replaced
-* .item - all element with class of item
+
+- p - everything with p tag
+- #replaced - an element with an id replaced
+- .item - all element with class of item
 
 We can actually change multiple things
 `Multiple`
-* p#order - paragraph with an id of order
-* button.inventory - button with a class of inventory
-* h1#title.inventory - h1 with id of tittle and class of inventory
-* h1.application#title = h1 with a  class of application and id of title
+
+- p#order - paragraph with an id of order
+- button.inventory - button with a class of inventory
+- h1#title.inventory - h1 with id of tittle and class of inventory
+- h1.application#title = h1 with a class of application and id of title
 
 ### Text Inputs and Live Data filtering
+
 In this section we are going to learn how to get text based input from the user so that user is going to be able to type something in the browser. And we're going to be able to get that data back and do something with it in our Javascript.
 
 The input element is very flexible.There are all sorts of different types of inputs, we can work with the default one though is this text based input.Specifying the input type actually comes from the `type` attribute.
@@ -300,15 +323,17 @@ document.querySelector('#search-text').addEventListener('change', function (e) {
 
 So this type of event is very good when you want to capture the values after the user has remove the focus to an input, or click away. But when you need to capture value when user is entering data, the best event to use is 'input event.'
 
-So this event will be fired each time the the use enter data, when  character is entered, the event will be fired or in other words, the event will be fired on every single character change.
+So this event will be fired each time the the use enter data, when character is entered, the event will be fired or in other words, the event will be fired on every single character change.
 
 So this will allow me to filter notes my dues or my expenses in real time as the user types.
 
-There's another attibute for the input that's going to serve us well and this is the `placeholder attribute`.Another very common one for our text based inputs, placeholder allows us to provide a little smaple text input  when there is no value.
+There's another attibute for the input that's going to serve us well and this is the `placeholder attribute`.Another very common one for our text based inputs, placeholder allows us to provide a little smaple text input when there is no value.
 
 ### Rendering our Filtered Data.
+
 In this section we're going to render our data and filter it on the fly.
 `HTML`
+
 ```
 <body>
     <h1>Notes App</h1>
@@ -317,7 +342,7 @@ In this section we're going to render our data and filter it on the fly.
     <input type="text" name="" id="search-text" placeholder="filter todos">
 
     <div id="notes">
-        
+
     </div>
 
     <button id="remove-all">Remove all notes</button>
@@ -328,6 +353,7 @@ In this section we're going to render our data and filter it on the fly.
 ```
 
 `Javascript`
+
 ```
 const notes = [{
   title: 'My next trip',
@@ -362,12 +388,15 @@ document.querySelector('#search-text').addEventListener('input', function (e) {
 ```
 
 ### Todo Filter Challenge
+
 > Challenge Tips
-* Setup a div contain for todo
-* Setup filters (searchText) and wire up a new filter input to change it
-* Create a renderTodos function to render the latest filter data.
+
+- Setup a div contain for todo
+- Setup filters (searchText) and wire up a new filter input to change it
+- Create a renderTodos function to render the latest filter data.
 
 `HTML`
+
 ```<body>
     <h1>Todos</h1>
     <button id="add-todo">Add Todo</button>
@@ -380,6 +409,7 @@ document.querySelector('#search-text').addEventListener('input', function (e) {
 ```
 
 `Javascript`
+
 ```
 let todos = [{
     text: 'Order cat food',
@@ -439,9 +469,11 @@ const renderTodos = function (todos, filters) {
 ```
 
 ### Working with form
+
 > You can use `event.target.elements` to access all the elements withing the form.
 
 `HTML`
+
 ```
     <form action="" id="form-name">
 
@@ -449,7 +481,9 @@ const renderTodos = function (todos, filters) {
         <button>Submit</button>
     </form>
 ```
+
 `Javascript`
+
 ```
  console.log(event.target.elements.firstName.value)
 
@@ -458,6 +492,7 @@ const renderTodos = function (todos, filters) {
 ```
 
 `Challenge Code`
+
 ```
 let todos = [{
     text: 'Order cat food',
@@ -527,7 +562,9 @@ document.querySelector("form").addEventListener('submit', (e) => {
 
 })
 ```
+
 ### Checkboxes
+
 In this video we're going to learn about the checkbox and this is going to allow us to add things that need to either be true or false.
 
 > When we first explored our text based inputs we saw that we had access to both `change` and `input`. And there was a clear advantage that `input` allowed us to get the new value on every key stroke as opposed to having to wait untill the user typed something and then clicked away.
@@ -620,9 +657,8 @@ document.querySelector('#hide-completed').addEventListener('change', (e) => {
 
 ```
 
-
-
 ### Dropdowns
+
 In this session which is the last section for this section, we will going to learn about select dropdown.So the dropdown is going to allow us to provide the user with multiple pre-configured options and they can pick one.
 
 ```
@@ -643,4 +679,5 @@ document.querySelector('#filter-by').addEventListener('change', (e) => {
 ```
 
 ## Summary
+
 On this section we have learned how Javascript is used in a Browser to enable user interactions, this includes event handling
