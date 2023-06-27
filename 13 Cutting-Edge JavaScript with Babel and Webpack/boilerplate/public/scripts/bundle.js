@@ -1,11 +1,1 @@
-const name = 'Joseph';
-console.log(name);
-
-class Hangman {
-    myMethod() {
-        return 'Testing';
-    }
-}
-
-const hangman = new Hangman();
-console.log(hangman.myMethod());
+(()=>{console.log("Joseph");const o=new class{myMethod(){return"Testing"}};console.log(o.myMethod())})();

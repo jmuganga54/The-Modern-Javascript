@@ -380,4 +380,129 @@ We're also going to be able to reduce the weird ordering in order to share code 
 
 Excited to get in other weeds with webpack and start installing it and setting it up.
 
+## Setting up Webpack
+In this section we'll learn how to install webpack into the boilerplate project and you're going to learn how to configure it to work with our project structure.
+
+This is going to give use access to all sorts of awesome stuff like the javascript modules system which is very exciting.
+
+Before we dive into anything and install webpack. I want to show you where webpack lives on the web. And the one page that I want to point out ont his website is the documentation page. The documentation page is basically an entire website on its own.It outlines everything that webpack can do. Incase you want to dive deep, just read the documentation.
+
+[Webpack documentation](https://webpack.js.org/concepts/)
+
+In this section we're going to come up with the most basic configuration necessary to get webpack to work. Then throughout the section we'll be adding more things to our well-packed configuration to enable new features, to kick things off, we do need to install webpack in our project, it's an npm module.
+
+So let's go ahead and move in to the terminal. We are going to use a control C to shutdown the server script, then we are going to use `npm install` to install two new modules.
+
+Now I'm leaving off the g flag because we want to install these as local modules and not global modules. The first one is `webpack@4.5.0` and the second one is `webpack-cli@2.0.14`.
+
+```
+npm install webpack@4.5.0 webpack-cli@2.
+0.14
+``` 
+
+After installing, we're going to go ahead and move over to Visual studio code and we're going to create the configuration file that webpack needs.So in the end of the day we're going to be running a webpack via a script just like we run babel via a script.
+
+We can actually go ahead and create that script right now, the script name itself can be whatever we want.
+
+```
+"webpack": "webpack"
+```
+Now you'll notice this is similar to running babel without any of the arguments, webpack actually allows us to create the separate configuration file. So we don't have to define a really long command here. Instead we can create a javascript file and we can set up an object that defines all of the thing like where the code lives, what we want to process and where we want to save the processed code.
+
+So let's go ahead and knock that out by creating a new file. This file needs to live in the root of your project and its name it needs to match up exactly with this `webpack.config.js`, and this is where we configure webpack specifying the details of our project.
+
+The code we put in this file is eventually going to get processed via `node.js`. So we actually need to take advantage of a couple of node specific features which I'll walk you through. So bear with me through this webpack configuration.
+
+The big picture goal is to create a configuration object and we actually define this object on `module.exports` is specific to `nodejs`. This is how we can expose something from a given file, and in this case we are exposing the configuration object right here inside of the object, inside the object we can now start providing the configuration details for our purposes, to get the basic configuration in place, we have to specify the input and the output, the input also known as the entry, for webpack is going to get defined first.
+
+So we are going to setup our first property on the object entry and we're going to set entry equal to string. This string is relative path to the place where our code lives. So for us this is inside of the source directory and the file is called `index.js`
+
+```
+modules.exports = {
+  entry: './src/index.js'
+}
+```
+
+We have half of the configuration down, webpack now knows where to find the code to process. The only thing we have to still specify is where to save the processed code. We can now add a second property onto our configuration object. This one is called `output` and output actually doesn't get set equal to a string, it gets set equal to an object since there are a lot of different things we can configure about the output, for our purpose we are going to configure just one path and path get set equal to a string, it contains the path to where we want to save the webpack output.
+
+So for us we want to save it in the public scripts directory.Now there is a catch what goes inside of the path value needs to be an absolute path unlike entry which can be a relative path, the absolute path needs  to start from the root of our hand drive and navigate all the way to the correct location.
+
+```
+modules.exports = {
+  entry: './src/index.js',
+  output: {
+    path: '/Users/macbook/Documents/Learning_center/Computer Science/Learning_code/modern-javascript-bootcamp/13 Cutting-Edge JavaScript with Babel and Webpack/boilerplate/public/scripts'
+  }
+}
+```
+
+`/Users/macbook/Documents/Learning_center/Computer Science/Learning_code/modern-javascript-bootcamp/13 Cutting-Edge JavaScript with Babel and Webpack/boilerplate/public/scripts` This is a absolute path, it start the way from the root of my hard drive and navigate into my user folder untill to the specified location.
+
+The problem is that this path is subject to change. If I take the boilerplate project and move it from this folder to my documents folder for example the path is going to change. If I share this with a friend whose user name isn't `Andrew` the path is going to change. So we don't want to define this string right inside of here because that's not very flexible it's pretty much going to break any single time we change the location of the project or someone else works on the project with us.
+
+What we want to do is provide an absolute path that's a bit more flexible. Luckily `nodejs` gives us good way to get this done. The first piece of puzzle is nodejs global variable. It's `__dirname` and this provides the absolute path to the root of your project. So for our purposes with the `webpack.config.js` it's going to provide this portion of the path all the way from the root of the hard drive up to the `boilerplate` folder so we can get all of the stuff that's subject to change with the name variable.
+
+All we need to do then is tack on `public/scripts` which is never going to change because it's all part of the project structure and `public/scripts` portion is going to be the same regardless of where the project lives on my folder or if I share it with someone else and they're on a different operating system or have a different user name.
+
+Now the value for path is not going to be a simple as `just taking __dirname`and concatenating something on like for example forward slash public forward slash scripts `path: __dirname + '/public/scripts/`, this isn't going to work because of cross operating system issues with path's windows, linus and Mac, have different systems or working with those paths. We need a universal way to get this done, nodejs give us few functions that allow us to get this done up above.
+
+We need to explore one more node feature. What we're going to do is create a concept called `path` we're then going to load in one of the libraries that nodejs provides, this library gives us whole bunch of utility methods for working with paths, we can combine two paths in a universal way to get this, we use the require function and we pass to require as single argument a string and provide the name of the library, we would like access to the one that we're going to be accessing is called `path.
+
+So now we have access `const path = require('path')` to this library path.`path` is just an object with a bunch of methods, on it down below, we are going to use one of those methods, it is `path.resolve` which is going to allow us to combine those two pieces to come up with the final absolute path.`path: path.resolve()` inside the resolve methods we pass two arguments, the first is `--dirname`, the second argument is `public/scripts/`, and there we go.
+
+```
+const path = require('path')
+modules.exports = {
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'public/scripts')
+  }
+}
+```
+
+We now have an absolute path that's going to work in all operating systems and with this in place we actually have our basic configuration all set up. 
+
+We can go ahead and save the `webpack.config.js` file and we can save `package.json` and we're going to go ahead and move into the terminal and actually run that webpack script to kick things off.
+
+Then we are going to run webpack
+
+```
+npm run webpack
+```
+
+The above command is going to run webpack and we're going to get a whole bunch of confusing output. So in the end of the day what happened here is a successful build webpack was able to run correctly and it actually created a new file in our project this file lives in the folder we specified and by default it's called `main.js` 
+
+When we open `main.js`, you can see that webpack has done a few really nice things for us. The first thing it's done is it has minimized all of our code making it as small as possible. This makes it very difficult for humans to actually read it but it makes thing much faster when a computer is processing it by reducing the total number of characters in the file.
+
+The codes from `main.js` is the code that we're going to end up running from the browser. Now with this code we have access to the modules system and that's what we're going to explore in the very next section.
+
+Before we go and dive into that I do want to show you how you can change the name of the file that's spit out over in webpack.config.js, we can add another property to the output object along  
+
+```
+const path = require("path");
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "public/scripts"),
+    filename: 'bundle.js'
+  },
+};
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Summary
