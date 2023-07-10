@@ -490,11 +490,143 @@ module.exports = {
 
 ```
 
+## Javascript Modules Part 1
+
+That we now have webpack all set up. In this section we're going to start taking advantage of what web pack actually offers us, one of the main things it offers is the javascript module system which gives us a better way to structure our application, so that what we're going to spend the next couple of video talking about.
+
+Now the good news is that we don't need to install anything new or change our configuration at all.
+
+We're going to spend all of our time working with files in the source directory. We're going to work with `index.js` and we're going to create a new file as well.
 
 
+The whole point of the module system is to give us a better way to structure and build out our javascript applications in the past if I wanted to have one file, use a function defined in a different file, we had to load in multiple files with multiple script tags and we had to load them in a specific order.
+
+No longer is that going to be the case with web pack, we always just have one file coming out, this contains everything needed to run our application and we only ever loaded in with a single script tag. Even though the underlying application might have multiple scripts.
+
+So let's go ahead and demonstrate how this is going to work by creating a second script in the source directory `utilities.js`
+
+```
+run live server (npm run server)
+run webpack(npm run webpack)
+```
+Now after running webpack, we can notice that the only file being loaded is the `src/index.js` file. Nowhere in this output do I see anything about my ew `utilies.js` file.
+
+That's because when web packs starts it starts with the entry point. Our entry point `index.js` gets loaded, `index.js` doesn't specify that it needs anything from any other files so no other files actually run.
+
+now the solution is to no change web pack configuration at all. The solution is to use the javascript modules system. It gives us new two things, we have the `import statement` and the `export statement` and the import statement can be used to grab something from another file.
+
+So `index.js` can use `import` to grap a function or a variable from some other file, the `export statement` can be used to export something from a file. So we can export function from `utilities.js`, that gets used over in `index.js` databasese allowing us to share code between those files.
+
+Currently there is nothing to grap from `utilities.js`. All we're going to do is use the `import statement` to get this file to run so we can actually see it's `console.log printing` int eh browser to do this, we're going to add an `import statement` into `index.js` and import statements start off with the `import` keyword.
+
+Now when it comes to our import statements with web pack we can actually leave off the file extension. They're completely option.
+
+```
+//index.js
+import './utilties'
+
+console.log('index.js')
+```
+
+Then run webpack `npm run webpack`
+
+```
+//webpack ouput
+
+cacheable modules 73 bytes
+  ./src/index.js 46 bytes [built] [code generated]
+  ./src/utilties.js 27 bytes [built] [code generated]
+
+```
+We can see that our entry point now has two files listed `indexjs` and `utilities.js`, this is only showing up because of the `import statement` we added to our code over inside the browser. Both files are executing
+
+```
+//console log
+utilities.js
+index.js
+```
+
+Now you might think that to actually share code between the two files I can just create a variable in index.js and use it .
+
+So this brings us to the first important thing to not about using the module system, each file has it's own separate scope no longer are available share between files, and `this is a good thing.`
+
+Now this separate scope doesn't means we can't share code between files, after all that's the whole point of the module system. This does mean though that we have to be explicit about what we're exporting from one file and what we're importing from another.
+
+Currently utilities has no exports meaning that data `index.js` is actually not going to be able to access `add` even if it wanted to.
+
+We're going to go ahead and change that by exporting add right here.
+
+We can create an export statement out of an existing variable declaration by just adding `export` with a space upfront.
+
+So here we are now saying we are exporting the constant `add` we could also export `let` if we wanted to.
+
+```
+//utilite.js
+
+console.log("utilities.js");
+
+export const add = (a, b) => a + b;
+```
+
+You can use function add down below the export with the utilities.js.
+
+All we're saying is that other files should also be able to access this if they need it. So now that we are explicits exporting the add function we can access it for the index.js by making a change to the import statement.
+
+It is not enough to just import the file, we have to specify the things we want from that file.
+
+So I'm going to go ahead and comment out this import statement and we're going to look at a different import statement that allows us to grab thing like `add`.
+
+```
+//import "./utilties";
+import {add} from './utilties'
+
+console.log("index.js");
+console.log(add(2, 3));
+
+//Expected output:
+utilities.js
+index.js
+5
+```
+
+### Challenge 
+
+```
+1. Create new file called scream.js
+2. Export a 'screams` function that takes a string
+   a. Convert that string to upper case
+   b. Add "!" onto the end
+3. Import scream into index.js and use it.
+```
+
+```
+//utilities.js
+console.log("utilities.js");
+export const add = (a, b) => a + b;
+export const name = "Andrew";
+
+//screams.js
+export const screams = (string) => `${string.toUpperCase()}!`;
 
 
+//index.js
+import { add, name } from "./utilties";
+import {screams} from "./screams"
 
+console.log("index.js");
+console.log(add(2, 3));
+console.log(name);
+console.log(screams('joseph'))
+
+Expected output:
+utilities.js
+index.js
+5
+Andrew
+JOSEPH!
+
+
+```
 
 
 
