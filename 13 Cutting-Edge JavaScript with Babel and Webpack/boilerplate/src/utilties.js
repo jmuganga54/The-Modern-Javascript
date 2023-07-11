@@ -1,5 +1,7 @@
-console.log("utilities.js");
+const add = (a, b) => a + b;
 
-export const add = (a, b) => a + b;
+const name = "Andrew";
 
-export const name = "Andrew";
+const square = (x) => x * x;
+
+export {add, name, square as default}

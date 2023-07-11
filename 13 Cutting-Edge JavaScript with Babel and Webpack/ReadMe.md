@@ -381,6 +381,7 @@ We're also going to be able to reduce the weird ordering in order to share code 
 Excited to get in other weeds with webpack and start installing it and setting it up.
 
 ## Setting up Webpack
+
 In this section we'll learn how to install webpack into the boilerplate project and you're going to learn how to configure it to work with our project structure.
 
 This is going to give use access to all sorts of awesome stuff like the javascript modules system which is very exciting.
@@ -398,7 +399,7 @@ Now I'm leaving off the g flag because we want to install these as local modules
 ```
 npm install webpack@4.5.0 webpack-cli@2.
 0.14
-``` 
+```
 
 After installing, we're going to go ahead and move over to Visual studio code and we're going to create the configuration file that webpack needs.So in the end of the day we're going to be running a webpack via a script just like we run babel via a script.
 
@@ -407,6 +408,7 @@ We can actually go ahead and create that script right now, the script name itsel
 ```
 "webpack": "webpack"
 ```
+
 Now you'll notice this is similar to running babel without any of the arguments, webpack actually allows us to create the separate configuration file. So we don't have to define a really long command here. Instead we can create a javascript file and we can set up an object that defines all of the thing like where the code lives, what we want to process and where we want to save the processed code.
 
 So let's go ahead and knock that out by creating a new file. This file needs to live in the root of your project and its name it needs to match up exactly with this `webpack.config.js`, and this is where we configure webpack specifying the details of our project.
@@ -425,7 +427,7 @@ modules.exports = {
 
 We have half of the configuration down, webpack now knows where to find the code to process. The only thing we have to still specify is where to save the processed code. We can now add a second property onto our configuration object. This one is called `output` and output actually doesn't get set equal to a string, it gets set equal to an object since there are a lot of different things we can configure about the output, for our purpose we are going to configure just one path and path get set equal to a string, it contains the path to where we want to save the webpack output.
 
-So for us we want to save it in the public scripts directory.Now there is a catch what goes inside of the path value needs to be an absolute path unlike entry which can be a relative path, the absolute path needs  to start from the root of our hand drive and navigate all the way to the correct location.
+So for us we want to save it in the public scripts directory.Now there is a catch what goes inside of the path value needs to be an absolute path unlike entry which can be a relative path, the absolute path needs to start from the root of our hand drive and navigate all the way to the correct location.
 
 ```
 modules.exports = {
@@ -460,7 +462,7 @@ modules.exports = {
 }
 ```
 
-We now have an absolute path that's going to work in all operating systems and with this in place we actually have our basic configuration all set up. 
+We now have an absolute path that's going to work in all operating systems and with this in place we actually have our basic configuration all set up.
 
 We can go ahead and save the `webpack.config.js` file and we can save `package.json` and we're going to go ahead and move into the terminal and actually run that webpack script to kick things off.
 
@@ -470,13 +472,13 @@ Then we are going to run webpack
 npm run webpack
 ```
 
-The above command is going to run webpack and we're going to get a whole bunch of confusing output. So in the end of the day what happened here is a successful build webpack was able to run correctly and it actually created a new file in our project this file lives in the folder we specified and by default it's called `main.js` 
+The above command is going to run webpack and we're going to get a whole bunch of confusing output. So in the end of the day what happened here is a successful build webpack was able to run correctly and it actually created a new file in our project this file lives in the folder we specified and by default it's called `main.js`
 
 When we open `main.js`, you can see that webpack has done a few really nice things for us. The first thing it's done is it has minimized all of our code making it as small as possible. This makes it very difficult for humans to actually read it but it makes thing much faster when a computer is processing it by reducing the total number of characters in the file.
 
 The codes from `main.js` is the code that we're going to end up running from the browser. Now with this code we have access to the modules system and that's what we're going to explore in the very next section.
 
-Before we go and dive into that I do want to show you how you can change the name of the file that's spit out over in webpack.config.js, we can add another property to the output object along  
+Before we go and dive into that I do want to show you how you can change the name of the file that's spit out over in webpack.config.js, we can add another property to the output object along
 
 ```
 const path = require("path");
@@ -498,7 +500,6 @@ Now the good news is that we don't need to install anything new or change our co
 
 We're going to spend all of our time working with files in the source directory. We're going to work with `index.js` and we're going to create a new file as well.
 
-
 The whole point of the module system is to give us a better way to structure and build out our javascript applications in the past if I wanted to have one file, use a function defined in a different file, we had to load in multiple files with multiple script tags and we had to load them in a specific order.
 
 No longer is that going to be the case with web pack, we always just have one file coming out, this contains everything needed to run our application and we only ever loaded in with a single script tag. Even though the underlying application might have multiple scripts.
@@ -509,6 +510,7 @@ So let's go ahead and demonstrate how this is going to work by creating a second
 run live server (npm run server)
 run webpack(npm run webpack)
 ```
+
 Now after running webpack, we can notice that the only file being loaded is the `src/index.js` file. Nowhere in this output do I see anything about my ew `utilies.js` file.
 
 That's because when web packs starts it starts with the entry point. Our entry point `index.js` gets loaded, `index.js` doesn't specify that it needs anything from any other files so no other files actually run.
@@ -538,6 +540,7 @@ cacheable modules 73 bytes
   ./src/utilties.js 27 bytes [built] [code generated]
 
 ```
+
 We can see that our entry point now has two files listed `indexjs` and `utilities.js`, this is only showing up because of the `import statement` we added to our code over inside the browser. Both files are executing
 
 ```
@@ -589,7 +592,7 @@ index.js
 5
 ```
 
-### Challenge 
+### Challenge
 
 ```
 1. Create new file called scream.js
@@ -624,16 +627,153 @@ index.js
 5
 Andrew
 JOSEPH!
+```
 
+## Javascript Modules Part II
+In this section we're going to continue to talk about javascript modules as there are few other ways we can use both the export and import to better structure and set up our files.
+
+The first thing I'd like to talk about are the two different styles of exports available to us because currently we're only using one of the two styles.
+
+The first style we have `named export`. This is what we're currently using. And the other style is the `default export`. 
+
+Now a `named export` is exported like we've seen already. It has a specific name assigned to it and them we want to `import it`, I have to import it by that name.
+
+```
+//utilities.js
+export const add = (a, b) => a + b;
+export const name = "Andrew";
+
+//index.js
+import { add, name } from "./utilties";
+import {screams} from "./screams"
+
+console.log("index.js");
+console.log(add(2, 3));
+console.log(name);
+console.log(screams('joseph'))
+```
+
+So above I have `add` and `name` exactly as they appear in the export. These are named exports and we can have as many of these as we need. I could have one if I just need one. I could have 40 if I happen to need 40.
+
+The other type of export made available to us is the `default export`, all of our files can choose to have one default export should they want to. So with 'named exports` we can have as many as we need with `default exports` we can only have at most one because it's the default, so there could only be one. Down below we're going to go ahead and set up another function to be our default export.
+
+So let's go ahead and create this.
+
+```
+//utilities.js
+export const add = (a, b) => a + b;
+export const name = "Andrew";
+const square = (x) => x * x;
+export default square
+
+//index.js
+import otherSquare, { add, name } from "./utilties";
+import { screams } from "./screams";
+
+console.log("index.js");
+console.log(add(2, 3));
+console.log(name);
+console.log(screams("Peter"));
+console.log(otherSquare(2));
+
+//Expected output
+index.js
+5
+Andrew
+PETER!
+4
 
 ```
 
+Note: To grab the default export, we actually don't put anything inside of curly braces. Instead we put something just before the curly braces. So right here we're going to go ahead and grab the default.
 
+```
+import square, { add, name } from "./utilties";
+```
+Now with the `default export` we can actually call it anything we like. Because remember we're not grabbing it by its name, we're grabbing it by the fact that it is the default. So I could call this something like `otherSquare` and that would work just as well.
 
+```
+import otherSquare, { add, name } from "./utilties";
+```
 
+In either case I'm not grabbing it by its name. I'm grabbing it by the fact that it is the default.
 
+Now if I didn't need any `named exports` and I just wanted the default export my export my import statement would be
 
+```
+import otherSquare from "./utilties";
+```
 
+Note: Run webpack to refresh the page.
+
+Now there's no hard and fast rule for when to use a `named export` and when to use the `default export`. So I'll give you a quick guiding principle if I find myself with one big thing that a file is trying to export like a class or a function, I'll typically use the `default export` for that.
+
+If I find myself needing to export five or six different functions or classes then I'll usually use `named exports` for all of those.
+
+But remember this is just a guiding principle that I happened to follow. There is no wrong way to set these up. The only real rule is that you get to have at most one default export and you can have as many named exports as you need. And as we've seen you can use a combination of both, when exporting and both when importing.
+
+The last thing I want to talk about is a different way we can set up our exports. Currently we're setting up all of our exports as we define thing in the file. There's also an alternative syntax that allows us to define all of the exports in one place. Typically the last line in the file.
+
+```
+//utilities.js
+const add = (a, b) => a + b;
+const name = "Andrew";
+const square = (x) => x * x;
+
+export {add, name, square as default}
+
+//index.js
+import otherSquare, { add, name } from "./utilties";
+import { screams } from "./screams";
+
+console.log("index.js");
+console.log(add(2, 3));
+console.log(name);
+console.log(screams("Peter"));
+console.log(otherSquare(2));
+
+//Expected output:
+index.js
+5
+Andrew
+PETER!
+4
+```
+
+### Challenge
+```
+1. Setup scream as the default export
+2. Update the import statement in index.js to use it
+```
+
+```
+//utilties.js
+const add = (a, b) => a + b;
+const name = "Andrew";
+const square = (x) => x * x;
+export {add, name, square as default}
+
+//screams.js
+const screams = (string) => `${string.toUpperCase()}!`;
+export {screams as default}
+
+//index.js
+import otherSquare, { add, name } from "./utilties";
+import screams from "./screams";
+
+console.log("index.js");
+console.log(add(2, 3));
+console.log(name);
+console.log(screams("Anna"));
+console.log(otherSquare(25));
+
+//Expected output:
+index.js
+5
+Andrew
+ANNA!
+625
+```
 
 
 
