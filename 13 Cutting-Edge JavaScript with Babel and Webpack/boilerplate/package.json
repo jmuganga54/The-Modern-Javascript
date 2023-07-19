@@ -5,8 +5,7 @@
   "main": "input.js",
   "scripts": {
     "serve": "live-server public",
-    "webpack":"webpack",
-    "build": "babel src/index.js --out-file public/scripts/bundle.js --presents env --watch"
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
@@ -16,5 +15,10 @@
     "live-server": "1.2.2",
     "webpack": "^5.88.0",
     "webpack-cli": "^5.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "babel-loader": "^9.1.3"
   }
 }

@@ -630,11 +630,12 @@ JOSEPH!
 ```
 
 ## Javascript Modules Part II
+
 In this section we're going to continue to talk about javascript modules as there are few other ways we can use both the export and import to better structure and set up our files.
 
 The first thing I'd like to talk about are the two different styles of exports available to us because currently we're only using one of the two styles.
 
-The first style we have `named export`. This is what we're currently using. And the other style is the `default export`. 
+The first style we have `named export`. This is what we're currently using. And the other style is the `default export`.
 
 Now a `named export` is exported like we've seen already. It has a specific name assigned to it and them we want to `import it`, I have to import it by that name.
 
@@ -655,7 +656,7 @@ console.log(screams('joseph'))
 
 So above I have `add` and `name` exactly as they appear in the export. These are named exports and we can have as many of these as we need. I could have one if I just need one. I could have 40 if I happen to need 40.
 
-The other type of export made available to us is the `default export`, all of our files can choose to have one default export should they want to. So with 'named exports` we can have as many as we need with `default exports` we can only have at most one because it's the default, so there could only be one. Down below we're going to go ahead and set up another function to be our default export.
+The other type of export made available to us is the `default export`, all of our files can choose to have one default export should they want to. So with 'named exports`we can have as many as we need with`default exports` we can only have at most one because it's the default, so there could only be one. Down below we're going to go ahead and set up another function to be our default export.
 
 So let's go ahead and create this.
 
@@ -690,6 +691,7 @@ Note: To grab the default export, we actually don't put anything inside of curly
 ```
 import square, { add, name } from "./utilties";
 ```
+
 Now with the `default export` we can actually call it anything we like. Because remember we're not grabbing it by its name, we're grabbing it by the fact that it is the default. So I could call this something like `otherSquare` and that would work just as well.
 
 ```
@@ -741,6 +743,7 @@ PETER!
 ```
 
 ### Challenge
+
 ```
 1. Setup scream as the default export
 2. Update the import statement in index.js to use it
@@ -773,6 +776,167 @@ index.js
 Andrew
 ANNA!
 625
+```
+
+## Adding Babel into Webpack
+
+In the last couple of sections we spend some time learning a new javascript feature. We learned all about javascript modules, in this section I want to get back to our `webpack config` file and talk about how we can make a change to it.
+
+The change we're going to focus on is adding support for babel right inside of webpack.So when webpack goes through and grabs all of our code and processes it we're also going to have it run the code through the babel. So we get the best of both worlds.
+
+We get the advantages of webpack being able to use that module system and get the advantages of Babel being able to run our code in a wider range of browsers, to get this done we're going to have to use what's known as a webpack loader, loaders allow us to customize what happens when the webpack loads a file with its module system.
+
+In our case we're going to be able to run that code through babel. So we're going to be installing the babel loader and configuring it to get everything to work.
+
+Inside the terminal we can run a single command to install this.
+
+```
+npm install babel-loader
+```
+
+Then we're going to have to do is add about 12 lines of code to the webpack config file to get this feature wrapped up right on the root object alongside of entry and output, I'm going to go ahead and set up another property called the `module`. This is the property that well-packed provides to us that allows us to configure the javascript module system, and webpack expects this to be an object.
+
+```
+//webpack.config.js
+const path = require("path");
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "public/scripts"),
+    filename: 'bundle.js'
+  },
+  module: {
+
+  }
+};
+```
+
+`rules` property allows us to specify as many rules as we want and the one rule that we're going to setup up Tells we're back to use Babel, so rules expects to be an array and it expects to be an array of objects where each object is a rule. In this case we just want one rule to use Babel. So we only need one object in this array, right here on this object is where most of the configuration is going to happen on this object.
+
+```
+//webpack.config.js
+const path = require("path");
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "public/scripts"),
+    filename: 'bundle.js'
+  },
+  module: {
+    rules:{
+      use:{
+        loader: 'babel-loader',
+        options:{
+          presets:['env']
+        }
+      }
+    }
+  }
+};
+```
+
+The last thing we need to do is customize this rule object telling it which files to actually apply the rule to. We want to apply it to all javascript files from our project excluding those inside of node modules. If we don't exclude those node modules babel can be really really slow.
+
+Slowing down our build time since that's not code we wrote there's no need to process it.
+
+So we are going to exclude files that have something specific in their path. Now to set up the values for exclude we actually have to use a regular expression a regular expression is just a way to target string so we can see if a given string has given value inside of it.
+
+We're going to go ahead and set this up like the following. So we use the forward slashed to create a regular expression then right inside we type the thing we're looking for, in this case we are trying to exclude all paths that have node modules anywhere inside.
+
+```
+//webpack.config.js
+const path = require("path");
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "public/scripts"),
+    filename: 'bundle.js'
+  },
+  module: {
+    rules:{
+      exclude: /node_modules/,
+      use:{
+        loader: 'babel-loader',
+        options:{
+          presets:['env']
+        }
+      }
+    }
+  }
+};
+```
+
+Set up the last property that we're going to need. This is the test property, so once again this one is also going to be regular expression. So we're going to add those two forward slashes with a comma and we're going to type some stuff inside.
+
+Now in this case we are trying to figure out if the file has `.js` on the end. No the `.` character in a regular expression has a special meaning we want to match an actual dot. So we just escaped that using a backslash.
+
+```
+//webpack.config.js
+const path = require("path");
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "public/scripts"),
+    filename: 'bundle.js'
+  },
+  module: {
+    rules:[{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use:{
+        loader: 'babel-loader',
+        options:{
+          presets:['env']
+        }
+      }
+    }]
+  }
+};
+```
+
+We also want to make sur that this file extension `.js` comes at the very end of the path. All we do is put a `$` dollar sign that makes sure that what comes before is a the end of the string.
+
+So now we have a great way to target just the javascript files we've written and actually process them through babel using babel loader. We can now save webpack config and actual make sure things are working by rerunning web pack over
+
+```
+const path = require("path");
+
+module.exports = {
+  mode: "development",
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "public/scripts"),
+    filename: "bundle.js",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+          },
+        },
+      },
+    ],
+  },
+};
+
+```
+Inside the terminal
+
+```
+npm run webpack
+```
+The program run fine, also processing the file through babel and in the end of the day we can see everything is working as expected which is awesome. Now this also allows us to switch up `package.json` no longer do we need this script around since webpack takes care of that for us.
+
+```
+  "build": "babel src/index.js --out-file public/scripts/bundle.js --presents env --watch"
+
+  //changing, webpack to build
+  "build": "webpack"
 ```
 
 
