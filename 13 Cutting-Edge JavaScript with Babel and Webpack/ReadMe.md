@@ -925,11 +925,13 @@ module.exports = {
 };
 
 ```
+
 Inside the terminal
 
 ```
 npm run webpack
 ```
+
 The program run fine, also processing the file through babel and in the end of the day we can see everything is working as expected which is awesome. Now this also allows us to switch up `package.json` no longer do we need this script around since webpack takes care of that for us.
 
 ```
@@ -939,6 +941,127 @@ The program run fine, also processing the file through babel and in the end of t
   "build": "webpack"
 ```
 
+## Webpack Dev Server
+In this section I want to take a few minutes to talk about how we can improve our local development workflow. So currently if we're working on the application and changing our javascript files we have to manually switch over to the terminal and rerun the build script in order to actually see our changes reflected.
 
+So we're going to go ahead and talk about how we can improve this workflow. So we never have to go into the terminal as we're developing our app. This is very similar to what we did with battle. We configure babel to watch our files for changes and rerun Babel when any of the files changed. That's exactly what we're going to be doing with webpack.
 
-## Summary
+Le'ts put five seconds on the clock and dive into the five second solution. All this requires to do is add a single flag onto the webpack command. We add on hyphen watch and we're done
+
+```
+{
+  "name": "boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "input.js",
+  "scripts": {
+    "serve": "live-server public",
+    "build": "webpack --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "live-server": "1.2.2",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "babel-loader": "^9.1.3"
+  }
+}
+
+```
+
+So what this is going to do is it is going to run web pack when we run the command. But then webpack is going to stay up and running it is going to watch any of the files that make up the bundle for changes. So in this case it's going to watch index.js but it's going to watch anything that index.js  as imports. So the end result is that it is going to watch all of our source files for changes when any of them change, It's going to generate a new bundle that's going to cause a live server to refresh the browser.
+
+So that is the five second solution. It gest the job done and it allows us a nicer workflow. No longer do we have to switch into the terminal and rerun any scripts to be able to view our application changes even we're using more advanced complex tooling like babel and webpack.
+
+Now I want to move on to the five minute solution.It's going to require a bit more time to set up.But it comes up with its own set of advantages.
+
+The `web-pack dev server` essentially does everything, we're already doing it in one tool. So instead of needing to run web pack with the watch flag and lives server and separate tabs `web-pack dev server` gives us a single process we can use to do both. We're going to kick things off by installing this tool then we're going to add about five or six lines of code to this file and then we'll be all done.
+
+So let's go ahead and start by moving into the terminal and running an NPM install command.
+
+```
+npm install webpack-dev-server
+```
+
+Now once this finishes installing we're going to have to make a few changes to the `webpack config file` to get the dev server to work. There are two main things we have to provide and they both relate to us telling the dev server where I can find the content it's supposed to serve up much like we tell a live server to serve up the content in the public directory. 
+
+We're going to add a new route property onto our config object. The first of those two properties is content base , its content need to be an absolute path, that let's the dev server know where the folder you're trying to serve up lives. So with `live server` we told it was the public directory with the `dev server` it's going to be that public directory. The only difference is in how we specify it, we have to provide an absolute path and that is very similar to what we did up above for path.
+
+```
+ devServer: {
+    contentBase: path.resolve(__dirname, 'public')
+  }
+```
+
+Now the next property we're going to provide is `public path` the value for public path is a string, and this is where we tell the dev server where relative to the public folder web pack puts our assets, in this case it's in the scripts folder now might seem a bit redundant don't nee to provide this again, since we're already providing it up above but don't worry we'll talk about why this is in just a few moments when we start exploring some of the advantages of the dev server.
+
+```
+path: path.resolve(__dirname, "public/scripts"),
+```
+
+So right here as the value of public path is going to as below
+
+```
+ devServer: {
+    contentBase: path.resolve(__dirname, 'public'),
+    publicPath: '/scripts/'
+  }
+```
+
+With that in place the dev server is all configured. The only thing we have to do before we can actually run it is change one of our scrips to use the correct command over `package.json`. We're going to end up redoing scripts over and over again as we learn new tools and techniques. So I'm going to start by deleting everything we have in these scripts object, and we're going to create just one script name, `dev-server`, it's value is going to be us just running `webpack-dev-server`
+
+```
+  "scripts": {
+    "dev-server": "webpack-dev-server"
+  },
+```
+
+Save and run the webpack dev server
+
+```
+npm run dev-server
+```
+
+> webpack config file code
+```
+const path = require("path");
+
+module.exports = {
+  mode: "development",
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "public/scripts"),
+    filename: "bundle.js",
+  },
+  devServer: {
+    static: {
+      directory: path.resolve(__dirname, "public"),
+    },
+    devMiddleware: {
+      publicPath: "/scripts/",
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+          },
+        },
+      },
+    ],
+  },
+};
+
+```

@@ -7,6 +7,14 @@ module.exports = {
     path: path.resolve(__dirname, "public/scripts"),
     filename: "bundle.js",
   },
+  devServer: {
+    static: {
+      directory: path.resolve(__dirname, "public"),
+    },
+    devMiddleware: {
+      publicPath: "/scripts/",
+    },
+  },
   module: {
     rules: [
       {

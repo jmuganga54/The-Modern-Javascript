@@ -36,7 +36,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   add: () => (/* binding */ add),\n/* harmony export */   \"default\": () => (/* binding */ square),\n/* harmony export */   name: () => (/* binding */ name)\n/* harmony export */ });\nvar add = function add(a, b) {\n  return a + b;\n};\nvar name = \"Andrew\";\nvar square = function square(x) {\n  return x * x;\n};\n\n\n//# sourceURL=webpack://boilerplate/./src/utilties.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   add: () => (/* binding */ add),\n/* harmony export */   \"default\": () => (/* binding */ square),\n/* harmony export */   name: () => (/* binding */ name)\n/* harmony export */ });\nvar add = function add(a, b) {\n  return a + b;\n};\nvar name = \"Joseph\";\nvar square = function square(x) {\n  return x * x;\n};\n\n\n//# sourceURL=webpack://boilerplate/./src/utilties.js?");
 
 /***/ })
 
