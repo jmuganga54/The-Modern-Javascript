@@ -1065,3 +1065,90 @@ module.exports = {
 };
 
 ```
+
+## Environment and Source Maps
+We spend a good deal of time in this section we're working with and configuring both babel and webpack.
+
+And that's because I truly believe they are great tools for you to be using in your applications. Even if this is your first time ever working with javascript because they allow us to use those latest cutting edge features. So thanks for bearing with me as we move through this configuration process.
+
+And keep in mind that what we're doing here is building something that has lasting value. We're creating a boilerplate project. So when we do want to start a new web app we don't have to go through the process of configuring all this stuff again, we simply take this boilerplate directory copy and past it and we're off and running with a new project. So well yes we do have to do this once writing a webpack config file from scratch is something I almost never do anymore.
+
+I had my boiler plate when I want to start a new project, I just copy it, sometimes making small tweaks to fit my specific needs. The good new too is that we're almost done with our webpack configuration.
+
+
+In this section I finally want to address the warning we've been seeing since the very beginning. This warning is complaining about the mode option in webpack that hasn't been set. Now it gives us a little information how the modern option has not been set where webpack will fall back to production for the value set mode option to development or production to enable defaults for each environment.
+
+So this is telling us to specify if we're trying to use webpack for development or production, development would be use on our local machine or making changes of files and we want to see those changes reflected as fast as possible. Production is something we would only run every so often when we're actually ready to get a new copy of the public folder that could put on a web server. Each comes with their own set of advantages. Obviously when we're working in development our biggest concern is being able to work quickly. So the changes get reflected as fast as possible, webpack runs really quick.  When we run things in production webpack takes way way longer, about 10 times as long but that's OK because we only run production every so often. The file it spits out is smaller and more efficient. And this is what we want for production mode.
+
+So we're gong to be using development mode when we run the dev server and we're gong to be using production when we run our other script and setting this up to actually remove this warning is super easy. Over `package.json` all we have to do is provide a command line.
+
+```
+  "scripts": {
+    "dev-server": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
+  },
+```
+
+That's actually only have to do to tell webpack which mode we want to run in. Let's rerun our commands.
+
+```
+//development
+npm run dev-server
+
+//production 
+npm run build
+```
+
+For production, we're going to do the same thing with our production `build` so to generate the actual physical `bundled.js` file we need. We will run from the terminal `npm run build`. And remember we only need to do this when we're done making all of the changes for whatever new feature, we're trying to add and we're ready to get a copy of the app, we can actually upload to one of those services to change the version that people run when they visit the app in the browser. So right here we can see that things have been build and we have a physical `bundle.js` file.
+
+Now you would be ready to take everything out of `public` put it on your wev server and you would have a new version of your production application deployed.
+
+Now there is one more topic I want to talk about in this section and to Illustrate the problem that we're going to solve, I just want to add a `console.log` into one of our files like `utilities.js`, we can add it wherever we want it's not important.
+
+```
+//utilities.js
+const add = (a, b) => a + b;
+
+const name = "Joseph";
+
+const square = (x) => x * x;
+console.log("from my code");
+export { add, name, square as default };
+```
+
+From the code above then we're going to save utilities.js and we're going to go ahead and start up the dev server once again. Once the dev server is up, we'll refresh the browser and then we can start having this discussion about the new topic. I wan tto talk about.
+
+Down on `console panel`, we get all of the expected output. We have our console logs, from index.js, we have the one from utilities.js and we even notice that the dev tools are showing us that is shows us exactly which file the log is coming from and which line it's coming from as well.
+![Console](imgs/console.png)
+
+This can be really useful information as we debug complex applications. It can be really nice to be able to find where in the code something is coming from whether it's a message like these here or an error rom something going wrong.
+
+The only problem with the developer tools is that if we actually click one of these files it's not going to give us accurate information. So when we click that it shows our console.log on line 14 of tha file. If were to actually go over there and look for it we would realize that utilties.js doesn't even have 14 lines, the last line is line 7. So clearly while this file looks similar it's not exactly we have over here (created one) and that's because the displayed after clicking the file is the compiled file that actually runs in the browser.
+
+This is after Babel runs through it so he can see that ad has been converted to a regular function.
+
+Obviously we still want these things to be converted but when it comes to debugging our application in the browser dev tools it would be nice if we got more useful information. It would be nice for example if this said utilities.js line 10 which is indeed execute line 9 which is indeed accurate.
+
+Now there is a way to do thi and it is by enabling something called a `source map`, a source map contains a bunch of information that allows the browser to map the compiled code so the code we see here back to the original source from which it come. That's going to make it way easier to work with our webpack projects using the browser developer tools and the good news is that we can set it up in webpack with a single line of configuration, over inside of the webpack config file, we're going to add a new root property  called `dev tool`
+
+```
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+          },
+        },
+      },
+    ],
+  },
+  devtool: "source-map",
+};
+```
+
+Well and code.
+
