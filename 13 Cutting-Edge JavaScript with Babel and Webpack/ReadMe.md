@@ -1152,3 +1152,28 @@ Now there is a way to do thi and it is by enabling something called a `source ma
 
 Well and code.
 
+## Converting Hangman App
+In this section we are going to start the process of converting three javascript application over to the boilerplate project structure.
+
+So we'll be able to take advantage of things like webpack, babel, javascript modules source maps and all of the other awesome stuff we've set up.
+
+Essentially we're going to clone the boilerplate folder we're then going to take some of the files from older project copy them over to the new one and make few changes to take advantage of things like the javascript module system and the slightly altered directory structure for the most part through it's really not going to be that bad.
+
+
+>> For example we are using things like getPuzzle, getPuzzle isn't defined in this file and we don't have access to it because with webpack each file has its own private scope. The same thing is true for the hangman class used on the very next line.
+
+[Polyfill](https://babeljs.io/docs/babel-polyfill)The polyfill fixes that the `polyfill` runs before your code and it adds support for things like `includes function` in older browsers, the polyfill runs some code to check if the array prototype has the `includes methods` in it. If it does it leaves it alone. Knowing it's a modern browser. If it doesn't that actually defines an implementation for us. 
+
+So long story short what we need to do is include the polyfill so we get access to the function babel needs regeneration runtime. Now all we have to do is install this, make a one line change to well-packed config and we'll be all done with this conversion process.
+
+```
+npm install polyfill
+```
+
+Now the key to using the polyfill is to load it before we load our application code. That's going to require a single one line change to webpack config.
+
+```
+  entry: ["babel-polyfill", "./src/index.js"]
+```
+
+Now the polyfill is going to load before our application loads. It's going to make that function available to us and we'll be able to use async await over in the terminal.
