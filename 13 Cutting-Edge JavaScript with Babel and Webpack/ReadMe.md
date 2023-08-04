@@ -1177,3 +1177,18 @@ Now the key to using the polyfill is to load it before we load our application c
 ```
 
 Now the polyfill is going to load before our application loads. It's going to make that function available to us and we'll be able to use async await over in the terminal.
+
+//deployment
+Now that our Local development environment is looking good. Let's go ahead and actually create a production build and deploy to production and test that out as well.
+
+If you remember we had used those two services when hosting our websites we had used `netlify` an easy browser based way to host website and we had used `surge` as a great command line tool for 
+deploying applications.
+
+//first run
+```
+npm run build
+```
+
+Remember we have to run this script to generate the production build. This spits out actual files to the public scripts folder. Now that we have the files there let's go ahead and move over to the browser. I'm going to pull up `netlify.com` for the Hangman game, the drag the public folder to netlify for deployment.
+
+So here we have it. This is the process of converting our old applications to the new system where we get the advantages of webpack and babel.
