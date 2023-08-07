@@ -1,6 +1,8 @@
+import { v4 as uuidv4 } from "uuid";
 import Hangman from "./hangman";
 import getPuzzle from "./requests";
 
+console.log(uuidv4());
 const puzzleEl = document.querySelector("#puzzle");
 const guessesEl = document.querySelector("#guesses");
 let game1;

@@ -1192,3 +1192,36 @@ npm run build
 Remember we have to run this script to generate the production build. This spits out actual files to the public scripts folder. Now that we have the files there let's go ahead and move over to the browser. I'm going to pull up `netlify.com` for the Hangman game, the drag the public folder to netlify for deployment.
 
 So here we have it. This is the process of converting our old applications to the new system where we get the advantages of webpack and babel.
+
+## Using Third Party Libraries [UUID]
+Before we convert the notes or todo application there's one more thing we need to learn about and that's how we can use third party libraries with javascript modules.
+
+So the todo application takes advantage of the UUID for a library. We're going to learn how we can install that library via npm then load it in the import.
+
+if you google `github uuid` that will bring us over to the library page right there [uuidjs/uuid](https://github.com/uuidjs/uuid). And we had used this page to figure out exactly how we can load in the library and run things.
+
+If we scroll down on this page to the documentation we'll notice that one of the first things shown is `npm install uuid`. So this is exactly we're going to do to get the library installed in our project.
+
+So, over in the terminal like we've done plenty of times before. We're going to install this library in the terminal.
+
+So what we're going to end up doing from index.js or whatever file happen to need it is adding an import statement that imports that library code.
+
+This is then going to allow us to use that library functionality in the specific file. So just like I import hangman in this file because I need the hangman class I would import `uuid` in this file. If I needed it here if I didn't need it here `[index.js]` but I needed it in the request file, I would add the `import` in request.js.
+
+So we're using the javascript module system just like we've been using it already with the code we wrote. The only difference is we're loading in third part code.
+
+So in the terminal we can see the NPM installation command did succeed. So let's go ahead and cycle through the previous commands and get the `dev-server` up and running once.
+
+
+```
+import { v4 as uuidv4 } from 'uuid';
+uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+```
+
+I'm going to test things out down below by just using `console.log` to print a unique ID to the console. I'm going to call `uuid` for passing in no arguments sent it accepts none. I'll pass that to console.log to print it. And now we can actually start the `dev-server` again from the terminal.
+
+```
+npm run dev-server
+```
+
+Now we are actually able to see unique id. Now that we ahve installed and use one third party library I want to run through that process one more time with a library we've never used before.
