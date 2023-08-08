@@ -942,6 +942,7 @@ The program run fine, also processing the file through babel and in the end of t
 ```
 
 ## Webpack Dev Server
+
 In this section I want to take a few minutes to talk about how we can improve our local development workflow. So currently if we're working on the application and changing our javascript files we have to manually switch over to the terminal and rerun the build script in order to actually see our changes reflected.
 
 So we're going to go ahead and talk about how we can improve this workflow. So we never have to go into the terminal as we're developing our app. This is very similar to what we did with battle. We configure babel to watch our files for changes and rerun Babel when any of the files changed. That's exactly what we're going to be doing with webpack.
@@ -976,7 +977,7 @@ Le'ts put five seconds on the clock and dive into the five second solution. All 
 
 ```
 
-So what this is going to do is it is going to run web pack when we run the command. But then webpack is going to stay up and running it is going to watch any of the files that make up the bundle for changes. So in this case it's going to watch index.js but it's going to watch anything that index.js  as imports. So the end result is that it is going to watch all of our source files for changes when any of them change, It's going to generate a new bundle that's going to cause a live server to refresh the browser.
+So what this is going to do is it is going to run web pack when we run the command. But then webpack is going to stay up and running it is going to watch any of the files that make up the bundle for changes. So in this case it's going to watch index.js but it's going to watch anything that index.js as imports. So the end result is that it is going to watch all of our source files for changes when any of them change, It's going to generate a new bundle that's going to cause a live server to refresh the browser.
 
 So that is the five second solution. It gest the job done and it allows us a nicer workflow. No longer do we have to switch into the terminal and rerun any scripts to be able to view our application changes even we're using more advanced complex tooling like babel and webpack.
 
@@ -990,7 +991,7 @@ So let's go ahead and start by moving into the terminal and running an NPM insta
 npm install webpack-dev-server
 ```
 
-Now once this finishes installing we're going to have to make a few changes to the `webpack config file` to get the dev server to work. There are two main things we have to provide and they both relate to us telling the dev server where I can find the content it's supposed to serve up much like we tell a live server to serve up the content in the public directory. 
+Now once this finishes installing we're going to have to make a few changes to the `webpack config file` to get the dev server to work. There are two main things we have to provide and they both relate to us telling the dev server where I can find the content it's supposed to serve up much like we tell a live server to serve up the content in the public directory.
 
 We're going to add a new route property onto our config object. The first of those two properties is content base , its content need to be an absolute path, that let's the dev server know where the folder you're trying to serve up lives. So with `live server` we told it was the public directory with the `dev server` it's going to be that public directory. The only difference is in how we specify it, we have to provide an absolute path and that is very similar to what we did up above for path.
 
@@ -1030,6 +1031,7 @@ npm run dev-server
 ```
 
 > webpack config file code
+
 ```
 const path = require("path");
 
@@ -1067,6 +1069,7 @@ module.exports = {
 ```
 
 ## Environment and Source Maps
+
 We spend a good deal of time in this section we're working with and configuring both babel and webpack.
 
 And that's because I truly believe they are great tools for you to be using in your applications. Even if this is your first time ever working with javascript because they allow us to use those latest cutting edge features. So thanks for bearing with me as we move through this configuration process.
@@ -1075,10 +1078,9 @@ And keep in mind that what we're doing here is building something that has lasti
 
 I had my boiler plate when I want to start a new project, I just copy it, sometimes making small tweaks to fit my specific needs. The good new too is that we're almost done with our webpack configuration.
 
-
 In this section I finally want to address the warning we've been seeing since the very beginning. This warning is complaining about the mode option in webpack that hasn't been set. Now it gives us a little information how the modern option has not been set where webpack will fall back to production for the value set mode option to development or production to enable defaults for each environment.
 
-So this is telling us to specify if we're trying to use webpack for development or production, development would be use on our local machine or making changes of files and we want to see those changes reflected as fast as possible. Production is something we would only run every so often when we're actually ready to get a new copy of the public folder that could put on a web server. Each comes with their own set of advantages. Obviously when we're working in development our biggest concern is being able to work quickly. So the changes get reflected as fast as possible, webpack runs really quick.  When we run things in production webpack takes way way longer, about 10 times as long but that's OK because we only run production every so often. The file it spits out is smaller and more efficient. And this is what we want for production mode.
+So this is telling us to specify if we're trying to use webpack for development or production, development would be use on our local machine or making changes of files and we want to see those changes reflected as fast as possible. Production is something we would only run every so often when we're actually ready to get a new copy of the public folder that could put on a web server. Each comes with their own set of advantages. Obviously when we're working in development our biggest concern is being able to work quickly. So the changes get reflected as fast as possible, webpack runs really quick. When we run things in production webpack takes way way longer, about 10 times as long but that's OK because we only run production every so often. The file it spits out is smaller and more efficient. And this is what we want for production mode.
 
 So we're gong to be using development mode when we run the dev server and we're gong to be using production when we run our other script and setting this up to actually remove this warning is super easy. Over `package.json` all we have to do is provide a command line.
 
@@ -1095,7 +1097,7 @@ That's actually only have to do to tell webpack which mode we want to run in. Le
 //development
 npm run dev-server
 
-//production 
+//production
 npm run build
 ```
 
@@ -1129,7 +1131,7 @@ This is after Babel runs through it so he can see that ad has been converted to 
 
 Obviously we still want these things to be converted but when it comes to debugging our application in the browser dev tools it would be nice if we got more useful information. It would be nice for example if this said utilities.js line 10 which is indeed execute line 9 which is indeed accurate.
 
-Now there is a way to do thi and it is by enabling something called a `source map`, a source map contains a bunch of information that allows the browser to map the compiled code so the code we see here back to the original source from which it come. That's going to make it way easier to work with our webpack projects using the browser developer tools and the good news is that we can set it up in webpack with a single line of configuration, over inside of the webpack config file, we're going to add a new root property  called `dev tool`
+Now there is a way to do thi and it is by enabling something called a `source map`, a source map contains a bunch of information that allows the browser to map the compiled code so the code we see here back to the original source from which it come. That's going to make it way easier to work with our webpack projects using the browser developer tools and the good news is that we can set it up in webpack with a single line of configuration, over inside of the webpack config file, we're going to add a new root property called `dev tool`
 
 ```
   module: {
@@ -1153,16 +1155,16 @@ Now there is a way to do thi and it is by enabling something called a `source ma
 Well and code.
 
 ## Converting Hangman App
+
 In this section we are going to start the process of converting three javascript application over to the boilerplate project structure.
 
 So we'll be able to take advantage of things like webpack, babel, javascript modules source maps and all of the other awesome stuff we've set up.
 
 Essentially we're going to clone the boilerplate folder we're then going to take some of the files from older project copy them over to the new one and make few changes to take advantage of things like the javascript module system and the slightly altered directory structure for the most part through it's really not going to be that bad.
 
+> > For example we are using things like getPuzzle, getPuzzle isn't defined in this file and we don't have access to it because with webpack each file has its own private scope. The same thing is true for the hangman class used on the very next line.
 
->> For example we are using things like getPuzzle, getPuzzle isn't defined in this file and we don't have access to it because with webpack each file has its own private scope. The same thing is true for the hangman class used on the very next line.
-
-[Polyfill](https://babeljs.io/docs/babel-polyfill)The polyfill fixes that the `polyfill` runs before your code and it adds support for things like `includes function` in older browsers, the polyfill runs some code to check if the array prototype has the `includes methods` in it. If it does it leaves it alone. Knowing it's a modern browser. If it doesn't that actually defines an implementation for us. 
+[Polyfill](https://babeljs.io/docs/babel-polyfill)The polyfill fixes that the `polyfill` runs before your code and it adds support for things like `includes function` in older browsers, the polyfill runs some code to check if the array prototype has the `includes methods` in it. If it does it leaves it alone. Knowing it's a modern browser. If it doesn't that actually defines an implementation for us.
 
 So long story short what we need to do is include the polyfill so we get access to the function babel needs regeneration runtime. Now all we have to do is install this, make a one line change to well-packed config and we'll be all done with this conversion process.
 
@@ -1181,10 +1183,11 @@ Now the polyfill is going to load before our application loads. It's going to ma
 //deployment
 Now that our Local development environment is looking good. Let's go ahead and actually create a production build and deploy to production and test that out as well.
 
-If you remember we had used those two services when hosting our websites we had used `netlify` an easy browser based way to host website and we had used `surge` as a great command line tool for 
+If you remember we had used those two services when hosting our websites we had used `netlify` an easy browser based way to host website and we had used `surge` as a great command line tool for
 deploying applications.
 
 //first run
+
 ```
 npm run build
 ```
@@ -1194,6 +1197,7 @@ Remember we have to run this script to generate the production build. This spits
 So here we have it. This is the process of converting our old applications to the new system where we get the advantages of webpack and babel.
 
 ## Using Third Party Libraries [UUID]
+
 Before we convert the notes or todo application there's one more thing we need to learn about and that's how we can use third party libraries with javascript modules.
 
 So the todo application takes advantage of the UUID for a library. We're going to learn how we can install that library via npm then load it in the import.
@@ -1212,7 +1216,6 @@ So we're using the javascript module system just like we've been using it alread
 
 So in the terminal we can see the NPM installation command did succeed. So let's go ahead and cycle through the previous commands and get the `dev-server` up and running once.
 
-
 ```
 import { v4 as uuidv4 } from 'uuid';
 uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
@@ -1225,3 +1228,90 @@ npm run dev-server
 ```
 
 Now we are actually able to see unique id. Now that we ahve installed and use one third party library I want to run through that process one more time with a library we've never used before.
+
+Now that we have installed and use one third party library I want to runt through that process one more time with a library we've never used before. Just to give you a bit more experience. It's really essential to get comfortable working with these third party libraries because it can really save you a lot of time in the long run.
+
+There are a lot of problems we might want to solve in our javascript app but these might be problems that other people needed to solve as well like generating a unique ID. So it's not essential for us to write all the code actually learn how those thing works, then make sure the code is working correctly and change it over time. Instead we can take this common thing generating a unique ID and we can essentially outsource it to a library like UUID.
+
+Let's go ahead and run through just one more example with one more npm library.
+
+Over inside of the browser I am going to search NPM the validator. This is going to pull up the validator package on npm and this is the one that we're going to be installing and using.
+
+> Challenge import and use the validator package
+
+```
+npm install validator
+
+//index.js
+import validator from "validator";
+
+//use it
+console.log(validator.isEmail("foo@bar.com"));
+
+//Expected output: true;
+```
+
+So being able to take advantage fo third party libraries like UUID or validator are going to allow us to foucst ont he specifics of our application and not worry about generic tasks that a lot of applications need.
+
+So I recommend looking for third party libraries for common problems before you decide to write a bunch of code on your own.
+
+```
+//index.js
+import { v4 as uuidv4 } from "uuid";
+import validator from "validator";
+import Hangman from "./hangman";
+import getPuzzle from "./requests";
+
+console.log(uuidv4());
+const puzzleEl = document.querySelector("#puzzle");
+const guessesEl = document.querySelector("#guesses");
+let game1;
+
+console.log(validator.isEmail("foo@baom")); //=> true
+
+window.addEventListener("keypress", (e) => {
+  const guess = String.fromCharCode(e.charCode);
+  game1.makeGuess(guess);
+  render();
+});
+
+const render = () => {
+  puzzleEl.innerHTML = "";
+  guessesEl.textContent = game1.statusMessage;
+
+  game1.puzzle.split("").forEach((letter) => {
+    const letterEl = document.createElement("span");
+    letterEl.textContent = letter;
+    puzzleEl.appendChild(letterEl);
+  });
+};
+
+const startGame = async () => {
+  const puzzle = await getPuzzle("2");
+  game1 = new Hangman(puzzle, 5);
+  render();
+};
+
+document.querySelector("#reset").addEventListener("click", startGame);
+
+startGame();
+
+// getPuzzle('2').then((puzzle) => {
+//     console.log(puzzle)
+// }).catch((err) => {
+//     console.log(`Error: ${err}`)
+// })
+
+// getCurrentCountry().then((country) => {
+//     console.log(country.name)
+// }).catch((error) => {
+//     console.log(error)
+// })
+
+```
+
+So if you want to unistall the package all you have to do is to run
+
+```
+npm uninstall uuid validator
+```
