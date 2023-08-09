@@ -1296,22 +1296,52 @@ document.querySelector("#reset").addEventListener("click", startGame);
 
 startGame();
 
-// getPuzzle('2').then((puzzle) => {
-//     console.log(puzzle)
-// }).catch((err) => {
-//     console.log(`Error: ${err}`)
-// })
-
-// getCurrentCountry().then((country) => {
-//     console.log(country.name)
-// }).catch((error) => {
-//     console.log(error)
-// })
-
 ```
 
 So if you want to unistall the package all you have to do is to run
 
 ```
 npm uninstall uuid validator
+```
+
+## Converting Notes App
+
+So for Notes App it has two js script to control different pages, for edit page and index page, for the thing that we have to do is change the entry point on our `webpack.config.js` file, to accomodate all the pages.
+
+```
+entry:{
+     index:  ["babel-polyfill", "./src/index.js"],
+     edit:  ["babel-polyfill", "./src/edit.js"]
+  },
+```
+
+Also we have to make some modification on the output, to for both pages the edit and index page
+
+```
+ output: {
+    path: path.resolve(__dirname, "public/scripts"),
+    filename: "[name]-bundle.js",
+  }
+```
+
+To link the html and the js, below are the links
+
+```
+//index.html
+ <script src="./scripts/index-bundle.js"></script>
+
+ //edit.html
+<script src="./scripts/edit-bundle.js"></script>
+```
+
+After that you have to run the npm to make sure all the dependencies are ok
+
+```
+npm install
+```
+
+Then run the application
+
+```
+npm run dev-server
 ```
