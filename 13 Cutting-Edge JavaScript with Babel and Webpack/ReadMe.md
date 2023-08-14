@@ -1345,3 +1345,18 @@ Then run the application
 ```
 npm run dev-server
 ```
+
+## Converting Notes App Part II
+In this section we will continue to convert Notes App.
+
+Now before we actually move any files over or copy any code I Want to talk about why converting this project is going to be a little harder than it was to convert the hangman application, to kick things let's go ahead and start with `note functions` and `notes.js`
+
+One of hte very first things `notes.app` does is it creates the notes array. So we get this value by calling `getSavedNotes` which reads data out of local storage. If there is no data in local storage we just start off with an empty array and this function has been working really well so far.
+
+It gives us access to the notes which we can then use in this file. For example we render the notes.
+
+But there's a problem with our current structure, that's not going to work when we introduce the module system that is the fact that this variable `notes` is being used by other files as well.
+
+When we use javascript modules each module. So each file has it's own scope meaning that we can''t share variable between files like we're currently relying on. Instead we need to use export and import to transfer data between those files.
+
+So we're going to do a bit of restructuring to create a better application oto kick things off.
