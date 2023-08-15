@@ -1359,4 +1359,13 @@ But there's a problem with our current structure, that's not going to work when 
 
 When we use javascript modules each module. So each file has it's own scope meaning that we can''t share variable between files like we're currently relying on. Instead we need to use export and import to transfer data between those files.
 
-So we're going to do a bit of restructuring to create a better application oto kick things off.
+So we're going to do a bit of restructuring to create a better application to kick things off, let's go ahead and create a brand new file in source directory.
+
+`/src/notes.js` This is the file that's going to be in charge of managing those notes. 
+
+So for example in here' we're going to have a notes array just like we did before then we're going to export a series of functions allowing anyone to manipulate that array whether they want to add a new item figure out what times are in teh array or remove a note by it's id.
+
+So in the end of the day functionality is going to be the same. It's just about restructuring thing to better take advantage of the modules system.
+
+So let's go ahead and and kick things off my creating that array.
+
