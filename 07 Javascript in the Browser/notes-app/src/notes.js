@@ -1,3 +1,6 @@
+import { v4 as uuidv4 } from 'uuid';
+import moment from 'moment';
+
 let notes = []
 
 /**
@@ -19,7 +22,23 @@ const loadNotes = () => {
  */
 const getNotes = () => notes
 
+/**
+ * Create a note
+ */
+const createNote = () =>{
+    const id = uuidv4()
+    const timestamp = moment().valueOf()
+
+    notes.push({
+        id: id,
+        title: '',
+        body: '',
+        createdAt: timestamp,
+        updatedAt: timestamp
+    })
+
+}
 //calling the function
 notes = loadNotes();
 
-export {getNotes}
+export {getNotes, createNote}

@@ -1369,3 +1369,72 @@ So in the end of the day functionality is going to be the same. It's just about 
 
 So let's go ahead and and kick things off my creating that array.
 
+```
+//notes.js
+let notes = []
+
+/**
+ * Get the notes from localStorage
+ * @returns {array}
+ */
+const loadNotes = () => {
+    const notesJSON = localStorage.getItem('notes')
+
+    try {
+        return notesJSON ? JSON.parse(notesJSON) : []
+    } catch (e) {
+        return []
+    } 
+}
+/**
+ * Expose notes from module
+ * @returns {array} notes
+ */
+const getNotes = () => notes
+
+//calling the function
+notes = loadNotes();
+
+export {getNotes}
+
+//index.js
+import { getNotes } from "./notes";
+console.log(getNotes())
+
+```
+
+So once gain we're going to create a new function in the file and export it so it can be used by the rest of the application.
+
+In the past we didn't even have a function for creating a note. We just had a set of code inside of our event handler.
+
+So we're going to go ahead and clean that up by breaking it into a function that we can use and reuse anywhere we need over inside of `notes.js`
+
+`createNotes()` isn't going to need any arguments and inside of there, we're going to go ahead and do a few things. First up we're going to need to generate a new ID, using `uuid` and we're also going to have to generate a `timestamp` using moment. Neither of those are tools we currently have installed.
+
+So before we can continue we actually need to install a couple of third party modules `[moment, uuid]`
+
+```
+npm install moment uuid
+```
+Now these are all modules we've worked with before so we don't have to learn anything new switching from using script tags and the old project to actual modules in the new. Let's go ahead and run that.
+
+Below is the create notes function.
+
+```
+/**
+ * Create a note
+ */
+const createNote = () =>{
+    const id = uuidv4()
+    const timestamp = moment().valueOf()
+
+    notes.push({
+        id: id,
+        title: '',
+        body: '',
+        createdAt: timestamp,
+        updatedAt: timestamp
+    })
+
+}
+```
