@@ -1347,6 +1347,7 @@ npm run dev-server
 ```
 
 ## Converting Notes App Part II
+
 In this section we will continue to convert Notes App.
 
 Now before we actually move any files over or copy any code I Want to talk about why converting this project is going to be a little harder than it was to convert the hangman application, to kick things let's go ahead and start with `note functions` and `notes.js`
@@ -1361,7 +1362,7 @@ When we use javascript modules each module. So each file has it's own scope mean
 
 So we're going to do a bit of restructuring to create a better application to kick things off, let's go ahead and create a brand new file in source directory.
 
-`/src/notes.js` This is the file that's going to be in charge of managing those notes. 
+`/src/notes.js` This is the file that's going to be in charge of managing those notes.
 
 So for example in here' we're going to have a notes array just like we did before then we're going to export a series of functions allowing anyone to manipulate that array whether they want to add a new item figure out what times are in teh array or remove a note by it's id.
 
@@ -1384,7 +1385,7 @@ const loadNotes = () => {
         return notesJSON ? JSON.parse(notesJSON) : []
     } catch (e) {
         return []
-    } 
+    }
 }
 /**
  * Expose notes from module
@@ -1416,6 +1417,7 @@ So before we can continue we actually need to install a couple of third party mo
 ```
 npm install moment uuid
 ```
+
 Now these are all modules we've worked with before so we don't have to learn anything new switching from using script tags and the old project to actual modules in the new. Let's go ahead and run that.
 
 Below is the create notes function.
@@ -1438,3 +1440,24 @@ const createNote = () =>{
 
 }
 ```
+
+So now we have a way to read our notes and we have a way to create a new note. All of that code living nicely in `notes.js`
+
+So let's go ahead and create another function as well. This one is going to be similar to something that we already have and it is going to be `saveNotes`. `saveNotes` is going to save the data to local storage.
+
+Now we already have that function over in notes function.
+
+```
+/**
+ * Saving notes to local storage
+ */
+const saveNotes = () => {
+  localStorage.setItem("notes", JSON.stringify(notes));
+};
+```
+
+In this section we focused on create our notes module the notes is going to contain everything needed to work with and manipulate the notes array other files are going to be able to actually manipulate the notes array by calling one of the functions this file exposes in this case we're exposing two functions, `getNotes` allowing another file to get the current notes and `createNotes` allowing other file to actually create a note.
+
+`index.js` doesn't need to know the implementation details of either of these function. `index.js` doesn't need to know the implementation details of either of these function indexed. It shouldn't even care that local storage is being used.
+
+All it know is that it's been given a set of function to call. It's up to `notes.js` to worry about the details of exactly where this data is stored.
