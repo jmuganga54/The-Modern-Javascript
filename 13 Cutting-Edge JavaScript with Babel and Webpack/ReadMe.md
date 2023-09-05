@@ -1461,3 +1461,14 @@ In this section we focused on create our notes module the notes is going to cont
 `index.js` doesn't need to know the implementation details of either of these function. `index.js` doesn't need to know the implementation details of either of these function indexed. It shouldn't even care that local storage is being used.
 
 All it know is that it's been given a set of function to call. It's up to `notes.js` to worry about the details of exactly where this data is stored.
+
+## Converting Notes App Part III
+In this section we're going to continue moving through this conversion process. So let's go ahead and start by bringing over another function from `notes-function.js` to `notes.js` and that is the `remove notes function`
+
+```
+removeNot("5d77d528-b1fa-496b-8b33-8fc6b5b11b11");
+console.log(getNotes());
+```
+We can see that the removed note function is working as advertised.
+
+Now let's continue on with a another easy one. Inside of notes function near the bottom we have our `sortNotes` function, this one is going to get copied and pasted into the new file. 
