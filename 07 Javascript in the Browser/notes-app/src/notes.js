@@ -62,11 +62,10 @@ const removeNote = (id) => {
 
 /**
  * Sort your notes by one of three ways
- * @param {Array} notes - notes
  * @param {String} sortBy - sorting criteria
  * @returns
  */
-const sortNotes = (notes, sortBy) => {
+const sortNotes = (sortBy) => {
   if (sortBy === "byEdited") {
     return notes.sort((a, b) => {
       if (a.updatedAt > b.updatedAt) {
@@ -101,7 +100,29 @@ const sortNotes = (notes, sortBy) => {
     return notes;
   }
 };
+
+const updateNote = (id,updates) =>{
+  const note = notes.find((note)=> note.id == id)
+
+  if (!note){
+    return ;
+  }
+
+  if(typeof updates.title === 'string'){
+    note.title = updates.title;
+    notes.updatedAt = moment().valueOf()
+  }
+
+  if(typeof updates.body === 'string'){
+    note.body = updates.body;
+    notes.updatedAt = moment().valueOf();
+  }
+
+  saveNotes();
+
+}
+
 //loading all the notes from localStorage
 notes = loadNotes();
 
-export { getNotes, createNote, removeNote, sortNotes };
+export { getNotes, createNote, removeNote, sortNotes, updateNote };
