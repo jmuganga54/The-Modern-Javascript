@@ -1474,3 +1474,7 @@ We can see that the removed note function is working as advertised.
 Now let's continue on with a another easy one. Inside of notes function near the bottom we have our `sortNotes` function, this one is going to get copied and pasted into the new file. 
 
 The last function we're going to add in `notes.js` is going to be one that doesn't exit already. This one is going to be called `updateNote` and it's going to give us an easy function based way to update a notes title or by or both. So currently over inside of the note edit file which I'm going to move over 
+
+Now befor we actually integrate this any further witht the real application we're going to make one file, very similar to notes though a lot shorter than this one, is going to allow us to manage our filters.
+
+So over inside of the source directory let's make a new file and we're only going to add about 15 lines of code to it. We can call this `filter.js`
