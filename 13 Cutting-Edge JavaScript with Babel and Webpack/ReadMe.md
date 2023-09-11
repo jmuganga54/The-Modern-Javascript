@@ -1478,3 +1478,13 @@ The last function we're going to add in `notes.js` is going to be one that doesn
 Now befor we actually integrate this any further witht the real application we're going to make one file, very similar to notes though a lot shorter than this one, is going to allow us to manage our filters.
 
 So over inside of the source directory let's make a new file and we're only going to add about 15 lines of code to it. We can call this `filter.js`
+
+## Converting Notes App: Part IV
+In this video we're going to wrap up the conversation process for the notes application.
+
+By the end we'll have the final converted project complete. Let's go ahead and kick thing off by closing all of the open files.
+
+And I wan to open just a single file that has notes functions from the old project. Now some of the functions inside of here we've already accounted for things like `getSaveNotes`, `saveNotes` and `removeNotes`. But others like `generateNoteDOM`, `renderNots` and `generateLastEdited`, those three function they do not have a companion in the new project.
+
+So we're going to go ahead and start by fixing that over in teh source directory. In `src directory` we are going to create another file called `views.js` which we will add those functions.
+
