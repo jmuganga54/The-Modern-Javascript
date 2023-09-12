@@ -1,4 +1,7 @@
 import moment from "moment";
+import { getFilters } from "./filters";
+import { sortNotes } from "./notes";
+
 /**
  * Generate the DOM structure for a note
  * @param {*} note
@@ -35,9 +38,10 @@ const generateNoteDOM = (note) => {
  * @param {*} notes
  * @param {*} filters
  */
-const renderNotes = (notes, filters) => {
+const renderNotes = () => {
   const notesEl = document.querySelector("#notes");
-  notes = sortNotes(notes, filters.sortBy);
+  const filters = getFilters();
+  const notes = sortNotes(filters.sortBy);
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(filters.searchText.toLowerCase())
   );
@@ -66,4 +70,4 @@ const generateLastEdited = (timestamp) => {
   return `Last edited ${moment(timestamp).fromNow()}`;
 };
 
-export {generateNoteDOM, renderNote, generateLastEdited }
+export { generateNoteDOM, renderNotes, generateLastEdited };

@@ -1,15 +1,45 @@
 import { getNotes, createNote, removeNote, updateNote } from "./notes";
 import { getFilters, setFilters } from "./filters";
 
+("use strict");
 
-// console.log(getNotes());
-// createNote();
-// removeNote("5d77d528-b1fa-496b-8b33-8fc6b5b11b11");
-// updateNote('8941e8f3-d9e2-4fc3-9e43-d54d1a3180a7', {title:'My note title', body:'This is the body for my notes'})
-// console.log(getNotes());
-console.log(getFilters())
-setFilters({
-    searchText: 'Office',
-    sortBy: 'byCreated'
-})
-console.log(getFilters())
+let notes = getSavedNotes();
+
+const filters = {
+  searchText: "",
+  sortBy: "byEdited",
+};
+
+renderNotes(notes, filters);
+
+document.querySelector("#create-note").addEventListener("click", (e) => {
+  const id = uuidv4();
+  const timestamp = moment().valueOf();
+
+  notes.push({
+    id: id,
+    title: "",
+    body: "",
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  });
+  saveNotes(notes);
+  location.assign(`./edit.html#${id}`);
+});
+
+document.querySelector("#search-text").addEventListener("input", (e) => {
+  filters.searchText = e.target.value;
+  renderNotes(notes, filters);
+});
+
+document.querySelector("#filter-by").addEventListener("change", (e) => {
+  filters.sortBy = e.target.value;
+  renderNotes(notes, filters);
+});
+
+window.addEventListener("storage", (e) => {
+  if (e.key === "notes") {
+    notes = JSON.parse(e.newValue);
+    renderNotes(notes, filters);
+  }
+});
