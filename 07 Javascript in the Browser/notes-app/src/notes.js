@@ -45,6 +45,7 @@ const createNote = () => {
   });
   //Saving notes
   saveNotes();
+  return id;
 };
 
 /**
