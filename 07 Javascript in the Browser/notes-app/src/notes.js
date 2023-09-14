@@ -102,26 +102,26 @@ const sortNotes = (sortBy) => {
   }
 };
 
-const updateNote = (id,updates) =>{
-  const note = notes.find((note)=> note.id == id)
+const updateNote = (id, updates) => {
+  const note = notes.find((note) => note.id == id);
 
-  if (!note){
-    return ;
+  if (!note) {
+    return;
   }
 
-  if(typeof updates.title === 'string'){
+  if (typeof updates.title === "string") {
     note.title = updates.title;
-    notes.updatedAt = moment().valueOf()
+    notes.updatedAt = moment().valueOf();
   }
 
-  if(typeof updates.body === 'string'){
+  if (typeof updates.body === "string") {
     note.body = updates.body;
     notes.updatedAt = moment().valueOf();
   }
 
   saveNotes();
-
-}
+  return note;
+};
 
 //loading all the notes from localStorage
 notes = loadNotes();
