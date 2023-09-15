@@ -1488,3 +1488,5 @@ And I wan to open just a single file that has notes functions from the old proje
 
 So we're going to go ahead and start by fixing that over in teh source directory. In `src directory` we are going to create another file called `views.js` which we will add those functions.
 
+## To-Do App Converstion Setup
+In this section will be setting up an environment to convert our todo app.
