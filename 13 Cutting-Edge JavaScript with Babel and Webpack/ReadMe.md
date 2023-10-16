@@ -1463,23 +1463,26 @@ In this section we focused on create our notes module the notes is going to cont
 All it know is that it's been given a set of function to call. It's up to `notes.js` to worry about the details of exactly where this data is stored.
 
 ## Converting Notes App Part III
+
 In this section we're going to continue moving through this conversion process. So let's go ahead and start by bringing over another function from `notes-function.js` to `notes.js` and that is the `remove notes function`
 
 ```
 removeNot("5d77d528-b1fa-496b-8b33-8fc6b5b11b11");
 console.log(getNotes());
 ```
+
 We can see that the removed note function is working as advertised.
 
-Now let's continue on with a another easy one. Inside of notes function near the bottom we have our `sortNotes` function, this one is going to get copied and pasted into the new file. 
+Now let's continue on with a another easy one. Inside of notes function near the bottom we have our `sortNotes` function, this one is going to get copied and pasted into the new file.
 
-The last function we're going to add in `notes.js` is going to be one that doesn't exit already. This one is going to be called `updateNote` and it's going to give us an easy function based way to update a notes title or by or both. So currently over inside of the note edit file which I'm going to move over 
+The last function we're going to add in `notes.js` is going to be one that doesn't exit already. This one is going to be called `updateNote` and it's going to give us an easy function based way to update a notes title or by or both. So currently over inside of the note edit file which I'm going to move over
 
 Now befor we actually integrate this any further witht the real application we're going to make one file, very similar to notes though a lot shorter than this one, is going to allow us to manage our filters.
 
 So over inside of the source directory let's make a new file and we're only going to add about 15 lines of code to it. We can call this `filter.js`
 
 ## Converting Notes App: Part IV
+
 In this video we're going to wrap up the conversation process for the notes application.
 
 By the end we'll have the final converted project complete. Let's go ahead and kick thing off by closing all of the open files.
@@ -1489,4 +1492,120 @@ And I wan to open just a single file that has notes functions from the old proje
 So we're going to go ahead and start by fixing that over in teh source directory. In `src directory` we are going to create another file called `views.js` which we will add those functions.
 
 ## To-Do App Converstion Setup
+
 In this section will be setting up an environment to convert our todo app.
+
+## Rest Parameter
+
+In this section we are going to see how to work with `rest parameter` and `spread operators`.
+
+Now both the `rest parameter` and the `spread operator` relate to function arguments.
+
+```
+const calculateAverage = (numOne, numTwo) => {
+  return (numOne + numTwo) / 2;
+};
+
+console.log(calculateAverage(0, 100));
+
+//Expected output:50
+
+```
+
+Now `calculateAverage` is indeed working as expected but it's not a very good function because it's not flexible.
+
+If I wanted to add a few more numbers like `88` and `60` for the function would now need to be changed in order to account for that.
+
+It would be a bit more ideal if we had a list of numbers and calculate average that we could loop over to add everything up then we could just divide the sum by the arrays length.
+
+Now there are two ways we could do that. The first is to pass in an array to calculate average instead of passing an individual arguments. For example `calculateAverage([10,20,30])`
+
+The alternative through allows us to stick with the current call syntax where we pass in four separate arguments. This is using the rest parameter we can use the `rest parameter` to grab all of the arguments passed into a given function.
+
+So let's go ahead and remove everything from the arguments list and instead of naming the first two arguments `numOne, numTwo` we're going to use the `rest parameter` to grab all of the arguments passed in and store them in an array.
+
+The rest parameter start with three dots `...` followed by a variable name. For example `...numbers`
+
+```
+const calculateAverage = (...numbers) => {
+  //return (numOne + numTwo) / 2;
+  let sum = 0;
+  numbers.forEach((num)=>{
+   return sum = sum + num;
+  })
+
+  return sum/numbers.length;
+};
+
+console.log(calculateAverage(0,100,88,64));
+
+//Expected output: 63
+```
+
+There is another aspect of `rest parameter`, we have to explore. Let's pretend that wa want calculate average to return `string` a message as opposed to just returning a number. So instead of returning the number directly.
+
+```
+const calculateAverage = (...numbers) => {
+  //return (numOne + numTwo) / 2;
+  let sum = 0;
+  numbers.forEach((num) => {
+    return (sum = sum + num);
+  });
+
+  const average = sum / numbers.length;
+  return `The average grade is ${average}`;
+};
+
+console.log(calculateAverage(0, 100, 88, 64));
+
+//Expected output: The average grade is 63
+```
+
+Now the problem with this is that we are always assuming that we're calculating the average grade.
+
+Maybe we're calculating the average temperate or the average age of a group of people.
+
+We'll want this piece to be dynamic too, and we'll let the caller pass that in.
+
+```
+const calculateAverage = (thing, ...numbers) => {
+  //return (numOne + numTwo) / 2;
+  let sum = 0;
+  numbers.forEach((num) => {
+    return (sum = sum + num);
+  });
+
+  const average = sum / numbers.length;
+  return `The average ${thing} is ${average}`;
+};
+
+console.log(calculateAverage(`temperature`, 0, 100, 88, 64));
+
+//Expected output: The average temperature is 63
+```
+
+So using rest parameters gives us a bit of flexibility when designing our functions.
+
+//Challenge
+{
+//Create printTeam that takes team name, coach, and players
+//Team: Liberty
+//Coach:Casey Penn
+//Player: Merge, Aiden, Herbert, Sherry
+
+//how it should be called.
+printTeam('Liberty','Casey Penn', 'Aiden', 'Herbert', 'Sherry')
+}
+
+//My try
+
+```
+const printTeam = (team, coachName, ...players) => {
+  return `Team: ${team}, Coach: ${coachName}, Players: ${players.join(", ")}`;
+};
+
+console.log(printTeam("Liberty", "Casey Penn", "Aiden", "Herbert", "Sherry"));
+
+
+
+```
